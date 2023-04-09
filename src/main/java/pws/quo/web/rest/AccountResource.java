@@ -8,10 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pws.quo.domain.Category;
+import pws.quo.domain.Quote;
 import pws.quo.domain.User;
+import pws.quo.domain.UserAdditionalFields;
 import pws.quo.repository.UserRepository;
 import pws.quo.security.SecurityUtils;
 import pws.quo.service.MailService;
+import pws.quo.service.UserAdditionalFieldsService;
+import pws.quo.service.UserQuoteService;
 import pws.quo.service.UserService;
 import pws.quo.service.dto.AdminUserDTO;
 import pws.quo.service.dto.PasswordChangeDTO;
@@ -41,10 +46,22 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final UserAdditionalFieldsService userAdditionalFieldsService;
+
+    private final UserQuoteService userQuoteService;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        UserAdditionalFieldsService userAdditionalFieldsService,
+        UserQuoteService userQuoteService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.userAdditionalFieldsService = userAdditionalFieldsService;
+        this.userQuoteService = userQuoteService;
     }
 
     /**
@@ -62,7 +79,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        //mailService.sendActivationEmail(user);
     }
 
     /**
@@ -99,10 +116,85 @@ public class AccountResource {
      */
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
-        return userService
-            .getUserWithAuthorities()
-            .map(AdminUserDTO::new)
-            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
+            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
+            adminUserDTO.setUserAdditionalFields(userAdditionalFields);
+
+            if (userAdditionalFields != null) {
+                List<Category> kate = getCategoriesForUser();
+
+                adminUserDTO.setCategoryList(kate);
+            }
+
+            return adminUserDTO;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @PostMapping("/set/category")
+    public List<Category> setCatgories(@RequestBody List<Category> kategorije) {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            List<Category> categoryList = userAdditionalFieldsService.saveCategoriesForUser(kategorije, user.get());
+            return categoryList;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @GetMapping("/get/category")
+    public List<Category> getCategoriesForUser() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            List<Category> categoryList = userAdditionalFieldsService.getCategoriesForUser(user.get());
+            return categoryList;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @PatchMapping("/set/theme/{id}")
+    public AdminUserDTO setTheme(@PathVariable("id") int id) {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            UserAdditionalFields uaf = userAdditionalFieldsService.saveNewTheme(user.get(), id);
+
+            AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
+            adminUserDTO.setUserAdditionalFields(uaf);
+
+            if (uaf != null) {
+                List<Category> kate = getCategoriesForUser();
+                adminUserDTO.setCategoryList(kate);
+            }
+            return adminUserDTO;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @GetMapping("/current/quote")
+    public Quote getCurrentQuote() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            Quote quote = userQuoteService.findLastQuote(user.get());
+            return quote;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @GetMapping("/quote/history")
+    public List<Quote> getQuoteHistory() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            List<Quote> quotes = userQuoteService.findQuotesForUser(user.get());
+            return quotes;
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
     }
 
     /**

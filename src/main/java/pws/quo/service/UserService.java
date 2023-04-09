@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pws.quo.config.Constants;
 import pws.quo.domain.Authority;
 import pws.quo.domain.User;
+import pws.quo.domain.UserAdditionalFields;
 import pws.quo.repository.AuthorityRepository;
+import pws.quo.repository.UserAdditionalFieldsRepository;
 import pws.quo.repository.UserRepository;
 import pws.quo.security.AuthoritiesConstants;
 import pws.quo.security.SecurityUtils;
@@ -41,16 +43,20 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final UserAdditionalFieldsRepository userAdditionalFieldsRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        UserAdditionalFieldsRepository userAdditionalFieldsRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userAdditionalFieldsRepository = userAdditionalFieldsRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -93,6 +99,7 @@ public class UserService {
             });
     }
 
+    @Transactional
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
@@ -123,13 +130,21 @@ public class UserService {
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
-        newUser.setActivated(false);
+        newUser.setActivated(true);
+
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
+        User saved = userRepository.save(newUser);
+
+        UserAdditionalFields uaf = new UserAdditionalFields();
+        uaf.setInternalUser(saved);
+        uaf.setRegistrationDate(Instant.now());
+        uaf.setThemePicture(1);
+        userAdditionalFieldsRepository.save(uaf);
+
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;

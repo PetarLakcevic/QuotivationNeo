@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20230409142241",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "category",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Category",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "quote",
+      "otherEntityRelationshipName": "category",
+      "ownerSide": false,
+      "relationshipName": "quote",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "userAdditionalFields",
+      "otherEntityRelationshipName": "category",
+      "ownerSide": false,
+      "relationshipName": "userAdditionalFields",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

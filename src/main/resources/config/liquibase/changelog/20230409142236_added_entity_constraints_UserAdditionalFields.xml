@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity UserAdditionalFields.
+    -->
+    <changeSet id="20230409142236-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="internal_user_id"
+                                 baseTableName="user_additional_fields"
+                                 constraintName="fk_user_additional_fields__internal_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_additional_fields_id"
+                                 baseTableName="rel_user_additional_fields__category"
+                                 constraintName="fk_rel_user_additional_fields____user_additional_fields_34_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_additional_fields"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="rel_user_additional_fields__category"
+                                 constraintName="fk_rel_user_additional_fields__category__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,55 @@
+// an ignored comment
+/** not an ignored comment */
+
+entity UserAdditionalFields {
+  expiry Instant
+  registrationDate Instant
+  themePicture Integer
+}
+
+entity Payment {
+paymentDate Instant
+}
+
+entity Author {
+name String required
+}
+
+entity QuoteSuggestion {
+author String
+    text String required
+}
+entity Quote {
+text String required
+}
+
+entity Category {
+name String required
+}
+
+entity UserQuote{
+    favourite Boolean
+    time Instant
+}
+
+relationship OneToOne {
+    UserAdditionalFields{internalUser} to User
+}
+
+relationship ManyToOne {
+    QuoteSuggestion{user(login)} to User //to limit suggestions daily
+    Quote{author(name)} to Author
+    UserQuote{user(login)} to User
+    UserQuote{quote} to Quote
+    Payment to UserAdditionalFields{payments}
+}
+
+relationship ManyToMany{
+Quote{category} to Category{quote}
+UserAdditionalFields{category} to Category{userAdditionalFields}
+}
+
+paginate * with pagination
+service * with serviceClass
+service * with serviceImpl
+filter *

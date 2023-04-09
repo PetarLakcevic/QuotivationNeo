@@ -1,0 +1,49 @@
+{
+  "applications": "*",
+  "changelogDate": "20230409142236",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "user_additional_fields",
+  "fields": [
+    {
+      "fieldName": "expiry",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "registrationDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "themePicture",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "javadoc": "not an ignored comment",
+  "jpaMetamodelFiltering": true,
+  "name": "UserAdditionalFields",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "ownerSide": true,
+      "relationshipName": "internalUser",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "userAdditionalFields",
+      "ownerSide": true,
+      "relationshipName": "category",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "payment",
+      "otherEntityRelationshipName": "userAdditionalFields",
+      "relationshipName": "payments",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

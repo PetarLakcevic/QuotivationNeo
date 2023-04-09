@@ -2,12 +2,15 @@ package pws.quo.service.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.constraints.*;
 import pws.quo.config.Constants;
 import pws.quo.domain.Authority;
+import pws.quo.domain.Category;
 import pws.quo.domain.User;
+import pws.quo.domain.UserAdditionalFields;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -51,6 +54,10 @@ public class AdminUserDTO implements Serializable {
 
     private Set<String> authorities;
 
+    private UserAdditionalFields userAdditionalFields;
+
+    private List<Category> categoryList;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -69,6 +76,56 @@ public class AdminUserDTO implements Serializable {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+    }
+
+    public AdminUserDTO(
+        Long id,
+        String login,
+        String firstName,
+        String lastName,
+        String email,
+        String imageUrl,
+        boolean activated,
+        String langKey,
+        String createdBy,
+        Instant createdDate,
+        String lastModifiedBy,
+        Instant lastModifiedDate,
+        Set<String> authorities,
+        UserAdditionalFields userAdditionalFields,
+        List<Category> categoryList
+    ) {
+        this.id = id;
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.activated = activated;
+        this.langKey = langKey;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedDate = lastModifiedDate;
+        this.authorities = authorities;
+        this.userAdditionalFields = userAdditionalFields;
+        this.categoryList = categoryList;
+    }
+
+    public UserAdditionalFields getUserAdditionalFields() {
+        return userAdditionalFields;
+    }
+
+    public void setUserAdditionalFields(UserAdditionalFields userAdditionalFields) {
+        this.userAdditionalFields = userAdditionalFields;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
     public Long getId() {

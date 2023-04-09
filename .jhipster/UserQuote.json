@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20230409142242",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "user_quote",
+  "fields": [
+    {
+      "fieldName": "favourite",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "time",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "UserQuote",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "quote",
+      "relationshipName": "quote",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}
