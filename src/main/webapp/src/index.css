@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Dosis-Regular';
+  src: url('./assets/fonts/Dosis-Regular.ttf') format('truetype');
+}
+
+* {
+  font-family: 'Dosis-Regular' !important;
+  box-sizing: border-box;
+  margin: 0;
+    padding: 0;
+}
+
