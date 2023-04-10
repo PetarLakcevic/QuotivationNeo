@@ -167,7 +167,6 @@ public class CategoryResource {
         log.debug("REST request to get Categories by criteria: {}", criteria);
         Page<Category> page = categoryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
 
         for (Category category : page) {

@@ -27,7 +27,7 @@ public class Category implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "author", "categories" }, allowSetters = true)
     private Set<Quote> quotes = new HashSet<>();
 
