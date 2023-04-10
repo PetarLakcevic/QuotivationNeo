@@ -6,7 +6,6 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -15,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import pws.quo.domain.Category;
-import pws.quo.domain.Quote;
-import pws.quo.domain.User;
-import pws.quo.domain.UserAdditionalFields;
+import pws.quo.domain.*;
+import pws.quo.domain.dto.QAC;
+import pws.quo.repository.AuthorRepository;
+import pws.quo.repository.CategoryRepository;
+import pws.quo.repository.QuoteRepository;
 import pws.quo.repository.UserRepository;
 import pws.quo.security.SecurityUtils;
 import pws.quo.service.MailService;
@@ -28,7 +29,9 @@ import pws.quo.service.UserQuoteService;
 import pws.quo.service.UserService;
 import pws.quo.service.dto.AdminUserDTO;
 import pws.quo.service.dto.PasswordChangeDTO;
-import pws.quo.web.rest.errors.*;
+import pws.quo.web.rest.errors.EmailAlreadyUsedException;
+import pws.quo.web.rest.errors.InvalidPasswordException;
+import pws.quo.web.rest.errors.LoginAlreadyUsedException;
 import pws.quo.web.rest.vm.KeyAndPasswordVM;
 import pws.quo.web.rest.vm.ManagedUserVM;
 
@@ -58,25 +61,37 @@ public class AccountResource {
 
     private final UserQuoteService userQuoteService;
 
+    private final CategoryRepository categoryRepository;
+
+    private final AuthorRepository authorRepository;
+
+    private final QuoteRepository quoteRepository;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
         MailService mailService,
         UserAdditionalFieldsService userAdditionalFieldsService,
-        UserQuoteService userQuoteService
+        UserQuoteService userQuoteService,
+        CategoryRepository categoryRepository,
+        AuthorRepository authorRepository,
+        QuoteRepository quoteRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.userAdditionalFieldsService = userAdditionalFieldsService;
         this.userQuoteService = userQuoteService;
+        this.categoryRepository = categoryRepository;
+        this.authorRepository = authorRepository;
+        this.quoteRepository = quoteRepository;
     }
 
     /**
      * {@code POST  /register} : register the user.
      *
      * @param managedUserVM the managed user View Model.
-     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws InvalidPasswordException  {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
@@ -210,7 +225,7 @@ public class AccountResource {
      *
      * @param userDTO the current user information.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
+     * @throws RuntimeException          {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
@@ -250,15 +265,16 @@ public class AccountResource {
 
     @GetMapping(path = "/app-reset")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
     public void appReset() throws Exception {
         String excelFilePath = "quotes.xlsx";
-        File folder = new File(".");
-        File[] files = folder.listFiles();
-        for (File file : files) {
-            if (file.isFile()) {
-                System.out.println(file.getName());
-            }
-        }
+        //        File folder = new File(".");
+        //        File[] files = folder.listFiles();
+        //        for (File file : files) {
+        //            if (file.isFile()) {
+        //                System.out.println(file.getName());
+        //            }
+        //        }
         // create a file input stream to read the Excel file
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
@@ -268,20 +284,102 @@ public class AccountResource {
         // get the first sheet of the workbook
         Sheet sheet = workbook.getSheetAt(0);
 
-        // loop through each row of the sheet
+        Set<String> categoriesStrings = new HashSet<>();
+        Set<String> authorStrings = new HashSet<>();
+        List<QAC> qacList = new ArrayList<>();
+
+        //Get Categories and Authors
         for (Row row : sheet) {
             if (row.getRowNum() == 0) continue;
-            // loop through each cell of the row
-            for (Cell cell : row) {
-                // print the value of the cell
-                System.out.print(cell.toString() + "aaa");
+            String strAuthor = row.getCell(1).getStringCellValue().trim();
+            if (strAuthor == null || strAuthor.isEmpty()) {
+                strAuthor = "Unknown";
             }
-            System.out.println();
+            String strCategory = row.getCell(2).getStringCellValue().trim();
+
+            String quote = row.getCell(0).getStringCellValue().trim();
+
+            qacList.add(new QAC(quote, strAuthor, strCategory));
+
+            authorStrings.add(strAuthor);
+            categoriesStrings.add(strCategory);
         }
+
+        List<Author> authors = new ArrayList<>();
+        for (String authorS : authorStrings) {
+            authors.add(new Author(authorS));
+        }
+
+        List<Category> categories = new ArrayList<>();
+        for (String categoryS : categoriesStrings) {
+            categories.add(new Category(categoryS));
+        }
+
+        authorRepository.deleteAll();
+        categoryRepository.deleteAll();
+        quoteRepository.deleteAll();
+
+        List<Author> authorList = authorRepository.saveAll(authors);
+        List<Category> categoryList = categoryRepository.saveAll(categories);
+
+        List<Quote> quoteList = new ArrayList<>();
+        for (QAC qac : qacList) {
+            if (qac.getQuote() == null || qac.getQuote().isEmpty()) {
+                continue;
+            }
+
+            Quote quote = new Quote();
+
+            if (qac.getQuote().length() > 250) {
+                qac.setQuote("TOO LONGY");
+            } else {
+                quote.setText(qac.getQuote());
+            }
+
+            if (quote.getText() == null) {
+                quote.setText("Error :)");
+            }
+
+            quote.setAuthor(findAuthor(authorList, qac.getAuthor()));
+            List<String> names = new ArrayList<>();
+
+            for (QAC qac1 : qacList) {
+                if (qac.getQuote().equals(qac1.getQuote())) {
+                    names.add(qac.getCategory());
+                }
+            }
+
+            quote.setCategories(findCategory(categoryList, names));
+            quoteList.add(quote);
+        }
+
+        quoteRepository.saveAll(quoteList);
 
         // close the workbook and input stream
         workbook.close();
         inputStream.close();
+    }
+
+    private Author findAuthor(List<Author> authorList, String name) {
+        for (Author author : authorList) {
+            if (author.getName().equals(name)) {
+                return author;
+            }
+        }
+        return null;
+    }
+
+    private Set<Category> findCategory(List<Category> categoryList, List<String> names) {
+        Set<Category> categories = new HashSet<>();
+        for (Category category : categoryList) {
+            for (String name : names) {
+                if (category.getName().equals(name)) {
+                    categories.add(category);
+                    continue;
+                }
+            }
+        }
+        return categories;
     }
 
     /**
@@ -306,7 +404,7 @@ public class AccountResource {
      *
      * @param keyAndPassword the generated key and the new password.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the password could not be reset.
+     * @throws RuntimeException         {@code 500 (Internal Server Error)} if the password could not be reset.
      */
     @PostMapping(path = "/account/reset-password/finish")
     public void finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {

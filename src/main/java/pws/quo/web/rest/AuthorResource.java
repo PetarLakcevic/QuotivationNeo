@@ -38,7 +38,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AuthorResource {
 
     private final Logger log = LoggerFactory.getLogger(AuthorResource.class);
@@ -76,6 +75,7 @@ public class AuthorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/authors")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Author> createAuthor(@Valid @RequestBody Author author) throws URISyntaxException {
         log.debug("REST request to save Author : {}", author);
         if (author.getId() != null) {
@@ -99,6 +99,7 @@ public class AuthorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/authors/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Author> updateAuthor(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Author author
@@ -134,6 +135,7 @@ public class AuthorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/authors/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Author> partialUpdateAuthor(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Author author
@@ -171,8 +173,7 @@ public class AuthorResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get Authors by criteria: {}", criteria);
-        Page<Author> page = authorQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        List<Author> page = authorRepository.findAll();
 
         //take all quotes
         List<Quote> quoteList = quoteService.findAllQuotes();
@@ -182,7 +183,7 @@ public class AuthorResource {
             authorDTOList.add(new AuthorDTO(author.getId(), author.getName(), filterQuotesForAuthor(author.getId(), quoteList)));
         }
 
-        return ResponseEntity.ok().headers(headers).body(authorDTOList);
+        return ResponseEntity.ok().body(authorDTOList);
     }
 
     private List<Quote> filterQuotesForAuthor(Long id, List<Quote> quoteList) {
@@ -241,6 +242,7 @@ public class AuthorResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/authors/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         log.debug("REST request to delete Author : {}", id);
         authorService.delete(id);
