@@ -57,7 +57,7 @@ const AdminPanel = () => {
             color="success"
             onPointerDown={() => navigate(`/adminpanel/${page}`)}
           >
-            <Typography>{page}</Typography>
+            <Typography>{page.replace("_", " ")}</Typography>
           </Button>
         ))}
       </Box>

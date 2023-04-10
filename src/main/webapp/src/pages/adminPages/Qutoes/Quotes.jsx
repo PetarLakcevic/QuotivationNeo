@@ -45,6 +45,31 @@ const Quotes = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [quotesPerPage, setQuotesPerPage] = useState(5);
+  const [sort, setSort] = useState({ field: '', order: 'asc' });
+
+  const sortedQuotes = quotes => {
+    return quotes.sort((a, b) => {
+      if (sort.field === 'quote') {
+        return sort.order === 'asc' ? a.text.localeCompare(b.text) : b.text.localeCompare(a.text);
+      }
+      if (sort.field === 'categories') {
+        const aCategories = a.categories.map(c => c.name).join(', ');
+        const bCategories = b.categories.map(c => c.name).join(', ');
+        return sort.order === 'asc' ? aCategories.localeCompare(bCategories) : bCategories.localeCompare(aCategories);
+      }
+      if (sort.field === 'author') {
+        return sort.order === 'asc' ? a.author?.name.localeCompare(b.author?.name) : b.author?.name.localeCompare(a.author?.name);
+      }
+      return 0;
+    });
+  };
+
+  const changeSort = field => {
+    setSort(prevSort => {
+      const order = prevSort.field === field && prevSort.order === 'asc' ? 'desc' : 'asc';
+      return { field, order };
+    });
+  };
 
   const indexOfLastQuote = page * quotesPerPage;
   const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
@@ -60,7 +85,7 @@ const Quotes = () => {
     setQuotesPerPage(5);
   };
 
-  const currentQuotes = quotes
+  const currentQuotes = sortedQuotes(quotes)
     .filter(quote => {
       if (searchTerm === '') {
         return quote;
@@ -145,9 +170,22 @@ const Quotes = () => {
             >
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Quote</TableCell>
-                <TableCell>Categories</TableCell>
-                <TableCell>Author</TableCell>
+                <TableCell onClick={() => changeSort('quote')}  sx={{
+                    cursor: 'pointer',
+                  }}>
+                  Quote
+                  {sort.field === 'quote' ? (sort.order === 'asc' ? '▲' : '▼') : null}
+                </TableCell>
+                <TableCell onClick={() => changeSort('categories')}  sx={{
+                    cursor: 'pointer',
+                }}>Categories
+                {sort.field === 'categories' ? (sort.order === 'asc' ? '▲' : '▼') : null}
+                </TableCell>
+                <TableCell onClick={() => changeSort('author')}  sx={{
+                    cursor: 'pointer',
+                }}>Author
+                {sort.field === 'author' ? (sort.order === 'asc' ? '▲' : '▼') : null}
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -155,10 +193,12 @@ const Quotes = () => {
               {currentQuotes.map((quote, index) => (
                 <TableRow key={index}>
                   <TableCell
-                  sx={{
+                    sx={{
                       width: '1%',
                     }}
-                  >{index + 1}.</TableCell>
+                  >
+                    {index + 1}.
+                  </TableCell>
                   <TableCell align="left">{quote.text}</TableCell>
                   <TableCell>
                     {quote?.categories?.map(c => {

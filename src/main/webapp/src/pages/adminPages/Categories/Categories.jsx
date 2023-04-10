@@ -56,6 +56,11 @@ const Categories = () => {
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
 
+      if (sortConfig.key === 'quotes.length') {
+        aValue = a.quotes.length;
+        bValue = b.quotes.length;
+      }
+
       if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
