@@ -162,15 +162,14 @@ public class QuoteResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get Quotes by criteria: {}", criteria);
-        Page<Quote> page = quoteQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        List<Quote> page = quoteRepository.findAll();
 
         List<QuoteDTO> quoteDTOList = new ArrayList<>();
         for (Quote quote : page) {
             quoteDTOList.add(new QuoteDTO(quote));
         }
 
-        return ResponseEntity.ok().headers(headers).body(quoteDTOList);
+        return ResponseEntity.ok().body(quoteDTOList);
     }
 
     /**

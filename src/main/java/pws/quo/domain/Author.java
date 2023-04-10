@@ -35,6 +35,12 @@ public class Author implements Serializable {
         return this;
     }
 
+    public Author() {}
+
+    public Author(String name) {
+        this.name = name;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
