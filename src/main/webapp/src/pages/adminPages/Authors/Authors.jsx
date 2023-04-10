@@ -45,14 +45,49 @@ const Authors = () => {
   const [page, setPage] = useState(1);
   const [quotesPerPage, setQuotesPerPage] = useState(5);
 
+  const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'ascending' });
+
   const indexOfLastQuote = page * quotesPerPage;
   const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
+
+  const sortedAuthors = authors => {
+    const sorted = [...authors];
+
+    sorted.sort((a, b) => {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      // Ako sortiramo po dužini niza citata, uporedi dužine umesto nizova
+      if (sortConfig.key === 'quoteList.length') {
+        aValue = a.quoteList.length;
+        bValue = b.quoteList.length;
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return sorted;
+  };
+
+  const requestSort = key => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
 
   const handleChangePage = (event, value) => {
     setPage(value);
   };
 
-  const currentAuthors = authors
+  const currentAuthors = sortedAuthors(authors)
     .filter(author => {
       if (searchTerm === '') {
         return author;
@@ -134,67 +169,73 @@ const Authors = () => {
                 >
                   ID
                 </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="center">Number of quoutes</TableCell>
+                <TableCell
+                  onPointerDown={() => requestSort('name')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Name {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : ''}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  onPointerDown={() => requestSort('quoteList.length')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Number of quotes {sortConfig.key === 'quoteList.length' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : ''}
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {currentAuthors
-                // .filter(author => {
-                //   if (searchTerm === '') {
-                //     return author;
-                //   } else {
-                //     const searchTerms = searchTerm.toLowerCase().split(' ');
-                //     return searchTerms.every(term => author.name.toLowerCase().includes(term));
-                //   }
-                // })
-                .map((author, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}.</TableCell>
-                    <TableCell
-                      onPointerDown={() => {
-                        navigate(`/adminpanel/author/${author.id}`);
-                      }}
+              {currentAuthors.map((author, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}.</TableCell>
+                  <TableCell
+                    onPointerDown={() => {
+                      navigate(`/adminpanel/author/${author.id}`);
+                    }}
+                    sx={{
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      '&:hover': {
+                        color: 'hsl(144, 25%, 57%)',
+                      },
+                    }}
+                  >
+                    {author.name}
+                  </TableCell>
+                  <TableCell align="center">{author.quoteList.length}</TableCell>
+                  <TableCell align="right">
+                    <IconButton
                       sx={{
-                        cursor: 'pointer',
-                        textDecoration: 'underline',
-                        '&:hover': {
-                          color: 'hsl(144, 25%, 57%)',
-                        },
+                        color: 'hsl(190, 50%, 40%)',
+                      }}
+                      aria-label="edit"
+                      onPointerDown={() => {
+                        setSelectedAuthor(author);
+                        setEditDialog(true);
                       }}
                     >
-                      {author.name}
-                    </TableCell>
-                    <TableCell align="center">{author.quoteList.length}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        sx={{
-                          color: 'hsl(190, 50%, 40%)',
-                        }}
-                        aria-label="edit"
-                        onPointerDown={() => {
-                          setSelectedAuthor(author);
-                          setEditDialog(true);
-                        }}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
-                     sx={{
-                      color: 'hsl(360, 50%, 50%)',
-                    }}
-                        aria-label="delete"
-                        onPointerDown={() => {
-                          setSelectedAuthor(author);
-                          setDeleteDialog(true);
-                        }}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      sx={{
+                        color: 'hsl(360, 50%, 50%)',
+                      }}
+                      aria-label="delete"
+                      onPointerDown={() => {
+                        setSelectedAuthor(author);
+                        setDeleteDialog(true);
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
           <Box

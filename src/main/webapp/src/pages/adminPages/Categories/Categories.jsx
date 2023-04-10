@@ -47,11 +47,40 @@ const Categories = () => {
   const indexOfLastQuote = page * categoriesPerPage;
   const indexOfFirstQuote = indexOfLastQuote - categoriesPerPage;
 
+  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
+
+  const sortedCategories = categories => {
+    const sorted = [...categories];
+
+    sorted.sort((a, b) => {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return sorted;
+  };
+
+  const requestSort = key => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
   const handleChangePage = (event, value) => {
     setPage(value);
   };
 
-  const currentCategory = categories
+  const currentCategory = sortedCategories(categories)
     .filter(category => {
       if (searchTerm === '') {
         return category;
@@ -202,8 +231,23 @@ const Categories = () => {
             >
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Category</TableCell>
-                {/* <TableCell align="center">Number of quoutes</TableCell> */}
+                <TableCell
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  onPointerDown={() => requestSort('name')}
+                >
+                  Category {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : ''}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  onPointerDown={() => requestSort('quotes.length')}
+                >
+                  Number of quoutes {sortConfig.key === 'quotes.length' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : ''}
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -230,7 +274,7 @@ const Categories = () => {
                   >
                     {category.name}
                   </TableCell>
-                  {/* <TableCell align="center">{category.quotes.length}</TableCell> */}
+                  <TableCell align="center">{category.quotes?.length}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       sx={{
@@ -401,7 +445,6 @@ const Categories = () => {
                 sx={{
                   backgroundColor: 'hsl(144, 25%, 57%)',
                 }}
-                color="success"
                 type="submit"
               >
                 Add
