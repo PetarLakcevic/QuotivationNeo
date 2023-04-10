@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -64,6 +65,7 @@ public class QuoteResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/quotes")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Quote> createQuote(@Valid @RequestBody Quote quote) throws URISyntaxException {
         log.debug("REST request to save Quote : {}", quote);
         if (quote.getId() != null) {
@@ -87,6 +89,7 @@ public class QuoteResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/quotes/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Quote> updateQuote(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Quote quote)
         throws URISyntaxException {
         log.debug("REST request to update Quote : {}, {}", id, quote);
@@ -120,6 +123,7 @@ public class QuoteResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/quotes/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Quote> partialUpdateQuote(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Quote quote
@@ -152,6 +156,7 @@ public class QuoteResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of quotes in body.
      */
     @GetMapping("/quotes")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<QuoteDTO>> getAllQuotes(
         QuoteCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
@@ -206,6 +211,7 @@ public class QuoteResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/quotes/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteQuote(@PathVariable Long id) {
         log.debug("REST request to delete Quote : {}", id);
         quoteService.delete(id);

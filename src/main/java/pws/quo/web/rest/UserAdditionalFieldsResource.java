@@ -53,7 +53,6 @@ public class UserAdditionalFieldsResource {
         this.userAdditionalFieldsRepository = userAdditionalFieldsRepository;
         this.userAdditionalFieldsQueryService = userAdditionalFieldsQueryService;
     }
-
     /**
      * {@code POST  /user-additional-fields} : Create a new userAdditionalFields.
      *
@@ -61,19 +60,19 @@ public class UserAdditionalFieldsResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userAdditionalFields, or with status {@code 400 (Bad Request)} if the userAdditionalFields has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/user-additional-fields")
-    public ResponseEntity<UserAdditionalFields> createUserAdditionalFields(@RequestBody UserAdditionalFields userAdditionalFields)
-        throws URISyntaxException {
-        log.debug("REST request to save UserAdditionalFields : {}", userAdditionalFields);
-        if (userAdditionalFields.getId() != null) {
-            throw new BadRequestAlertException("A new userAdditionalFields cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        UserAdditionalFields result = userAdditionalFieldsService.save(userAdditionalFields);
-        return ResponseEntity
-            .created(new URI("/api/user-additional-fields/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+    //    @PostMapping("/user-additional-fields")
+    //    public ResponseEntity<UserAdditionalFields> createUserAdditionalFields(@RequestBody UserAdditionalFields userAdditionalFields)
+    //        throws URISyntaxException {
+    //        log.debug("REST request to save UserAdditionalFields : {}", userAdditionalFields);
+    //        if (userAdditionalFields.getId() != null) {
+    //            throw new BadRequestAlertException("A new userAdditionalFields cannot already have an ID", ENTITY_NAME, "idexists");
+    //        }
+    //        UserAdditionalFields result = userAdditionalFieldsService.save(userAdditionalFields);
+    //        return ResponseEntity
+    //            .created(new URI("/api/user-additional-fields/" + result.getId()))
+    //            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+    //            .body(result);
+    //    }
 
     /**
      * {@code PUT  /user-additional-fields/:id} : Updates an existing userAdditionalFields.
@@ -85,29 +84,29 @@ public class UserAdditionalFieldsResource {
      * or with status {@code 500 (Internal Server Error)} if the userAdditionalFields couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/user-additional-fields/{id}")
-    public ResponseEntity<UserAdditionalFields> updateUserAdditionalFields(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody UserAdditionalFields userAdditionalFields
-    ) throws URISyntaxException {
-        log.debug("REST request to update UserAdditionalFields : {}, {}", id, userAdditionalFields);
-        if (userAdditionalFields.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, userAdditionalFields.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!userAdditionalFieldsRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        UserAdditionalFields result = userAdditionalFieldsService.update(userAdditionalFields);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userAdditionalFields.getId().toString()))
-            .body(result);
-    }
+    //    @PutMapping("/user-additional-fields/{id}")
+    //    public ResponseEntity<UserAdditionalFields> updateUserAdditionalFields(
+    //        @PathVariable(value = "id", required = false) final Long id,
+    //        @RequestBody UserAdditionalFields userAdditionalFields
+    //    ) throws URISyntaxException {
+    //        log.debug("REST request to update UserAdditionalFields : {}, {}", id, userAdditionalFields);
+    //        if (userAdditionalFields.getId() == null) {
+    //            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+    //        }
+    //        if (!Objects.equals(id, userAdditionalFields.getId())) {
+    //            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+    //        }
+    //
+    //        if (!userAdditionalFieldsRepository.existsById(id)) {
+    //            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+    //        }
+    //
+    //        UserAdditionalFields result = userAdditionalFieldsService.update(userAdditionalFields);
+    //        return ResponseEntity
+    //            .ok()
+    //            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userAdditionalFields.getId().toString()))
+    //            .body(result);
+    //    }
 
     /**
      * {@code PATCH  /user-additional-fields/:id} : Partial updates given fields of an existing userAdditionalFields, field will ignore if it is null
@@ -120,30 +119,30 @@ public class UserAdditionalFieldsResource {
      * or with status {@code 500 (Internal Server Error)} if the userAdditionalFields couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/user-additional-fields/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<UserAdditionalFields> partialUpdateUserAdditionalFields(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody UserAdditionalFields userAdditionalFields
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update UserAdditionalFields partially : {}, {}", id, userAdditionalFields);
-        if (userAdditionalFields.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, userAdditionalFields.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!userAdditionalFieldsRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<UserAdditionalFields> result = userAdditionalFieldsService.partialUpdate(userAdditionalFields);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userAdditionalFields.getId().toString())
-        );
-    }
+    //    @PatchMapping(value = "/user-additional-fields/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    //    public ResponseEntity<UserAdditionalFields> partialUpdateUserAdditionalFields(
+    //        @PathVariable(value = "id", required = false) final Long id,
+    //        @RequestBody UserAdditionalFields userAdditionalFields
+    //    ) throws URISyntaxException {
+    //        log.debug("REST request to partial update UserAdditionalFields partially : {}, {}", id, userAdditionalFields);
+    //        if (userAdditionalFields.getId() == null) {
+    //            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+    //        }
+    //        if (!Objects.equals(id, userAdditionalFields.getId())) {
+    //            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+    //        }
+    //
+    //        if (!userAdditionalFieldsRepository.existsById(id)) {
+    //            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+    //        }
+    //
+    //        Optional<UserAdditionalFields> result = userAdditionalFieldsService.partialUpdate(userAdditionalFields);
+    //
+    //        return ResponseUtil.wrapOrNotFound(
+    //            result,
+    //            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userAdditionalFields.getId().toString())
+    //        );
+    //    }
 
     /**
      * {@code GET  /user-additional-fields} : get all the userAdditionalFields.
@@ -152,16 +151,16 @@ public class UserAdditionalFieldsResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userAdditionalFields in body.
      */
-    @GetMapping("/user-additional-fields")
-    public ResponseEntity<List<UserAdditionalFields>> getAllUserAdditionalFields(
-        UserAdditionalFieldsCriteria criteria,
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get UserAdditionalFields by criteria: {}", criteria);
-        Page<UserAdditionalFields> page = userAdditionalFieldsQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    //    @GetMapping("/user-additional-fields")
+    //    public ResponseEntity<List<UserAdditionalFields>> getAllUserAdditionalFields(
+    //        UserAdditionalFieldsCriteria criteria,
+    //        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    //    ) {
+    //        log.debug("REST request to get UserAdditionalFields by criteria: {}", criteria);
+    //        Page<UserAdditionalFields> page = userAdditionalFieldsQueryService.findByCriteria(criteria, pageable);
+    //        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //    }
 
     /**
      * {@code GET  /user-additional-fields/count} : count all the userAdditionalFields.
@@ -169,11 +168,11 @@ public class UserAdditionalFieldsResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
-    @GetMapping("/user-additional-fields/count")
-    public ResponseEntity<Long> countUserAdditionalFields(UserAdditionalFieldsCriteria criteria) {
-        log.debug("REST request to count UserAdditionalFields by criteria: {}", criteria);
-        return ResponseEntity.ok().body(userAdditionalFieldsQueryService.countByCriteria(criteria));
-    }
+    //    @GetMapping("/user-additional-fields/count")
+    //    public ResponseEntity<Long> countUserAdditionalFields(UserAdditionalFieldsCriteria criteria) {
+    //        log.debug("REST request to count UserAdditionalFields by criteria: {}", criteria);
+    //        return ResponseEntity.ok().body(userAdditionalFieldsQueryService.countByCriteria(criteria));
+    //    }
 
     /**
      * {@code GET  /user-additional-fields/:id} : get the "id" userAdditionalFields.
@@ -181,26 +180,26 @@ public class UserAdditionalFieldsResource {
      * @param id the id of the userAdditionalFields to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userAdditionalFields, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/user-additional-fields/{id}")
-    public ResponseEntity<UserAdditionalFields> getUserAdditionalFields(@PathVariable Long id) {
-        log.debug("REST request to get UserAdditionalFields : {}", id);
-        Optional<UserAdditionalFields> userAdditionalFields = userAdditionalFieldsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(userAdditionalFields);
-    }
-
-    /**
-     * {@code DELETE  /user-additional-fields/:id} : delete the "id" userAdditionalFields.
-     *
-     * @param id the id of the userAdditionalFields to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/user-additional-fields/{id}")
-    public ResponseEntity<Void> deleteUserAdditionalFields(@PathVariable Long id) {
-        log.debug("REST request to delete UserAdditionalFields : {}", id);
-        userAdditionalFieldsService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
-    }
+    //    @GetMapping("/user-additional-fields/{id}")
+    //    public ResponseEntity<UserAdditionalFields> getUserAdditionalFields(@PathVariable Long id) {
+    //        log.debug("REST request to get UserAdditionalFields : {}", id);
+    //        Optional<UserAdditionalFields> userAdditionalFields = userAdditionalFieldsService.findOne(id);
+    //        return ResponseUtil.wrapOrNotFound(userAdditionalFields);
+    //    }
+    //
+    //    /**
+    //     * {@code DELETE  /user-additional-fields/:id} : delete the "id" userAdditionalFields.
+    //     *
+    //     * @param id the id of the userAdditionalFields to delete.
+    //     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+    //     */
+    //    @DeleteMapping("/user-additional-fields/{id}")
+    //    public ResponseEntity<Void> deleteUserAdditionalFields(@PathVariable Long id) {
+    //        log.debug("REST request to delete UserAdditionalFields : {}", id);
+    //        userAdditionalFieldsService.delete(id);
+    //        return ResponseEntity
+    //            .noContent()
+    //            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+    //            .build();
+    //    }
 }

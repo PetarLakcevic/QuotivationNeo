@@ -21,6 +21,11 @@ public class CategoryDTO {
         this.quotes = category.getQuotes();
     }
 
+    public CategoryDTO(Category category, boolean a1) {
+        this.id = category.getId();
+        this.name = category.getName();
+    }
+
     public Long getId() {
         return id;
     }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,6 +38,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AuthorResource {
 
     private final Logger log = LoggerFactory.getLogger(AuthorResource.class);
@@ -186,7 +188,9 @@ public class AuthorResource {
     private List<Quote> filterQuotesForAuthor(Long id, List<Quote> quoteList) {
         List<Quote> quotesOfAuthor = new ArrayList<>();
         for (Quote quote : quoteList) {
-            if (quote.getAuthor()==null){continue;}
+            if (quote.getAuthor() == null) {
+                continue;
+            }
             if (quote.getAuthor().getId().equals(id)) {
                 quotesOfAuthor.add(quote);
             }

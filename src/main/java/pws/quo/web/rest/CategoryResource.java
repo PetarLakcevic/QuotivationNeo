@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,6 +27,7 @@ import pws.quo.domain.Quote;
 import pws.quo.domain.dto.CategoryDTO;
 import pws.quo.domain.dto.QuoteDTO;
 import pws.quo.repository.CategoryRepository;
+import pws.quo.security.SecurityUtils;
 import pws.quo.service.CategoryQueryService;
 import pws.quo.service.CategoryService;
 import pws.quo.service.criteria.CategoryCriteria;
@@ -70,6 +74,7 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/categories")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
         log.debug("REST request to save Category : {}", category);
         if (category.getId() != null) {
@@ -93,6 +98,7 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/categories/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Category> updateCategory(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Category category
@@ -128,6 +134,7 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/categories/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Category> partialUpdateCategory(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Category category
@@ -169,8 +176,14 @@ public class CategoryResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
 
-        for (Category category : page) {
-            categoryDTOList.add(new CategoryDTO(category));
+        if (isAdmin()) {
+            for (Category category : page) {
+                categoryDTOList.add(new CategoryDTO(category));
+            }
+        } else {
+            for (Category category : page) {
+                categoryDTOList.add(new CategoryDTO(category, true));
+            }
         }
 
         return ResponseEntity.ok().headers(headers).body(categoryDTOList);
@@ -195,6 +208,7 @@ public class CategoryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the category, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/categories/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
         Optional<Category> category = categoryService.findOne(id);
@@ -214,6 +228,7 @@ public class CategoryResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/categories/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryService.delete(id);
@@ -221,5 +236,13 @@ public class CategoryResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    public boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            return true;
+        }
+        return false;
     }
 }

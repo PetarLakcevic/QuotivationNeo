@@ -105,29 +105,29 @@ public class UserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
-    @PostMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
-        log.debug("REST request to save User : {}", userDTO);
-
-        if (userDTO.getId() != null) {
-            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
-            // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
-            throw new LoginAlreadyUsedException();
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
-            throw new EmailAlreadyUsedException();
-        } else {
-            User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
-            return ResponseEntity
-                .created(new URI("/api/admin/users/" + newUser.getLogin()))
-                .headers(
-                    HeaderUtil.createAlert(applicationName, "A user is created with identifier " + newUser.getLogin(), newUser.getLogin())
-                )
-                .body(newUser);
-        }
-    }
+    //    @PostMapping("/users")
+    //    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    //    public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
+    //        log.debug("REST request to save User : {}", userDTO);
+    //
+    //        if (userDTO.getId() != null) {
+    //            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
+    //            // Lowercase the user login before comparing with database
+    //        } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
+    //            throw new LoginAlreadyUsedException();
+    //        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
+    //            throw new EmailAlreadyUsedException();
+    //        } else {
+    //            User newUser = userService.createUser(userDTO);
+    //            mailService.sendCreationEmail(newUser);
+    //            return ResponseEntity
+    //                .created(new URI("/api/admin/users/" + newUser.getLogin()))
+    //                .headers(
+    //                    HeaderUtil.createAlert(applicationName, "A user is created with identifier " + newUser.getLogin(), newUser.getLogin())
+    //                )
+    //                .body(newUser);
+    //        }
+    //    }
 
     /**
      * {@code PUT /admin/users} : Updates an existing User.
@@ -137,25 +137,25 @@ public class UserResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already in use.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
-    @PutMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
-        log.debug("REST request to update User : {}", userDTO);
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            throw new EmailAlreadyUsedException();
-        }
-        existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            throw new LoginAlreadyUsedException();
-        }
-        Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            updatedUser,
-            HeaderUtil.createAlert(applicationName, "A user is updated with identifier " + userDTO.getLogin(), userDTO.getLogin())
-        );
-    }
+    //    @PutMapping("/users")
+    //    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    //    public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
+    //        log.debug("REST request to update User : {}", userDTO);
+    //        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+    //        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
+    //            throw new EmailAlreadyUsedException();
+    //        }
+    //        existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
+    //        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
+    //            throw new LoginAlreadyUsedException();
+    //        }
+    //        Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
+    //
+    //        return ResponseUtil.wrapOrNotFound(
+    //            updatedUser,
+    //            HeaderUtil.createAlert(applicationName, "A user is updated with identifier " + userDTO.getLogin(), userDTO.getLogin())
+    //        );
+    //    }
 
     /**
      * {@code GET /admin/users} : get all users with all the details - calling this are only allowed for the administrators.

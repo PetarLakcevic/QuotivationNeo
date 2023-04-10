@@ -1,12 +1,20 @@
 package pws.quo.web.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pws.quo.domain.Category;
 import pws.quo.domain.Quote;
@@ -238,6 +246,42 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
+    }
+
+    @GetMapping(path = "/app-reset")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void appReset() throws Exception {
+        String excelFilePath = "quotes.xlsx";
+        File folder = new File(".");
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                System.out.println(file.getName());
+            }
+        }
+        // create a file input stream to read the Excel file
+        FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+
+        // create a workbook object from the input stream
+        Workbook workbook = WorkbookFactory.create(inputStream);
+
+        // get the first sheet of the workbook
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // loop through each row of the sheet
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue;
+            // loop through each cell of the row
+            for (Cell cell : row) {
+                // print the value of the cell
+                System.out.print(cell.toString() + "aaa");
+            }
+            System.out.println();
+        }
+
+        // close the workbook and input stream
+        workbook.close();
+        inputStream.close();
     }
 
     /**
