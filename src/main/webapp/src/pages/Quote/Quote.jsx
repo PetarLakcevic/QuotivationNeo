@@ -71,15 +71,15 @@ const Quote = ({ account }) => {
                 wordBreak: 'break-all',
               }}
             >
-              {/* {quote.text}
-                {quote.text}
+            {quote?.text}
+                {/*   {quote.text}
                 {quote.text}
                 {quote.text}
                 {quote.text}
                 {quote.text}
                 {quote.text}
                 {quote.text} */}
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates nisi consequatur laudantium vitae! Voluptatem nam autem illum, veritatis, recusandae eveniet id voluptates fugiat dolorum voluptatibus officiis soluta fuga sint? Natus.
+              {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates nisi consequatur laudantium vitae! Voluptatem nam autem illum, veritatis, recusandae eveniet id voluptates fugiat dolorum voluptatibus officiis soluta fuga sint? Natus. */}
             </Typography>
           </Box>
           <Box
@@ -102,8 +102,8 @@ const Quote = ({ account }) => {
                 fontStyle: 'italic',
               }}
             >
-              {/* {quote?.author?.name} */}
-              Author
+             {quote?.author?.name} 
+              {/* Author */}
             </Typography>
           </Box>
         </Box>
