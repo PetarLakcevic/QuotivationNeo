@@ -203,6 +203,7 @@ const Categories = () => {
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Category</TableCell>
+                {/* <TableCell align="center">Number of quoutes</TableCell> */}
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -229,6 +230,7 @@ const Categories = () => {
                   >
                     {category.name}
                   </TableCell>
+                  {/* <TableCell align="center">{category.quotes.length}</TableCell> */}
                   <TableCell align="right">
                     <IconButton
                       sx={{
@@ -314,12 +316,19 @@ const Categories = () => {
                 mt: 2,
               }}
             >
-              <Button variant="contained"   sx={{
-              backgroundColor: 'hsl(190, 50%, 40%)',
-            }} color="info" type="submit">
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: 'hsl(190, 50%, 40%)',
+                }}
+                color="info"
+                type="submit"
+              >
                 Edit
               </Button>
-              <Button variant='outlined' onPointerDown={cancelEdit}>Cancel</Button>
+              <Button variant="outlined" onPointerDown={cancelEdit}>
+                Cancel
+              </Button>
             </Box>
           </form>
         </DialogStyled>
@@ -343,12 +352,19 @@ const Categories = () => {
               gap: 3,
             }}
           >
-            <Button variant="contained"    sx={{
-            background: 'hsl(360, 50%, 50%)',
-          }} color="error" onPointerDown={submitDelete}>
+            <Button
+              variant="contained"
+              sx={{
+                background: 'hsl(360, 50%, 50%)',
+              }}
+              color="error"
+              onPointerDown={submitDelete}
+            >
               Delete
             </Button>
-            <Button variant='outlined' onPointerDown={cancelDelete}>Cancel</Button>
+            <Button variant="outlined" onPointerDown={cancelDelete}>
+              Cancel
+            </Button>
           </Box>
         </DialogStyled>
       </SlideUp>
@@ -379,12 +395,20 @@ const Categories = () => {
                 mt: 5,
               }}
             >
-              <Button variant="contained" color='success' sx={{
-           backgroundColor: 'hsl(144, 25%, 57%)'
-        }} color="success" type="submit">
+              <Button
+                variant="contained"
+                color="success"
+                sx={{
+                  backgroundColor: 'hsl(144, 25%, 57%)',
+                }}
+                color="success"
+                type="submit"
+              >
                 Add
               </Button>
-              <Button variant='outlined' onPointerDown={() => setAddNewDialog(false)}>Cancel</Button>
+              <Button variant="outlined" onPointerDown={() => setAddNewDialog(false)}>
+                Cancel
+              </Button>
             </Box>
           </form>
         </DialogStyled>

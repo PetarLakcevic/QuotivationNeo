@@ -186,6 +186,7 @@ public class AuthorResource {
     private List<Quote> filterQuotesForAuthor(Long id, List<Quote> quoteList) {
         List<Quote> quotesOfAuthor = new ArrayList<>();
         for (Quote quote : quoteList) {
+            if (quote.getAuthor()==null){continue;}
             if (quote.getAuthor().getId().equals(id)) {
                 quotesOfAuthor.add(quote);
             }

@@ -135,6 +135,7 @@ const Authors = () => {
                   ID
                 </TableCell>
                 <TableCell>Name</TableCell>
+                <TableCell align="center">Number of quoutes</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -165,6 +166,7 @@ const Authors = () => {
                     >
                       {author.name}
                     </TableCell>
+                    <TableCell align="center">{author.quoteList.length}</TableCell>
                     <TableCell align="right">
                       <IconButton
                         sx={{
