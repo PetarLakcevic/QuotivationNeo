@@ -37,6 +37,10 @@ const accountReq = () => {
   return api.get('/account');
 };
 
+const changePasswordReq = (currentPassword, newPassword) => {
+  return api.post('/account/change-password', { currentPassword, newPassword });
+};
+
 const getQuotes = () => {
   return api.get('/quotes');
 };
@@ -109,6 +113,10 @@ const getSuggestions = () => {
   return api.get('/quote-suggestions');
 };
 
+const postSuggestion = (text) => {
+  return api.post('/quote-suggestions', { text });
+};
+
 const getAdditionalFields = (id) => {
   return api.get('/user-additional-fields/' + id);
 };
@@ -133,6 +141,7 @@ export {
   loginReq,
   registerReq,
   accountReq,
+  changePasswordReq,
   getQuotes,
   getQuote,
   deleteQuote,
@@ -151,6 +160,7 @@ export {
   getUsers,
   deleteUser,
   getSuggestions,
+  postSuggestion,
   getAdditionalFields,
   setTheme,
   setCategory,

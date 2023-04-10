@@ -1,12 +1,15 @@
 import { Avatar, Button, TextField, Typography } from '@mui/material';
 import { Box, padding } from '@mui/system';
-import React from 'react';
+import React, { useRef } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserContent from '../../components/UserContent';
 import UserNavbar from '../../components/UserNavbar';
 import qq from '../../assets/images/qq2.png';
+import { postSuggestion } from '../../axios/axios';
 
 const Suggestions = () => {
+  const textRef = useRef();
+  const authorRef = useRef();
   return (
     <UserContainer>
       <UserNavbar />
@@ -28,11 +31,12 @@ const Suggestions = () => {
             rows={7}
             // fullWidth
             variant="outlined"
+            inputRef={textRef}
             placeholder="Enter your suggestions here"
             sx={{
               mt: 3,
               width: '90%',
-              backgroundColor: '#e8e8e8',
+              backgroundColor: '#f8f8f8',
               backgroundImage: `url(${qq})`,
               backgroundSize: 'auto 80%',
               backgroundPosition: 'center',
@@ -44,6 +48,26 @@ const Suggestions = () => {
               padding: '0.5rem',
             }}
           />
+          <TextField
+            variant="outlined"
+            inputRef={authorRef}
+            placeholder="Enter author's name here"
+            sx={{
+              mt: 3,
+              width: '90%',
+              backgroundColor: '#f8f8f8',
+              backgroundImage: `url(${qq})`,
+              backgroundSize: 'auto 80%',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              border: '#c5c5c5 solid 2px',
+              borderRadius: '0.5rem',
+              outline: 'none',
+              position: 'static',
+              padding: '0.5rem',
+            }}
+          />
+
           <Button
             mt={4}
             sx={{
@@ -57,6 +81,7 @@ const Suggestions = () => {
               alignItems: 'space-between',
               gap: '1rem',
             }}
+            onPointerDown={() => postSuggestion(textRef.current.value)}
           >
             <Avatar
               sx={{

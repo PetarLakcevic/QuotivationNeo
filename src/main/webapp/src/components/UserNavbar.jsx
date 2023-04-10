@@ -257,21 +257,58 @@ const UserNavbar = ({ home }) => {
                     Theme
                   </Typography>
                 </Button>{' '}
+                <Button
+                  onPointerDown={() => {
+                    navigate('/suggestions');
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'white',
+                    }}
+                  >
+                    Suggestions
+                  </Typography>
+                </Button>
               </>
             )}
           </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {!user.auth.includes('ROLE_ADMIN') && (
+              <Button
+                onPointerDown={() => {
+                  navigate('/profile');
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: 'white',
+                  }}
+                >
+                  Profile
+                </Typography>
+              </Button>
+            )}
 
-          <Button onPointerDown={handleLogout}>
-            {' '}
-            <Typography
-              variant="h6"
-              sx={{
-                color: 'white',
-              }}
-            >
-              Logout
-            </Typography>
-          </Button>
+            <Button onPointerDown={handleLogout}>
+              {' '}
+              <Typography
+                variant="h6"
+                sx={{
+                  color: 'white',
+                }}
+              >
+                Logout
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       </SlideLeft>
     </Box>

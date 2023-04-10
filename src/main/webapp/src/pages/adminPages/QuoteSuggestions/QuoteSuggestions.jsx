@@ -105,7 +105,7 @@ const QuoteSuggestions = () => {
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Suggestion</TableCell>
-                <TableCell align="right">>Author</TableCell>
+                <TableCell align="right">Author</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
