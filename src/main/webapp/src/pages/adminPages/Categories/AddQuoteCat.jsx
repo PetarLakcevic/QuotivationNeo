@@ -61,7 +61,7 @@ const AddQuoteCat = ({  category, setCategory, setAddQuoteDialog }) => {
     textRef.current.value = '';
     setSelectedAuthor(null);
     setSelectedCategories([]);
-    setAddODialog(false);
+    setAddQuoteDialog(false);
   };
 
   return (

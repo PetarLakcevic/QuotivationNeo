@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="icon" href="${baseUrl}/favicon.ico" />
-    <title>Your request cannot be processed</title>
+    <title>Your request cannot be processed.</title>
     <style>
       ::-moz-selection {
         background: #b3d4fc;
@@ -88,5 +88,11 @@
         <span th:text="#{error.message}">Message:</span>&nbsp;<span th:text="${message}"></span><br />
       </span>
     </div>
+    <script>
+      // redirect to home page after 5 seconds
+      setTimeout(function () {
+        window.location.href = '/';
+      }, 1000);
+    </script>
   </body>
 </html>

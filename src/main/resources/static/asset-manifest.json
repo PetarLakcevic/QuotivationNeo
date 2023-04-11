@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d12f53bb.css",
+    "main.js": "/static/js/main.4ce846e2.js",
+    "static/js/787.994511a4.chunk.js": "/static/js/787.994511a4.chunk.js",
+    "static/media/sky.jpg": "/static/media/sky.bdc9e44ba9e1b86961b2.jpg",
+    "static/media/hope.jpg": "/static/media/hope.bcf9c15e5b4283e58793.jpg",
+    "static/media/rain.jpg": "/static/media/rain.cdd73006e31ab088d6c8.jpg",
+    "static/media/seapink.jpg": "/static/media/seapink.71dd4c72b7629bd0ff0f.jpg",
+    "static/media/sandcolor.jpg": "/static/media/sandcolor.de6b4c3250d27162b256.jpg",
+    "static/media/Dosis-Regular.ttf": "/static/media/Dosis-Regular.16c5afafe71efb210033.ttf",
+    "static/media/logo.png": "/static/media/logo.13610357cfe0cec99d39.png",
+    "service-worker.js": "/service-worker.js",
+    "static/media/qq.png": "/static/media/qq.5048c8488d680c27903d.png",
+    "static/media/qq2.png": "/static/media/qq2.a9d44ba80cba2b1e92ac.png",
+    "static/media/react.svg": "/static/media/react.6d4dd5dfc6163bdfcfe520bd6bef1a6a.svg",
+    "index.html": "/index.html",
+    "main.d12f53bb.css.map": "/static/css/main.d12f53bb.css.map",
+    "main.4ce846e2.js.map": "/static/js/main.4ce846e2.js.map",
+    "787.994511a4.chunk.js.map": "/static/js/787.994511a4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d12f53bb.css",
+    "static/js/main.4ce846e2.js"
+  ]
+}

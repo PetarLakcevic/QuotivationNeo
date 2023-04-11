@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_URL;
+const apiUrl = 'http://localhost:8080' + '/api';
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',

@@ -192,7 +192,7 @@ const Login = ({ setToken, parseToken }) => {
                 type={showPassword ? 'text' : 'password'}
               />
             </FormControl>
-            <Typography
+            {/* <Typography
               variant="body2"
               color="black"
               sx={{
@@ -202,7 +202,7 @@ const Login = ({ setToken, parseToken }) => {
               }}
             >
               Forgot password?{' '}
-            </Typography>
+            </Typography> */}
             <Button
               type="submit"
               variant="contained"
@@ -228,7 +228,7 @@ const Login = ({ setToken, parseToken }) => {
                 width: '100%',
               }}
             >
-              <Box
+              {/* <Box
                 sx={{
                   width: '100%',
                   height: '1px',
@@ -250,14 +250,14 @@ const Login = ({ setToken, parseToken }) => {
                   height: '1px',
                   backgroundColor: 'black',
                 }}
-              />
+              /> */}
             </Box>
-            <Button onPointerDown={handleGoogleLogin}>
+            {/* <Button onPointerDown={handleGoogleLogin}>
               <AccountCircle />
               <Typography variant="body2" color="black">
                 Google
               </Typography>
-            </Button>
+            </Button> */}
             <Typography variant="body2" color="black">
               New user?{' '}
               <Typography

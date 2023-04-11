@@ -131,7 +131,7 @@ const EditQuoteCat = ({ category, quote, setEditQuoteDialog, setCategory }) => {
           >
             Update
           </Button>
-          <Button variant="outlined" onPointerDown={() => setEditDialog(false)}>
+          <Button variant="outlined" onPointerDown={() => setEditQuoteDialog(false)}>
             Cancel
           </Button>
         </Box>

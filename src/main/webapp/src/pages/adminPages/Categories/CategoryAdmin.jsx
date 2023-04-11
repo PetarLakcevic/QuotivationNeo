@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCategory, updateCategory } from '../../../axios/axios';
+import { deleteCategory, getCategories, getCategory, updateCategory } from '../../../axios/axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import UserContainer from '../../../components/UserContainer';
 import {
@@ -42,6 +42,25 @@ const CategoryAdmin = () => {
 
   const [page, setPage] = useState(1);
   const [quotesPerPage, setQuotesPerPage] = useState(5);
+
+  const [sort, setSort] = useState({ field: '', order: 'asc' });
+
+  const sortedQuotes = quotes => {
+    return quotes?.sort((a, b) => {
+      if (sort.field === 'quote') {
+        return sort.order === 'asc' ? a.text.localeCompare(b.text) : b.text.localeCompare(a.text);
+      }
+      if (sort.field === 'author') {
+        return sort.order === 'asc' ? a.author.name.localeCompare(b.author.name) : b.author.name.localeCompare(a.author.name);
+      }
+      return 0;
+    });
+  };
+
+  const changeSort = field => {
+    const order = sort.field === field && sort.order === 'asc' ? 'desc' : 'asc';
+    setSort({ field, order });
+  };
 
   const indexOfLastQuote = page * quotesPerPage;
   const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
@@ -86,7 +105,7 @@ const CategoryAdmin = () => {
         console.log(response);
         getCategories()
           .then(response => {
-            setCategories(response.data);
+            // setCategories(response.data);
             setDeleteDialog(false);
           })
           .catch(error => {
@@ -102,7 +121,7 @@ const CategoryAdmin = () => {
     setDeleteDialog(false);
   };
 
-  const currentQuotes = category.quotes?.filter(quote => {
+  const currentQuotes = sortedQuotes(category.quotes)?.filter(quote => {
     if (searchTerm === '') {
       return quote;
     } else {
@@ -208,8 +227,24 @@ const CategoryAdmin = () => {
             >
               <TableRow>
                 <TableCell>Id</TableCell>
-                <TableCell>Quote</TableCell>
-                <TableCell>Author</TableCell>
+                <TableCell
+                  onPointerDown={() => changeSort('quote')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Quote 
+                  {sort.field === 'quote' ? (sort.order === 'asc' ? '▲' : '▼') : ('')}
+                </TableCell>
+                <TableCell
+                  onPointerDown={() => changeSort('author')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Author
+                  {sort.field === 'author' ? (sort.order === 'asc' ? '▲' : '▼') : ('')}
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>

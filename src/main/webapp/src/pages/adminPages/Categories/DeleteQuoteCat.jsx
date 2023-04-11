@@ -68,7 +68,7 @@ const DeleteQuoteCat = ({ quote, setDeleteQuoteDialog, setCategory, category }) 
         >
           Delete
         </Button>
-        <Button variant="outlined" onClick={() => setDeleteDialog(false)}>
+        <Button variant="outlined" onClick={() => setDeleteQuoteDialog(false)}>
           Cancel
         </Button>
       </Box>

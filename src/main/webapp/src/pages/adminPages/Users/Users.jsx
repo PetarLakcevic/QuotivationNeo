@@ -38,6 +38,20 @@ const Users = () => {
   const [usersPerPage, setUsersPerPage] = useState(5);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+  const [sort, setSort] = useState({ field: '', order: 'asc' });
+
+  const sortedUsers = users => {
+    return users.sort((a, b) => {
+      if (sort.field === 'login') {
+        return sort.order === 'asc' ? a.login.localeCompare(b.login) : b.login.localeCompare(a.login);
+      }
+    });
+  };
+
+  const changeSort = field => {
+    const order = sort.field === field && sort.order === 'asc' ? 'desc' : 'asc';
+    setSort({ field, order });
+  };
 
   const indexOfLastQuote = page * usersPerPage;
   const indexOfFirstQuote = indexOfLastQuote - usersPerPage;
@@ -46,7 +60,7 @@ const Users = () => {
     setPage(value);
   };
 
-  const currentUsers = users
+  const currentUsers = sortedUsers(users)
     .filter(user => {
       if (searchTerm === '') {
         return user;
@@ -123,7 +137,15 @@ const Users = () => {
             >
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>User</TableCell>
+                <TableCell
+                sx={{
+                    cursor: 'pointer',
+                  }}
+                onPointerDown={() => changeSort('login')}
+                >User 
+                {sort.field === 'login' && sort.order === 'asc' ? '▲' : '▼'}
+                
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>

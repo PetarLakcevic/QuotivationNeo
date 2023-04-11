@@ -51,6 +51,27 @@ const Author = () => {
   const [page, setPage] = useState(1);
   const [quotesPerPage, setQuotesPerPage] = useState(5);
 
+  const [sort, setSort] = useState({ field: '', order: 'asc' });
+
+  const sortedQuotes = quotes => {
+    return quotes?.sort((a, b) => {
+      if (sort.field === 'text') {
+        return sort.order === 'asc' ? a.text.localeCompare(b.text) : b.text.localeCompare(a.text);
+      }
+      if (sort.field === 'categories') {
+        const aCategories = a.categories.map(c => c.name).join(', ');
+        const bCategories = b.categories.map(c => c.name).join(', ');
+        return sort.order === 'asc' ? aCategories.localeCompare(bCategories) : bCategories.localeCompare(aCategories);
+      }
+      return 0;
+    });
+  };
+
+  const changeSort = field => {
+    const order = sort.field === field && sort.order === 'asc' ? 'desc' : 'asc';
+    setSort({ field, order });
+  };
+
   const indexOfLastQuote = page * quotesPerPage;
   const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
 
@@ -77,7 +98,7 @@ const Author = () => {
         console.log(error);
       });
   }, []);
-  const currentQuotes = author?.quoteList
+  const currentQuotes = sortedQuotes(author.quoteList)
     ?.filter(quote => {
       if (searchTerm === '') {
         return quote;
@@ -175,8 +196,24 @@ const Author = () => {
             >
               <TableRow>
                 <TableCell>Id</TableCell>
-                <TableCell>Quote</TableCell>
-                <TableCell>Category</TableCell>
+                <TableCell
+                  onPointerDown={() => changeSort('text')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Quote
+                  {sort.field === 'text' ? (sort.order === 'asc' ? '▲' : '▼') : null}
+                </TableCell>
+                <TableCell
+                  onPointerDown={() => changeSort('categories')}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  Category
+                  {sort.field === 'categories' ? (sort.order === 'asc' ? '▲' : '▼') : null}
+                </TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
