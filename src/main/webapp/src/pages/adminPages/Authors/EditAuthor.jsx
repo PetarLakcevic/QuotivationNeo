@@ -1,15 +1,24 @@
 import { Box, Button, FormControl, InputLabel, OutlinedInput } from '@mui/material';
 import React, { useRef } from 'react';
-import { getAuthor, updateAuthor } from '../../../axios/axios';
+import { getAuthor, updateAuthor, getAuthors } from '../../../axios/axios';
 
-const EditAuthor = ({ author, setAuthor, setEditDialog }) => {
+const EditAuthor = ({ author, setAuthor, setEditDialog, onMain, setAuthors }) => {
   const nameRef = useRef();
 
   const handleUpdate = e => {
     e.preventDefault();
     updateAuthor(author.id, nameRef.current.value)
       .then(response => {
-        console.log(response);
+        if (onMain) {
+          getAuthors()
+            .then(response => {
+              setAuthors(response.data);
+              setEditDialog(false);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
         getAuthor(author.id)
           .then(response => {
             setAuthor(response.data);
@@ -17,7 +26,7 @@ const EditAuthor = ({ author, setAuthor, setEditDialog }) => {
           })
           .catch(error => {
             console.log(error);
-          });
+          });}
       })
       .catch(error => {
         console.log(error);

@@ -265,7 +265,10 @@ const Authors = () => {
         <AddAuthor setAddODialog={setAddODialog} setAuthors={setAuthors} />
       </SlideUp>
       <SlideUp open={editDialog} onClose={() => setEditDialog(false)}>
-        <EditAuthor author={selectedAuthor} setAuthor={setSelectedAuthor} setEditDialog={setEditDialog} />
+        <EditAuthor author={selectedAuthor} setAuthor={setSelectedAuthor} setEditDialog={setEditDialog}
+          onMain={true}
+          setAuthors={setAuthors}
+        />
       </SlideUp>
       <SlideUp open={deleteDialog} onClose={() => setDeleteDialog(false)}>
         <DeleteAuthor author={selectedAuthor} setDeleteDialog={setDeleteDialog} />

@@ -9,6 +9,7 @@ import History from '../pages/History/History';
 import { getCategories, accountReq } from '../axios/axios';
 import Suggestions from '../pages/Suggestions/Suggestions';
 import Profile from '../pages/Profile/Profile';
+import ThankYou from '../pages/Suggestions/ThankYou';
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
@@ -26,6 +27,7 @@ const UserRoutes = () => {
       <Route path="/category" element={<Category account={account } setAccount={setAccount}/>} />
       <Route path="/home" element={<Quote account={account } />} />
       <Route path="/suggestions" element={<Suggestions />} />
+      <Route path="/thankyou" element={<ThankYou/>} />
       <Route path='/history' element={<History account={account} />} /> 
       <Route path="/profile" element={<Profile account={account} />} />
       {/* <Route path="*" element={<Error />} /> */}

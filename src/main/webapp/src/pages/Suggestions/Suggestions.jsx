@@ -6,10 +6,12 @@ import UserContent from '../../components/UserContent';
 import UserNavbar from '../../components/UserNavbar';
 import qq from '../../assets/images/qq2.png';
 import { postSuggestion } from '../../axios/axios';
+import { useNavigate } from 'react-router-dom';
 
 const Suggestions = () => {
   const textRef = useRef();
   const authorRef = useRef();
+  const navigate = useNavigate();
   return (
     <UserContainer>
       <UserNavbar />
@@ -81,7 +83,8 @@ const Suggestions = () => {
               alignItems: 'space-between',
               gap: '1rem',
             }}
-            onPointerDown={() => postSuggestion(textRef.current.value)}
+            onPointerDown={() => postSuggestion(textRef.current.value, authorRef.current.value).then(() => navigate('/thankyou'))
+            }
           >
             <Avatar
               sx={{

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// const apiUrl = 'http://localhost:8080'+ '/api';
 const apiUrl = window.location.origin + '/api';
 const headers = {
   'Content-Type': 'application/json',
@@ -12,11 +13,27 @@ const api = axios.create({
   headers: headers,
 });
 
+const getToken = async () => {
+  return new Promise(resolve => {
+    const checkToken = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        resolve(token);
+      } else {
+        setTimeout(checkToken, 100); // Retry after 100ms
+      }
+    };
+    checkToken();
+  });
+};
+
 api.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async config => {
+    if (config.url !== '/authenticate' && config.url !== '/register') {
+      const token = await getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -24,6 +41,7 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 const loginReq = (username, password) => {
   return api.post('/authenticate', { username, password });
@@ -113,8 +131,8 @@ const getSuggestions = () => {
   return api.get('/quote-suggestions');
 };
 
-const postSuggestion = (text) => {
-  return api.post('/quote-suggestions', { text });
+const postSuggestion = (text, author) => {
+  return api.post('/quote-suggestions', { text, author });
 };
 
 const getAdditionalFields = (id) => {
