@@ -72,6 +72,7 @@ function App() {
           {renderRoutes()}
         </BrowserRouter>
       </Box>
+      
     </GoogleOAuthProvider>
   );
 }
