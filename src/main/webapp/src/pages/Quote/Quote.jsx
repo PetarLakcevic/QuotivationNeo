@@ -231,19 +231,22 @@ const Quote = ({ account }) => {
             >
               <Download onPointerDown={downloadImage} />
             </IconButton>
-       
-              <TwitterShareButton url={'https://quotivation.io/'} title={quote?.text}  style={{
+
+            <TwitterShareButton
+              url={'https://quotivation.io/'}
+              title={`"${quote?.text?.length > 200 ? quote?.text.slice(0, 200) + "..." : quote?.text}" by ${quote?.author?.name}. View more at`}
+              style={{
                 boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
                 aspectRatio: '1/1',
                 color: 'grey',
                 borderRadius: '50%',
                 padding: '0.5rem',
-              }}>
-                <Twitter />
-              </TwitterShareButton>
-            
+              }}
+            >
+              <Twitter />
+            </TwitterShareButton>
 
-            <FacebookShareButton
+            {/* <FacebookShareButton
               url={'https://quotivation.io/'}
               quote={quote?.text}
               hashtag={'#quotivation'}
@@ -256,12 +259,12 @@ const Quote = ({ account }) => {
               }}
             >
               <Facebook />
-            </FacebookShareButton>
+            </FacebookShareButton> */}
 
             <EmailShareButton
               url={'https://quotivation.io/'}
               subject={quote?.text}
-              body={quote?.text}
+              body={`"${quote?.text}" by ${quote?.author?.name}. View more at https://quotivation.io/`}
               style={{
                 boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
                 aspectRatio: '1/1',
@@ -275,7 +278,7 @@ const Quote = ({ account }) => {
 
             <WhatsappShareButton
               url={'https://quotivation.io/'}
-              title={quote?.text}
+              title={`"${quote?.text}" by ${quote?.author?.name}. View more at `}
               style={{
                 boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
                 aspectRatio: '1/1',
