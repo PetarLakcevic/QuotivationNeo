@@ -24,36 +24,36 @@ const History = ({ account }) => {
   const historyTest = [
     {
       id: 1,
-      quote: 'test',
+      text: 'test',
       author: 'test',
     },
     {
       id: 2,
-      quote: 'test56464564',
+      text: 'test56464564',
       author: 'test',
     },
     {
       id: 3,
-      quote: 'test',
+      text: 'test',
       author: 'test',
     },
     {
       id: 4,
-      quote: 'test',
+      text: 'test',
       author: 'test',
     },
     {
       id: 5,
-      quote: 'test',
+      text: 'test',
       author: 'test',
     },
   ]
 
   useEffect(() => {
-     getHistory().then(response => {
-       setHistory(response.data);
-     });
-    // setHistory(historyTest);
+      getHistory().then(response => {
+        setHistory(response.data);
+      });
+    //  setHistory(historyTest);
   }, []);
 
 
@@ -119,7 +119,7 @@ const History = ({ account }) => {
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              overflow: 'hidden',
+              // overflow: 'hidden',
               //  borderRadius: '10px',
               //  boxShadow: '0 0 1px 0 rgba(0, 0, 0, 0.5)',
               // height: '80%', // Promenite visinu ovde
@@ -187,6 +187,7 @@ const History = ({ account }) => {
           swipeable
           style={{
             flex: 1,
+            overflow: 'visible',
           }}
             selectedItem={currentImageIndex}
             onSwipeStart={handleSwipeStart}
@@ -203,6 +204,7 @@ const History = ({ account }) => {
                 position: 'relative',
                 // overflow: 'hidden',
                 width: '100%',
+                height: '100vh',
                 padding: '0 10px',
                 transform: `translateY(${verticalOffset}px)`,
                 transition: verticalOffset ? 'none' : 'all 0.1s ease-in-out',
