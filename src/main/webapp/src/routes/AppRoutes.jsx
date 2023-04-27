@@ -6,6 +6,8 @@ import Registration from '../pages/Registration/Registration';
 import Error from '../pages/Error/Error';
 
 const AppRoutes = ({ setToken, parseToken }) => {
+
+  
   return (
     <Routes>
       {/* <Route path="/" element={<Splash />} /> */}

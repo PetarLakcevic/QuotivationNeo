@@ -164,24 +164,24 @@ public class QuoteSuggestionResource {
     //        );
     //    }
     //
-    //    /**
-    //     * {@code GET  /quote-suggestions} : get all the quoteSuggestions.
-    //     *
-    //     * @param pageable the pagination information.
-    //     * @param criteria the criteria which the requested entities should match.
-    //     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of quoteSuggestions in body.
-    //     */
-    //    @GetMapping("/quote-suggestions")
-    //    public ResponseEntity<List<QuoteSuggestion>> getAllQuoteSuggestions(
-    //        QuoteSuggestionCriteria criteria,
-    //        @org.springdoc.api.annotations.ParameterObject Pageable pageable
-    //    ) {
-    //        log.debug("REST request to get QuoteSuggestions by criteria: {}", criteria);
-    //        Page<QuoteSuggestion> page = quoteSuggestionQueryService.findByCriteria(criteria, pageable);
-    //        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-    //        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    //    }
-    //
+        /**
+         * {@code GET  /quote-suggestions} : get all the quoteSuggestions.
+         *
+         * @param pageable the pagination information.
+         * @param criteria the criteria which the requested entities should match.
+         * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of quoteSuggestions in body.
+         */
+        @GetMapping("/quote-suggestions")
+        public ResponseEntity<List<QuoteSuggestion>> getAllQuoteSuggestions(
+            QuoteSuggestionCriteria criteria,
+            @org.springdoc.api.annotations.ParameterObject Pageable pageable
+        ) {
+            log.debug("REST request to get QuoteSuggestions by criteria: {}", criteria);
+            Page<QuoteSuggestion> page = quoteSuggestionQueryService.findByCriteria(criteria, pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+            return ResponseEntity.ok().headers(headers).body(page.getContent());
+        }
+
     //    /**
     //     * {@code GET  /quote-suggestions/count} : count all the quoteSuggestions.
     //     *

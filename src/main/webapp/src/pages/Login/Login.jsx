@@ -12,6 +12,8 @@ import {
   TextField,
   Input,
   Typography,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { Visibility, VisibilityOff, AccountCircle, PermIdentity, Lock, LockOpen } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -26,6 +28,13 @@ const Login = ({ setToken, parseToken }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
     loginReq(userNameRef.current.value, passwordRef.current.value)
@@ -38,7 +47,8 @@ const Login = ({ setToken, parseToken }) => {
         }
       })
       .catch(error => {
-        console.log(error);
+        setMessage('Invalid username or password');
+        setOpen(true);
       });
   };
 
@@ -49,8 +59,7 @@ const Login = ({ setToken, parseToken }) => {
         client_id: '230834961464-it87cplru84s90ih3blbh1c9fkhdao90.apps.googleusercontent.com',
         client_secret: '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',
         grant_type: 'authorization_code',
-    redirect_uri: 'http://localhost:5173',
-
+        redirect_uri: 'http://localhost:5173',
       })
       .then(response => {
         console.log(response);
@@ -110,21 +119,25 @@ const Login = ({ setToken, parseToken }) => {
           alignItems: 'center',
           justifyContent: 'center',
           backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 57%), #aac0d0)',
-
         }}
       >
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 'min(100vw, 300px)',
-          mb: '1rem',
-        }}>
-          <img src={logo} alt="logo" style={{
-            width: '6rem',
-            
-          }}/>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 'min(100vw, 300px)',
+            mb: '1rem',
+          }}
+        >
+          <img
+            src={logo}
+            alt="logo"
+            style={{
+              width: '6rem',
+            }}
+          />
           <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', marginLeft: '-0.3rem' }}>
             uotivation
           </Typography>
@@ -275,6 +288,11 @@ const Login = ({ setToken, parseToken }) => {
             </Typography>
           </Box>
         </form>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Box>
     </ThemeProvider>
   );

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { registerReq, loginReq } from '../../axios/axios.js';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box, Button, FormControl, Input, InputAdornment, Typography } from '@mui/material';
+import { Alert, Box, Button, FormControl, Input, InputAdornment, Snackbar, Typography } from '@mui/material';
 import { DriveFileRenameOutline, Email, Lock, LockOpen, PermIdentity } from '@mui/icons-material';
 import logo from '../../assets/images/logo.png';
 
@@ -14,6 +14,13 @@ const Registration = ({ setToken, parseToken }) => {
   const emailRef = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -33,7 +40,8 @@ const Registration = ({ setToken, parseToken }) => {
         });
       })
       .catch(error => {
-        console.log(error);
+        setMessage(error.response.data.title);
+        setOpen(true);
       });
   };
 
@@ -241,6 +249,11 @@ const Registration = ({ setToken, parseToken }) => {
             </Box>
           </Box>
         </form>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Box>
     </ThemeProvider>
   );
