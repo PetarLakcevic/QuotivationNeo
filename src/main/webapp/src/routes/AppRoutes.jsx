@@ -13,7 +13,7 @@ const AppRoutes = ({ setToken, parseToken }) => {
       {/* <Route path="/" element={<Splash />} /> */}
       <Route path="/login" element={<Login setToken={setToken} parseToken={parseToken} />} />
       <Route path="/register" element={<Registration setToken={setToken} parseToken={parseToken} />} />
-      <Route path="*" element={<Splash />} />
+      <Route path="/" element={<Login setToken={setToken} parseToken={parseToken} />} />
     </Routes>
   );
 };

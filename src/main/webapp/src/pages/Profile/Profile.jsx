@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Button, IconButton, InputAdornment, Snackbar, TextField, Typography } from '@mui/material';
 import { Box, padding } from '@mui/system';
 import React, { useRef, useState } from 'react';
 import UserContainer from '../../components/UserContainer';
@@ -14,6 +14,16 @@ const Profile = ({ account }) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const currentPasswordRef = useRef();
   const newPasswordRef = useRef();
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleClose = () => {
+    setTimeout(() => {
+    setOpen(false);
+    }, 3000);
+  };
+
   return (
     <UserContainer>
       <UserNavbar />
@@ -101,20 +111,27 @@ const Profile = ({ account }) => {
             <Button
               variant="contained"
               onPointerDown={() => {
-                  changePasswordReq(currentPasswordRef.current.value, newPasswordRef.current.value).then(response => {
-                      console.log(response);
-                      setChangePassDialog(false);
-                  }).catch(error => {
-                        console.log(error);
+                changePasswordReq(currentPasswordRef.current.value, newPasswordRef.current.value)
+                  .then(response => {
+                    console.log(response);
+                    setChangePassDialog(false);
                   })
-                  
-                      
+                  .catch(error => {
+                    console.log(error);
+                    setMessage('Incorrect password');
+                    setOpen(true);
+                  });
               }}
             >
               Change
             </Button>
           </Box>
-        </SlideUp>
+        </SlideUp>{' '}
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {message} 
+          </Alert>
+        </Snackbar>
       </UserContent>
     </UserContainer>
   );
