@@ -30,8 +30,6 @@ import pws.quo.web.rest.vm.ManagedUserVM;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 
 /**
@@ -103,8 +101,6 @@ public class AccountResource {
 //    public void registerQuotes(){
 //        userQuoteService.generateNewLineOfQuotes();
 //    }
-
-
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
@@ -285,18 +281,18 @@ public class AccountResource {
     }
 
 
-
     @GetMapping("/count-cat")
-    public long count(){
+    public long count() {
         return quoteRepository.count();
     }
+
     @PostMapping(path = "/improt")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public void appReset(@RequestParam("file") MultipartFile file) throws Exception {
 
 
-     //   String excelFilePath = "quotes.xlsx";
+        //   String excelFilePath = "quotes.xlsx";
         //        File folder = new File(".");
         //        File[] files = folder.listFiles();
         //        for (File file : files) {
@@ -305,7 +301,7 @@ public class AccountResource {
         //            }
         //        }
         // create a file input stream to read the Excel file
-       // FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+        // FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
         // create a workbook object from the input stream
         Workbook workbook = WorkbookFactory.create(file.getInputStream());
@@ -386,8 +382,20 @@ public class AccountResource {
             if (quote.getText() == null) {
                 quote.setText("Error :)");
             }
-
             quote.setAuthor(findAuthor(authorList, qac.getAuthor()));
+
+            //da li vec postoji taj quote?
+            boolean found = false;
+            for (Quote q : quoteList) {
+                if (q.getText().equals(qac.getQuote())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+                continue;
+
+
             List<String> names = new ArrayList<>();
 
             for (QAC qac1 : qacList) {
@@ -400,7 +408,7 @@ public class AccountResource {
             quoteList.add(quote);
         }
 
-       List<Quote> quotes =  quoteRepository.saveAll(quoteList);
+        List<Quote> quotes = quoteRepository.saveAll(quoteList);
 
         // close the workbook and input stream
         workbook.close();
