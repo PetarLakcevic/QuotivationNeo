@@ -1,10 +1,5 @@
 package pws.quo.web.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,12 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pws.quo.domain.*;
 import pws.quo.domain.dto.QAC;
-import pws.quo.repository.AuthorRepository;
-import pws.quo.repository.CategoryRepository;
-import pws.quo.repository.QuoteRepository;
-import pws.quo.repository.UserRepository;
+import pws.quo.repository.*;
 import pws.quo.security.SecurityUtils;
 import pws.quo.service.MailService;
 import pws.quo.service.UserAdditionalFieldsService;
@@ -34,6 +27,12 @@ import pws.quo.web.rest.errors.InvalidPasswordException;
 import pws.quo.web.rest.errors.LoginAlreadyUsedException;
 import pws.quo.web.rest.vm.KeyAndPasswordVM;
 import pws.quo.web.rest.vm.ManagedUserVM;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
 
 /**
  * REST controller for managing the current user's account.
@@ -67,6 +66,8 @@ public class AccountResource {
 
     private final QuoteRepository quoteRepository;
 
+    private final UserQuoteRepository userQuoteRepository;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
@@ -75,7 +76,8 @@ public class AccountResource {
         UserQuoteService userQuoteService,
         CategoryRepository categoryRepository,
         AuthorRepository authorRepository,
-        QuoteRepository quoteRepository
+        QuoteRepository quoteRepository,
+        UserQuoteRepository userQuoteRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -85,6 +87,7 @@ public class AccountResource {
         this.categoryRepository = categoryRepository;
         this.authorRepository = authorRepository;
         this.quoteRepository = quoteRepository;
+        this.userQuoteRepository = userQuoteRepository;
     }
 
     /**
@@ -95,6 +98,13 @@ public class AccountResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
+
+    @GetMapping("/testic")
+    public void registerQuotes(){
+        userQuoteService.generateNewLineOfQuotes();
+    }
+
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
@@ -263,10 +273,29 @@ public class AccountResource {
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
     }
 
-    @GetMapping(path = "/app-reset")
+
+    @GetMapping("/reset-app")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public void appReset() throws Exception {
+    public void resetApp() {
+        userQuoteRepository.deleteAll();
+        quoteRepository.deleteAll();
+        authorRepository.deleteAll();
+        categoryRepository.deleteAll();
+    }
+
+
+
+    @GetMapping("/count-cat")
+    public long count(){
+        return quoteRepository.count();
+    }
+    @PostMapping(path = "/improt")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
+    public void appReset(@RequestParam("file") MultipartFile file) throws Exception {
+
+
         String excelFilePath = "quotes.xlsx";
         //        File folder = new File(".");
         //        File[] files = folder.listFiles();
@@ -279,7 +308,7 @@ public class AccountResource {
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
         // create a workbook object from the input stream
-        Workbook workbook = WorkbookFactory.create(inputStream);
+        Workbook workbook = WorkbookFactory.create(file.getInputStream());
 
         // get the first sheet of the workbook
         Sheet sheet = workbook.getSheetAt(0);
@@ -291,13 +320,28 @@ public class AccountResource {
         //Get Categories and Authors
         for (Row row : sheet) {
             if (row.getRowNum() == 0) continue;
-            String strAuthor = row.getCell(1).getStringCellValue().trim();
-            if (strAuthor == null || strAuthor.isEmpty()) {
-                strAuthor = "Unknown";
-            }
-            String strCategory = row.getCell(2).getStringCellValue().trim();
 
-            String quote = row.getCell(0).getStringCellValue().trim();
+
+            String quote = null;
+            String strAuthor = null;
+            String strCategory = null;
+
+            try {
+                quote = row.getCell(0).getStringCellValue().trim();
+            } catch (Exception e) {
+                continue;
+            }
+            try {
+                strAuthor = row.getCell(1).getStringCellValue().trim();
+            } catch (Exception e) {
+                strAuthor = "unknown";
+            }
+            try {
+                strCategory = row.getCell(2).getStringCellValue().trim();
+            } catch (Exception e) {
+                continue;
+            }
+
 
             qacList.add(new QAC(quote, strAuthor, strCategory));
 
@@ -315,9 +359,12 @@ public class AccountResource {
             categories.add(new Category(categoryS));
         }
 
+
+        userQuoteRepository.deleteAll();
+        quoteRepository.deleteAll();
         authorRepository.deleteAll();
         categoryRepository.deleteAll();
-        quoteRepository.deleteAll();
+
 
         List<Author> authorList = authorRepository.saveAll(authors);
         List<Category> categoryList = categoryRepository.saveAll(categories);
@@ -331,7 +378,7 @@ public class AccountResource {
             Quote quote = new Quote();
 
             if (qac.getQuote().length() > 250) {
-                qac.setQuote("TOO LONGY");
+                continue;
             } else {
                 quote.setText(qac.getQuote());
             }
@@ -353,7 +400,7 @@ public class AccountResource {
             quoteList.add(quote);
         }
 
-        quoteRepository.saveAll(quoteList);
+       List<Quote> quotes =  quoteRepository.saveAll(quoteList);
 
         // close the workbook and input stream
         workbook.close();
@@ -421,8 +468,8 @@ public class AccountResource {
     private static boolean isPasswordLengthInvalid(String password) {
         return (
             StringUtils.isEmpty(password) ||
-            password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
-            password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
+                password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
+                password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
     }
 }

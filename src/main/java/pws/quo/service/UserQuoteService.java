@@ -70,4 +70,6 @@ public interface UserQuoteService {
     Quote findLastQuote(User user);
 
     List<Quote> findQuotesForUser(User user);
+
+    void generateNewLineOfQuotes();
 }

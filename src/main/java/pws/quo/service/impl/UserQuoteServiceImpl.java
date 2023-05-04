@@ -7,17 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pws.quo.domain.Quote;
-import pws.quo.domain.User;
-import pws.quo.domain.UserQuote;
+import pws.quo.domain.*;
 import pws.quo.repository.QuoteRepository;
+import pws.quo.repository.UserAdditionalFieldsRepository;
 import pws.quo.repository.UserQuoteRepository;
 import pws.quo.repository.UserRepository;
 import pws.quo.service.UserQuoteService;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 
 /**
  * Service Implementation for managing {@link UserQuote}.
@@ -34,10 +32,13 @@ public class UserQuoteServiceImpl implements UserQuoteService {
 
     private final QuoteRepository quoteRepository;
 
-    public UserQuoteServiceImpl(UserQuoteRepository userQuoteRepository, UserRepository userRepository, QuoteRepository quoteRepository) {
+    private final UserAdditionalFieldsRepository userAdditionalFieldsRepository;
+
+    public UserQuoteServiceImpl(UserQuoteRepository userQuoteRepository, UserRepository userRepository, QuoteRepository quoteRepository, UserAdditionalFieldsRepository userAdditionalFieldsRepository) {
         this.userQuoteRepository = userQuoteRepository;
         this.userRepository = userRepository;
         this.quoteRepository = quoteRepository;
+        this.userAdditionalFieldsRepository = userAdditionalFieldsRepository;
     }
 
     @Override
@@ -71,21 +72,55 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             .map(userQuoteRepository::save);
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+    //@Scheduled(cron = "0 0 1 * * ?")
     public void generateNewLineOfQuotes() {
-        List<User> userList = userRepository.findAll();
+        List<UserAdditionalFields> userAdditionalFields = userAdditionalFieldsRepository.findAll();
         List<UserQuote> userQuoteList = userQuoteRepository.findAll();
-        List<Quote> quoteList = quoteRepository.findAll();
 
+        List<UserQuote> newQuotes = new ArrayList<>();
 
-        for (User user : userList) {
-            
+        for (UserAdditionalFields uaf : userAdditionalFields) {
+            Quote newQuote = null;
+            List<Quote> myQuotes = findMyQuotes(uaf.getInternalUser(), userQuoteList);
+            Set<Category> myCategories = uaf.getCategories();
+            List<Quote> quotesByCategories = quoteRepository.findByCategoriesIn(myCategories);
 
+            Collections.shuffle(quotesByCategories);
 
+            for (Quote quote : quotesByCategories) {
+                if (!myQuotes.contains(quote)) {
+                    newQuote = quote;
+                    break;
+                }
+            }
+
+            if(newQuote != null){
+                UserQuote uq = new UserQuote();
+                uq.setUser(uaf.getInternalUser());
+                uq.setQuote(newQuote);
+                uq.setTime(Instant.now());
+                uq.setFavourite(false);
+                newQuotes.add(uq);
+            }
 
         }
 
+        userQuoteRepository.saveAll(newQuotes);
 
+    }
+
+
+    private List<Quote> findMyQuotes(User user, List<UserQuote> userQuoteList) {
+        if(user==null){
+            return new ArrayList<>();
+        }
+        List<Quote> list = new ArrayList<>();
+        for (UserQuote uq : userQuoteList) {
+            if (uq.getUser().getId().equals(user.getId())) {
+                list.add(uq.getQuote());
+            }
+        }
+        return list;
     }
 
     @Override
