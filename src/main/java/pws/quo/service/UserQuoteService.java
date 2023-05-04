@@ -71,5 +71,5 @@ public interface UserQuoteService {
 
     List<Quote> findQuotesForUser(User user);
 
-    void generateNewLineOfQuotes();
+    //void generateNewLineOfQuotes();
 }

@@ -99,10 +99,10 @@ public class AccountResource {
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
 
-    @GetMapping("/testic")
-    public void registerQuotes(){
-        userQuoteService.generateNewLineOfQuotes();
-    }
+//    @GetMapping("/testic")
+//    public void registerQuotes(){
+//        userQuoteService.generateNewLineOfQuotes();
+//    }
 
 
     @PostMapping("/register")

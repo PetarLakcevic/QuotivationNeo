@@ -72,7 +72,8 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             .map(userQuoteRepository::save);
     }
 
-    //@Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 18 * * *")
     public void generateNewLineOfQuotes() {
         List<UserAdditionalFields> userAdditionalFields = userAdditionalFieldsRepository.findAll();
         List<UserQuote> userQuoteList = userQuoteRepository.findAll();
