@@ -392,7 +392,7 @@ public class AccountResource {
 
             for (QAC qac1 : qacList) {
                 if (qac.getQuote().equals(qac1.getQuote())) {
-                    names.add(qac.getCategory());
+                    names.add(qac1.getCategory());
                 }
             }
 
