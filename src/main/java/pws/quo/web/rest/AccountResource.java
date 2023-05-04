@@ -296,7 +296,7 @@ public class AccountResource {
     public void appReset(@RequestParam("file") MultipartFile file) throws Exception {
 
 
-        String excelFilePath = "quotes.xlsx";
+     //   String excelFilePath = "quotes.xlsx";
         //        File folder = new File(".");
         //        File[] files = folder.listFiles();
         //        for (File file : files) {
@@ -305,7 +305,7 @@ public class AccountResource {
         //            }
         //        }
         // create a file input stream to read the Excel file
-        FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+       // FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
         // create a workbook object from the input stream
         Workbook workbook = WorkbookFactory.create(file.getInputStream());
@@ -404,7 +404,6 @@ public class AccountResource {
 
         // close the workbook and input stream
         workbook.close();
-        inputStream.close();
     }
 
     private Author findAuthor(List<Author> authorList, String name) {
