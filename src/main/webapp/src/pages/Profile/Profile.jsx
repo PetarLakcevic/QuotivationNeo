@@ -20,14 +20,21 @@ const Profile = ({ account }) => {
 
   const handleClose = () => {
     setTimeout(() => {
-    setOpen(false);
+      setOpen(false);
     }, 3000);
   };
 
   return (
     <UserContainer>
       <UserNavbar />
-      <UserContent>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -35,10 +42,23 @@ const Profile = ({ account }) => {
             alignItems: 'flex-start',
             gap: 3,
             padding: 3,
+            mt: 3,
           }}
         >
-          <Typography variant="h5">Profile</Typography>
-
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Avatar>{account?.login.toUpperCase().charAt(0)}</Avatar>
+            <Box>
+              <Typography variant="h5">Profile</Typography>
+              <Typography variant="subtitle1">{account?.login}</Typography>
+            </Box>
+          </Box>
           <TextField
             label="Username"
             variant="standard"
@@ -129,10 +149,10 @@ const Profile = ({ account }) => {
         </SlideUp>{' '}
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
           <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            {message} 
+            {message}
           </Alert>
         </Snackbar>
-      </UserContent>
+      </Box>
     </UserContainer>
   );
 };

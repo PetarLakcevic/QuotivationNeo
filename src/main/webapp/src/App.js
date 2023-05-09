@@ -35,9 +35,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (token) {
-      console.log(token);
-      console.log(parseToken(token));
+    if (token && parseToken(token).exp < Date.now() / 1000) {
+      setToken('');
     }
   }, [token]);
 

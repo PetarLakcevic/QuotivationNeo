@@ -102,7 +102,7 @@ const Category = ({ account, setAccount }) => {
                       position: 'absolute', // Add position property
                       top: 0, // Add top property
                       bottom: 0, // Add bottom property
-                      backgroundImage: 'linear-gradient(90deg, #6c8bd8 , #55b1e7 )',
+                      backgroundImage: 'linear-gradient(90deg, hsl(193, 66%, 32%) , hsl(144, 25%, 57%), #aac0d0 )',
                       borderRadius: '5px',
                       alignSelf: 'stretch', // Add alignSelf property
                     }}
@@ -149,7 +149,7 @@ const Category = ({ account, setAccount }) => {
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
                       backgroundImage: selectedCategories?.some(cat => cat.id === category.id)
-                        ? 'linear-gradient(45deg, #7dbadf, #55b1e7, #6c8bd8, #8e9ed4)'
+                        ? 'linear-gradient(135deg, #fff, hsl(193, 66%, 32%) 10%, hsl(144, 25%, 47%), hsl(193, 66%, 32%))'
                         : 'linear-gradient(90deg, #d0d0d0 , #d0d0d0 )',
                     },
                   }}
