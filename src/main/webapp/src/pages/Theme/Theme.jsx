@@ -9,11 +9,19 @@ import rain from '../../assets/images/rain.jpg';
 import sandColor from '../../assets/images/sandcolor.jpg';
 import seapink from '../../assets/images/seapink.jpg';
 import sky from '../../assets/images/sky.jpg';
+import sunset from '../../assets/images/sunset.webp';
+import golden from '../../assets/images/golden.jpeg';
+import sandbrown from '../../assets/images/sandbrown.jpg';
+import sandgray from '../../assets/images/sandgray.jpeg';
+import reddoor from '../../assets/images/reddoor.webp';
+import pencil from '../../assets/images/pencil.webp';
+import road from '../../assets/images/road.jpeg';
+import droneview from '../../assets/images/droneview.jpeg';
 
 import { setTheme } from '../../axios/axios';
 import { useNavigate } from 'react-router-dom';
 const Theme = ({ account, setAccount }) => {
-  const imageArray = [hope, rain, sandColor, seapink, sky];
+  const imageArray = [rain, sandColor, seapink, sky, sunset, golden, sandbrown, sandgray, reddoor, pencil, road, droneview];
   const [selectedIndex, setSelectedIndex] = useState(1);
 
   const carouselRef = useRef(null);

@@ -8,11 +8,22 @@ import rain from '../../assets/images/rain.jpg';
 import sandColor from '../../assets/images/sandcolor.jpg';
 import seapink from '../../assets/images/seapink.jpg';
 import sky from '../../assets/images/sky.jpg';
+import sunset from '../../assets/images/sunset.webp';
+import golden from '../../assets/images/golden.jpeg';
+import sandbrown from '../../assets/images/sandbrown.jpg';
+import sandgray from '../../assets/images/sandgray.jpeg';
+import reddoor from '../../assets/images/reddoor.webp';
+import pencil from '../../assets/images/pencil.webp';
+import road from '../../assets/images/road.jpeg';
+import droneview from '../../assets/images/droneview.jpeg';
+import logo from '../../assets/images/logo.png';
 import { Box } from '@mui/system';
 import { Dialog, IconButton, Slide, Typography } from '@mui/material';
 import { Download, Email, Facebook, Share, Twitter, WhatsApp } from '@mui/icons-material';
 import { toPng } from 'html-to-image';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton, ViberIcon, ViberShareButton, WhatsappShareButton } from 'react-share';
+
+import style from './Quote.module.css';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -20,7 +31,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Quote = ({ account }) => {
   const token = localStorage.getItem('token');
-  const imageArray = [hope, rain, sandColor, seapink, sky];
+  const imageArray = [rain, sandColor, seapink, sky, sunset, golden, sandbrown, sandgray, reddoor, pencil, road, droneview];
   const [quote, setQuote] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -142,7 +153,7 @@ const Quote = ({ account }) => {
                 textShadow: '0 0 4px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.9), 0 16px 24px rgba(0,0,0,0.4), 0 32px 48px rgba(0,0,0,0.7)',
                 textAlign: 'center',
                 width: '100%',
-                fontSize:  '3rem' ,
+                fontSize: '3rem',
               }}
               ref={quoteRef}
             >
@@ -189,24 +200,43 @@ const Quote = ({ account }) => {
           </Box> */}
           <Box
             sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%',
               position: 'absolute',
               bottom: '0%',
-              right: '0%',
-              transform: 'translate(-20%, -50%)',
+              left: '50%',
+              transform: 'translate(-50%, -10%)',
+              padding: '0 16px 0 10px',
             }}
           >
-            <IconButton
-              sx={{
-                color: 'hsl(144, 25%, 57%)',
-                backgroundColor: 'white',
-                boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
-              }}
-              aria-label="share"
-              component="span"
-              onPointerDown={() => setOpenDialog(true)}
-            >
-              <Share />
-            </IconButton>
+            <Box>
+              <img
+                src={logo}
+                alt="logo"
+                style={{
+                  height: '42px',
+                }}
+                className={style.logoEngraved}
+              />
+            </Box>
+            <Box>
+              <IconButton
+                sx={{
+                  height: '40px', // Dodaj visinu IconButton-a
+                  width: '40px', // Dodaj širinu IconButton-a
+                  color: 'hsl(144, 25%, 57%)',
+                  backgroundColor: 'white',
+                  boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
+                }}
+                aria-label="share"
+                component="span"
+                onPointerDown={() => setOpenDialog(true)}
+              >
+                <Share />
+              </IconButton>
+            </Box>
           </Box>
         </Box>
         <Dialog
@@ -249,7 +279,9 @@ const Quote = ({ account }) => {
 
             <TwitterShareButton
               url={'https://quotivation.io/'}
-              title={`"${quote?.text?.length > 200 ? quote?.text.slice(0, 200) + "..." : quote?.text}" by ${quote?.author?.name}. View more at`}
+              title={`"${quote?.text?.length > 200 ? quote?.text.slice(0, 200) + '...' : quote?.text}" by ${
+                quote?.author?.name
+              }. View more at`}
               style={{
                 boxShadow: '0 0 10px 1px rgba(0,0,0,0.5)',
                 aspectRatio: '1/1',
