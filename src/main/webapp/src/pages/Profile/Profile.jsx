@@ -7,6 +7,8 @@ import UserNavbar from '../../components/UserNavbar';
 import SlideUp from '../../components/SlideUp';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { changePasswordReq } from '../../axios/axios';
+import logo from '../../assets/images/logo.png';
+
 
 const Profile = ({ account }) => {
   const [changePassDialog, setChangePassDialog] = useState(false);
@@ -53,7 +55,24 @@ const Profile = ({ account }) => {
               gap: 2,
             }}
           >
-            <Avatar>{account?.login.toUpperCase().charAt(0)}</Avatar>
+            <Avatar
+            sx={{
+              bgcolor: '#fff',
+              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
+              width: '50px',
+              height: '50px',
+            }}
+           
+            >
+              <img src={logo} alt="logo" 
+              style={{
+                width: '80%',
+                height: '80%',
+                objectFit: 'contain',
+
+              }}
+              />
+              </Avatar>
             <Box>
               <Typography variant="h5">Profile</Typography>
               <Typography variant="subtitle1">{account?.login}</Typography>

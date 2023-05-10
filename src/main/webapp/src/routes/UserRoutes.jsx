@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Welcome from '../pages/Welcome/Welcome';
 import Theme from '../pages/Theme/Theme';
 import Category from '../pages/Category/Category';
@@ -14,6 +14,9 @@ import { accountReq } from '../axios/axios';
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     accountReq().then(res => {
@@ -41,6 +44,12 @@ const UserRoutes = () => {
   
     initNotifications();
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/login') {
+      navigate('/');
+    }
+  }, [location]);
   
 
   return (

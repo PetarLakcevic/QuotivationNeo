@@ -22,12 +22,13 @@ function App() {
   const [token, setToken] = useLocalStorage('token', '');
   const [loggedIn, setLoggedIn] = useState(false);
 
+
   const parseToken = t => {
     return JSON.parse(atob(t.split('.')[1]));
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) { 
       setToken(localStorage.getItem('token'));
       console.log(parseToken(localStorage.getItem('token')));
     
@@ -39,6 +40,8 @@ function App() {
       setToken('');
     }
   }, [token]);
+
+
 
   const renderRoutes = () => {
     if (!token) {
