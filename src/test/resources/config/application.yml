@@ -74,7 +74,7 @@ jhipster:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
         base64-secret: ZmM2MWU4ZGRjOTRiMmZmOTcxYjRkY2NhMTgyNDcyNjE4Mzc5YmZlMTU3MmQ0ODk3Mjg2ZGJlMDQwYzM3OGFlMTc4NWIxM2YzNjcxNjA5NWFlNmE3N2EwYWZkYjNhZGIyMGI5ZWQ1ZWZlYTliZDgzMGMxNjgyOWIzYTliOTAzODk=
         # Token is valid 24 hours
-        token-validity-in-seconds: 86400
+        token-validity-in-seconds: 31536000
 
 # ===================================================================
 # Application specific properties
