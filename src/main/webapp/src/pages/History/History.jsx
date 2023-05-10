@@ -131,8 +131,7 @@ const History = ({ account }) => {
                         '0 0 4px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.9), 0 16px 24px rgba(0,0,0,0.4), 0 32px 48px rgba(0,0,0,0.7)',
                       textAlign: 'center',
                       width: '100%',
-                      fontSize: '0.7rem',
-                      // wordBreak: 'break-all',
+                      fontSize: '1.9rem',
                     }}
                   >
                     {item.text}
