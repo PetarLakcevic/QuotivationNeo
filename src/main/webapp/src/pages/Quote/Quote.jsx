@@ -144,6 +144,7 @@ const Quote = ({ account }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
+              width: '90%',
             }}
           >
             <Typography
@@ -153,11 +154,11 @@ const Quote = ({ account }) => {
                 textShadow: '0 0 4px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.9), 0 16px 24px rgba(0,0,0,0.4), 0 32px 48px rgba(0,0,0,0.7)',
                 textAlign: 'center',
                 width: '100%',
-                fontSize: '3rem',
+                fontSize: '1.9rem',
               }}
               ref={quoteRef}
             >
-              {quote?.text}
+              {quote?.text} 
             </Typography>
             <Typography
               variant="h6"
@@ -166,7 +167,6 @@ const Quote = ({ account }) => {
                 textShadow: '0 0 4px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.5), 0 16px 24px rgba(0,0,0,0.4), 0 32px 48px rgba(0,0,0,0.3)',
                 textAlign: 'center',
                 width: '100%',
-                wordBreak: 'break-all',
                 fontStyle: 'italic',
               }}
               ref={authorRef}
