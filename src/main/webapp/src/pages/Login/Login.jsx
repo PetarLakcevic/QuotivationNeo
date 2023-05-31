@@ -205,17 +205,19 @@ const Login = ({ setToken, parseToken }) => {
                 type={showPassword ? 'text' : 'password'}
               />
             </FormControl>
-            {/* <Typography
+            <Typography
               variant="body2"
               color="black"
               sx={{
                 marginLeft: 'auto',
                 textDecoration: 'underline',
                 fontStyle: 'italic',
+                cursor: 'pointer',
               }}
+              onPointerDown={() => navigate('/forgot-password')}
             >
               Forgot password?{' '}
-            </Typography> */}
+            </Typography>
             <Button
               type="submit"
               variant="contained"

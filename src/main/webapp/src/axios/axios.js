@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-  // const apiUrl = 'http://localhost:8080'+ '/api';
+// const apiUrl = 'http://localhost:8080'+ '/api';
 const apiUrl = window.location.origin + '/api';
 const headers = {
   'Content-Type': 'application/json',
@@ -42,7 +42,6 @@ api.interceptors.request.use(
   }
 );
 
-
 const loginReq = (username, password) => {
   return api.post('/authenticate', { username, password });
 };
@@ -53,6 +52,10 @@ const registerReq = (login, password, firstName, lastName, email) => {
 
 const accountReq = () => {
   return api.get('/account');
+};
+
+const activateAccountReq = activationCode => {
+  return api.post('/activate', { activationCode });
 };
 
 const changePasswordReq = (currentPassword, newPassword) => {
@@ -76,7 +79,7 @@ const addQuote = (text, author, categories) => {
 };
 
 const updateQuote = (id, text, author, categories) => {
- return api.put(`/quotes/${id}`, { id, text, author, categories });
+  return api.put(`/quotes/${id}`, { id, text, author, categories });
 };
 
 const getAuthors = () => {
@@ -88,7 +91,7 @@ const getAuthor = id => {
 };
 
 const deleteAuthor = id => {
-    return api.delete(`/authors/${id}`);
+  return api.delete(`/authors/${id}`);
 };
 
 const addAuthor = name => {
@@ -120,7 +123,7 @@ const updateCategory = (id, name, quotes) => {
 };
 
 const getUsers = () => {
- return api.get('/admin/users');
+  return api.get('/admin/users');
 };
 
 const deleteUser = id => {
@@ -135,15 +138,15 @@ const postSuggestion = (text, author) => {
   return api.post('/quote-suggestions', { text, author });
 };
 
-const getAdditionalFields = (id) => {
+const getAdditionalFields = id => {
   return api.get('/user-additional-fields/' + id);
 };
 
-const setTheme = (id) => {
+const setTheme = id => {
   return api.patch('/set/theme/' + id);
 };
 
-const setCategory = (data) => {
+const setCategory = data => {
   return api.post('/set/category', data);
 };
 
@@ -159,6 +162,7 @@ export {
   loginReq,
   registerReq,
   accountReq,
+  activateAccountReq,
   changePasswordReq,
   getQuotes,
   getQuote,

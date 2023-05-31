@@ -11,6 +11,7 @@ import Profile from '../pages/Profile/Profile';
 import ThankYou from '../pages/Suggestions/ThankYou';
 import { requestNotificationPermission, scheduleDailyNotification } from '../pushNotifications';
 import { accountReq } from '../axios/axios';
+import ActivateAccount from '../pages/ActivateAccount/ActivateAccount';
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
@@ -24,6 +25,13 @@ const UserRoutes = () => {
       console.log(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (account?.activated) {
+      console.log('Nije aktiviran');
+      navigate('/welcome');
+    }
+  }, [account]);
 
   useEffect(() => {
     const initNotifications = async () => {
@@ -54,7 +62,8 @@ const UserRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/welcome" element={
+        account?.activated ? <Welcome /> : <ActivateAccount/>} />
       <Route path="/theme" element={<Theme account={account} setAccount={setAccount} />} />
       <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
       <Route path="/home" element={<Quote account={account} />} />
