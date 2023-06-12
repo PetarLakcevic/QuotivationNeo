@@ -5,6 +5,7 @@ import Login from '../pages/Login/Login.jsx';
 import Registration from '../pages/Registration/Registration';
 import Error from '../pages/Error/Error';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import PasswordChange from '../pages/PassworChange/PasswordChange';
 
 const AppRoutes = ({ setToken, parseToken, token }) => {
   return (
@@ -13,6 +14,7 @@ const AppRoutes = ({ setToken, parseToken, token }) => {
       <Route path="/login" element={<Login setToken={setToken} parseToken={parseToken} />} />
       <Route path="/register" element={<Registration setToken={setToken} parseToken={parseToken} />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/account/reset/finish" element={<PasswordChange setToken={setToken} parseToken={parseToken} />} />
       <Route path="/" element={<Login setToken={setToken} parseToken={parseToken} />} />
     </Routes>
   );

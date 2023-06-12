@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { registerReq, loginReq } from '../../axios/axios.js';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert, Box, Button, FormControl, Input, InputAdornment, Snackbar, Typography } from '@mui/material';
+import { Alert, Box, Button, FormControl, TextField, Input, InputAdornment, Snackbar, Typography, FormHelperText } from '@mui/material';
 import { DriveFileRenameOutline, Email, Lock, LockOpen, PermIdentity } from '@mui/icons-material';
 import logo from '../../assets/images/logo.png';
 
@@ -14,9 +14,17 @@ const Registration = ({ setToken, parseToken }) => {
   const emailRef = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]|.*[!@#$%^&*()\-_=+{};:,<.>]).{6,}$/;
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+
+  // useEffect(() => {
+  //   setError(!passwordRegex.test(password));
+  // }, [password]);
 
   const handleClose = () => {
     setOpen(false);
@@ -74,15 +82,16 @@ const Registration = ({ setToken, parseToken }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        // alignItems: 'center',
-        justifyContent: 'space-evenly',
-        minHeight: '100vh',
-        backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 57%), #aac0d0)',
-
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          // alignItems: 'center',
+          justifyContent: 'space-evenly',
+          minHeight: '100vh',
+          backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 57%), #aac0d0)',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -159,18 +168,40 @@ const Registration = ({ setToken, parseToken }) => {
                 width: '100%',
               }}
             >
-              <Input
+              <TextField
                 name="password"
+                variant="standard"
                 type={showPassword ? 'text' : 'password'}
                 inputRef={passwordRef}
                 placeholder="Type your password"
                 id="input-with-icon-adornment"
-                startAdornment={
-                  <InputAdornment position="start" onPointerDown={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <LockOpen /> : <Lock />}
-                  </InputAdornment>
-                }
+                onBlur={() => setError(!passwordRegex.test(password))}
+                error={error}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setError(false);
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start" onPointerDown={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <LockOpen /> : <Lock />}
+                    </InputAdornment>
+                  ),
+                }}
               />
+              {error && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Password must contain at least one uppercase letter, a number or special character, and be longer than 5 characters
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl
               variant="standard"

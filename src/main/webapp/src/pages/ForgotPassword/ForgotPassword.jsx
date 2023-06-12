@@ -4,6 +4,7 @@ import { Box, Button, FormControl, Input, InputAdornment, Typography, createThem
 import logo from '../../assets/images/logo.png';
 import { Email, PermIdentity } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { resetPasswordReq } from '../../axios/axios';
 
 const ForgotPassword = () => {
   const emailRef = useRef(null);
@@ -11,8 +12,15 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const handleSubmit = event => {
-    console.log(emailRef.current.value);
     event.preventDefault();
+    console.log(emailRef.current.value);
+    resetPasswordReq(emailRef.current.value)
+      .then(res => {
+        // console.log(res);
+        navigate('/password-changed');
+      }
+      )
+      .catch(err => console.log(err));
   };
 
   const theme = createTheme({

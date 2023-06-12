@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// const apiUrl = 'http://localhost:8080'+ '/api';
+// const apiUrl = 'http://localhost:8080' + '/api';
 const apiUrl = window.location.origin + '/api';
 const headers = {
   'Content-Type': 'application/json',
@@ -29,7 +29,13 @@ const getToken = async () => {
 
 api.interceptors.request.use(
   async config => {
-    if (config.url !== '/authenticate' && config.url !== '/register') {
+    if (
+      config.url !== '/authenticate' &&
+      config.url !== '/register' &&
+      config.url !== '/activate' &&
+      config.url !== '/account/reset-password/init' &&
+      config.url !== '/account/reset-password/finish'
+    ) {
       const token = await getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -60,6 +66,16 @@ const activateAccountReq = activationCode => {
 
 const changePasswordReq = (currentPassword, newPassword) => {
   return api.post('/account/change-password', { currentPassword, newPassword });
+};
+
+const resetPasswordReq = email => {
+  console.log('resetPasswordReq is called with email:', email);
+  return api.post('/account/reset-password/init', { email });
+};
+
+const finishResetPasswordReq = (key, password) => {
+  console.log('finishResetPasswordReq is called with key:', key);
+  return api.post('/account/reset-password/finish', { key, password });
 };
 
 const getQuotes = () => {
@@ -188,4 +204,6 @@ export {
   setCategory,
   getCurrentQuote,
   getHistory,
+  resetPasswordReq,
+  finishResetPasswordReq,
 };
