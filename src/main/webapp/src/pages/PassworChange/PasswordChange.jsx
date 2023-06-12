@@ -68,11 +68,11 @@ const PasswordChange = ({ setToken, parseToken }) => {
             uotivation
           </Typography>
         </Box>
-        <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', mb: '1rem' }}>
+        {/* <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', mb: '1rem' }}>
           Check your email for a code to reset your password.
-        </Typography>
+        </Typography> */}
         <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}>
-          Enter the code below to reset your password.
+          Enter your username and new password below.
         </Typography>
         <form onSubmit={handleSubmit}>
           <Box

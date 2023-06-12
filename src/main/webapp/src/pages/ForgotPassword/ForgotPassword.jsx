@@ -13,13 +13,13 @@ const ForgotPassword = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (emailRef.current.value === '') return;
     console.log(emailRef.current.value);
     resetPasswordReq(emailRef.current.value)
       .then(res => {
         // console.log(res);
-        navigate('/password-changed');
-      }
-      )
+        navigate('/check-email');
+      })
       .catch(err => console.log(err));
   };
 
