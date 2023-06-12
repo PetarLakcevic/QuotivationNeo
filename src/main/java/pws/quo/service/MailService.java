@@ -1,9 +1,16 @@
 package pws.quo.service;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Locale;
-import javax.mail.MessagingException;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -52,6 +59,41 @@ public class MailService {
     }
 
     @Async
+    public void sendMailPera(String mail) throws UnsupportedEncodingException, MessagingException {
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("quotivation.info@gmail.com", "fxboxpqjbkwcsngv");
+            }
+        });
+
+        Message msg = new MimeMessage(session);
+
+        msg.setFrom(new InternetAddress("info@quotivation.io", "Quotivation - noreply"));
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail));
+        msg.setSubject("Password reset request");
+
+        msg.setContent("fsafasfasfasfasf", "text/html; charset=UTF-8");
+        msg.setSentDate(new Date());
+
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent("asdasdassd", "text/html; charset=UTF-8");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+
+        msg.setContent(multipart);
+        Transport.send(msg);
+    }
+
+    @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
@@ -67,12 +109,12 @@ public class MailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
-            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setFrom(new InternetAddress("quotivation.info@gmail.com", "Quotivation - noreply"));
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
-        } catch (MailException | MessagingException e) {
+        } catch (Exception e) {
             log.warn("Email could not be sent to user '{}'", to, e);
         }
     }
@@ -83,7 +125,7 @@ public class MailService {
             log.debug("Email doesn't exist for user '{}'", user.getLogin());
             return;
         }
-        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Locale locale = Locale.ENGLISH;
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
