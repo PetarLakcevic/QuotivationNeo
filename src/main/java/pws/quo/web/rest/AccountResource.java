@@ -28,8 +28,10 @@ import pws.quo.web.rest.errors.LoginAlreadyUsedException;
 import pws.quo.web.rest.vm.KeyAndPasswordVM;
 import pws.quo.web.rest.vm.ManagedUserVM;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -443,15 +445,15 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/reset-password/init")
     public void requestPasswordReset(@RequestBody String mail) {
+        System.out.println(mail);
         Optional<User> user = userService.requestPasswordReset(mail);
         if (user.isPresent()) {
             mailService.sendPasswordResetMail(user.get());
         } else {
-            // Pretend the request has been successful to prevent checking which emails really exist
-            // but log that an invalid attempt has been made
             log.warn("Password reset requested for non existing mail");
         }
     }
+
 
     /**
      * {@code POST   /account/reset-password/finish} : Finish to reset the password of the user.
