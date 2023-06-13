@@ -36,20 +36,28 @@ const UserRoutes = () => {
   useEffect(() => {
     const initNotifications = async () => {
       const permission = await requestNotificationPermission();
-  
+
       if (permission === 'granted') {
-        scheduleDailyNotification('Notifikacija u 12:00', {
-          body: 'New quote is waiting for you!',
-          icon: '/logo5.png',
-        }, 12); // Zakazivanje notifikacije u 12:00
-  
-        scheduleDailyNotification('Notifikacija u 20:00', {
-          body: 'New quote is ready for you!',
-          icon: '/logo5.png',
-        }, 20); // Zakazivanje notifikacije u 20:00
+        scheduleDailyNotification(
+          'Notifikacija u 12:00',
+          {
+            body: 'New quote is waiting for you!',
+            icon: '/logo5.png',
+          },
+          12
+        ); // Zakazivanje notifikacije u 12:00
+
+        scheduleDailyNotification(
+          'Notifikacija u 20:00',
+          {
+            body: 'New quote is ready for you!',
+            icon: '/logo5.png',
+          },
+          20
+        ); // Zakazivanje notifikacije u 20:00
       }
     };
-  
+
     initNotifications();
   }, []);
 
@@ -58,12 +66,10 @@ const UserRoutes = () => {
       navigate('/');
     }
   }, [location]);
-  
 
   return (
     <Routes>
-      <Route path="/welcome" element={
-        account?.activated ? <Welcome /> : <ActivateAccount/>} />
+      <Route path="/welcome" element={<Welcome />} />
       <Route path="/theme" element={<Theme account={account} setAccount={setAccount} />} />
       <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
       <Route path="/home" element={<Quote account={account} />} />
