@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pws.quo.domain.*;
+import pws.quo.domain.dto.EmailDTO;
 import pws.quo.domain.dto.QAC;
 import pws.quo.repository.*;
 import pws.quo.security.SecurityUtils;
@@ -444,9 +445,9 @@ public class AccountResource {
      * @param mail the mail of the user.
      */
     @PostMapping(path = "/account/reset-password/init")
-    public void requestPasswordReset(@RequestBody String mail) {
-        System.out.println(mail);
-        Optional<User> user = userService.requestPasswordReset(mail);
+    public void requestPasswordReset(@RequestBody EmailDTO mail) {
+        System.out.println(mail.getEmail());
+        Optional<User> user = userService.requestPasswordReset(mail.getEmail());
         if (user.isPresent()) {
             mailService.sendPasswordResetMail(user.get());
         } else {
