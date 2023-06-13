@@ -34,6 +34,10 @@ const Registration = ({ setToken, parseToken }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (!passwordRegex.test(password)) {
+      setError(true);
+      return;
+    }
     registerReq(
       loginRef.current.value,
       passwordRef.current.value,

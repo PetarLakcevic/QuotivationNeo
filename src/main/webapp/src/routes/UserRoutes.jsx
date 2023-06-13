@@ -27,7 +27,7 @@ const UserRoutes = () => {
   }, []);
 
   useEffect(() => {
-    if (account?.activated) {
+    if (account?.categoryList.length === 0 || !account?.categoryList) {
       console.log('Nije aktiviran');
       navigate('/welcome');
     }
