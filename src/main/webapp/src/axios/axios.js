@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const apiUrl = 'http://localhost:8080' + '/api';
-const apiUrl = window.location.origin + '/api';
+const apiUrl = 'http://localhost:8080' + '/api';
+// const apiUrl = window.location.origin + '/api';
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -73,9 +73,9 @@ const resetPasswordReq = email => {
   return api.post('/account/reset-password/init', { email });
 };
 
-const finishResetPasswordReq = (key, password) => {
+const finishResetPasswordReq = (key, newPassword) => {
   console.log('finishResetPasswordReq is called with key:', key);
-  return api.post('/account/reset-password/finish', { key, password });
+  return api.post('/account/reset-password/finish', { key, newPassword });
 };
 
 const getQuotes = () => {

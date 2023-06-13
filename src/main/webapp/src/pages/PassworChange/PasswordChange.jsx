@@ -19,10 +19,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
   const handleSubmit = event => {
     event.preventDefault();
     // console.log(key);
-    finishResetPasswordReq({
-      key: key,
-      password: passwordRef.current.value,
-    })
+    finishResetPasswordReq(key, passwordRef.current.value)
       .then(response => {
         setToken(response.data.id_token);
         if (parseToken(response.data.id_token).auth.includes('ROLE_ADMIN')) {
