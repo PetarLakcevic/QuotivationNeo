@@ -17,11 +17,12 @@ const PasswordChange = ({ setToken, parseToken }) => {
   const [error, setError] = useState(false);
   const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]|.*[!@#$%^&*()\-_=+{};:,<.>]).{6,}$/;
   const handleSubmit = event => {
+    event.preventDefault();
     if (!passwordRegex.test(password)) {
       setError(true);
       return;
     }
-    event.preventDefault();
+
     // console.log(key);
     finishResetPasswordReq(key, passwordRef.current.value)
       .then(response => {
