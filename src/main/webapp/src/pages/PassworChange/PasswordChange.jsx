@@ -21,12 +21,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
     // console.log(key);
     finishResetPasswordReq(key, passwordRef.current.value)
       .then(response => {
-        setToken(response.data.id_token);
-        if (parseToken(response.data.id_token).auth.includes('ROLE_ADMIN')) {
-          navigate('/adminpanel');
-        } else {
-          navigate('/home');
-        }
+        navigate('/login');
       })
       .catch(err => console.log(err));
   };
@@ -69,7 +64,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
           Check your email for a code to reset your password.
         </Typography> */}
         <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}>
-          Enter your username and new password below.
+          Enter your new password below.
         </Typography>
         <form onSubmit={handleSubmit}>
           <Box
@@ -83,7 +78,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
               gap: '1rem',
             }}
           >
-            <FormControl
+            {/* <FormControl
               variant="standard"
               sx={{
                 width: '100%',
@@ -104,7 +99,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
                   ),
                 }}
               />
-            </FormControl>
+            </FormControl> */}
             <FormControl
               variant="standard"
               sx={{

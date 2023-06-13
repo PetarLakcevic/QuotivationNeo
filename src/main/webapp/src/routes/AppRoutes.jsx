@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Splash from '../pages/Splash/Splash';
 import Login from '../pages/Login/Login.jsx';
 import Registration from '../pages/Registration/Registration';
-import Error from '../pages/Error/Error';
+// import Error from '../pages/Error/Error';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import PasswordChange from '../pages/PassworChange/PasswordChange';
 import CheckEmail from '../pages/CheckEmail/CheckEmail';

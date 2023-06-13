@@ -6,7 +6,7 @@ import Login from './pages/Login/Login.jsx';
 import useLocalStorage from 'react-use-localstorage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminPanel from './pages/adminPages/AdminPanel/AdminPanel';
-import Error from './pages/Error/Error';
+// import Error from './pages/Error/Error';
 import Splash from './pages/Splash/Splash';
 import Registration from './pages/Registration/Registration';
 import { Box } from '@mui/material';

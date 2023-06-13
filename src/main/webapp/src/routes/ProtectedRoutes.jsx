@@ -9,7 +9,7 @@ import Users from '../pages/adminPages/Users/Users';
 import Categories from '../pages/adminPages/Categories/Categories';
 import QuoteSuggestions from '../pages/adminPages/QuoteSuggestions/QuoteSuggestions';
 import Navbar from '../components/Navbar';
-import Error from '../pages/Error/Error';
+// import Error from '../pages/Error/Error';
 import UserNavbar from '../components/UserNavbar';
 import CategoryAdmin from '../pages/adminPages/Categories/CategoryAdmin';
 
@@ -17,7 +17,7 @@ const ProtectedRoutes = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <UserNavbar/>
+      <UserNavbar />
       <Routes>
         <Route path="/" element={<Splash />} />
         <Route path="/adminpanel" element={<AdminPanel />} />
@@ -28,7 +28,6 @@ const ProtectedRoutes = () => {
         <Route path="/adminpanel/categories" element={<Categories />} />
         <Route path="/adminpanel/category/:id" element={<CategoryAdmin />} />
         <Route path="/adminpanel/quote_suggestions" element={<QuoteSuggestions />} />
-        {/* <Route path="*" element={<Error />} /> */}
       </Routes>
     </>
   );

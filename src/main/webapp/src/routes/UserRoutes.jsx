@@ -4,7 +4,7 @@ import Welcome from '../pages/Welcome/Welcome';
 import Theme from '../pages/Theme/Theme';
 import Category from '../pages/Category/Category';
 import Quote from '../pages/Quote/Quote';
-import Error from '../pages/Error/Error';
+// import Error from '../pages/Error/Error';
 import History from '../pages/History/History';
 import Suggestions from '../pages/Suggestions/Suggestions';
 import Profile from '../pages/Profile/Profile';
@@ -71,7 +71,6 @@ const UserRoutes = () => {
       <Route path="/thankyou" element={<ThankYou />} />
       <Route path="/history" element={<History account={account} />} />
       <Route path="/profile" element={<Profile account={account} />} />
-      {/* <Route path="*" element={<Error />} /> */}
     </Routes>
   );
 };
