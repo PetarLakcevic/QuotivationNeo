@@ -271,6 +271,20 @@ const UserNavbar = ({ home }) => {
                     Suggestions
                   </Typography>
                 </Button>
+                <Button
+                  onPointerDown={() => {
+                    navigate('/payments');
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'white',
+                    }}
+                  >
+                    Payments
+                  </Typography>
+                </Button>
               </>
             )}
           </Box>

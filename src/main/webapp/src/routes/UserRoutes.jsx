@@ -12,6 +12,7 @@ import ThankYou from '../pages/Suggestions/ThankYou';
 import { requestNotificationPermission, scheduleDailyNotification } from '../pushNotifications';
 import { accountReq } from '../axios/axios';
 import ActivateAccount from '../pages/ActivateAccount/ActivateAccount';
+import Payments from '../pages/Payments/Payments';
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
@@ -77,6 +78,7 @@ const UserRoutes = () => {
       <Route path="/thankyou" element={<ThankYou />} />
       <Route path="/history" element={<History account={account} />} />
       <Route path="/profile" element={<Profile account={account} />} />
+      <Route path="/payments" element={<Payments />} />
     </Routes>
   );
 };
