@@ -158,8 +158,7 @@ const Quote = ({ account }) => {
               }}
               ref={quoteRef}
             >
-              {quote?.text}  I'm a greater believer in luck, and I find the harder I work, the more I have of it.
-
+              {quote?.text} 
             </Typography>
             <Typography
               variant="h6"
