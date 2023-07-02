@@ -76,11 +76,13 @@ const Payments = () => {
   };
 
   const checkCardNumber = () => {
-    const regex = /^[0-9]{16}$/;
-    if (cardNumberRef.current.value === '') {
+    const regex = /^(\d{4} ){3}\d{4}$/; // Matches "1234 5678 9012 3456"
+    let value = cardNumberRef.current.value;
+
+    if (value === '') {
       setCardNumberError('Card number is required');
       return false;
-    } else if (!regex.test(cardNumberRef.current.value)) {
+    } else if (!regex.test(value)) {
       setCardNumberError('Card number must be 16 digits long');
       return false;
     } else {
@@ -159,7 +161,14 @@ const Payments = () => {
       >
         <Stepper activeStep={activeStep} orientation="vertical" sx={{ width: '100%' }}>
           <Step>
-            <StepLabel StepIconComponent={props => <CustomStepIcon {...props} icon={<LocalOffer />} />}>Choose plan</StepLabel>
+            <StepLabel
+              onPointerDown={() => {
+                setActiveStep(0);
+              }}
+              StepIconComponent={props => <CustomStepIcon {...props} icon={<LocalOffer />} />}
+            >
+              Choose plan
+            </StepLabel>
             <StepContent>
               <Box
                 sx={{
@@ -171,6 +180,7 @@ const Payments = () => {
                 }}
               >
                 <Typography variant="h5">Choose right plan for you</Typography>
+                <Typography variant="body1">Get unlimited quotes!</Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
                   <Box
                     sx={{
@@ -192,48 +202,46 @@ const Payments = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'space-between',
                         gap: 1,
                         p: 2,
                         bgcolor: planType === 'yearly' ? '#fff' : '#eee',
                         boxShadow: planType === 'yearly' ? '0px 0px 10px 0px rgba(0,0,0,0.25)' : 'none',
                         height: '100%',
-                        aspectRatio: '1/1',
+                        // aspectRatio: '1/1',
                         transition: 'all 0.3s ease',
                       }}
                       onPointerDown={() => setPlanType('yearly')}
                     >
-                      <Typography variant="h6">Yearly</Typography>
-                      <Typography variant="h5">1.59€</Typography>
-                      {/* <Typography
-                        variant="body1"
+                      <Typography variant="h6"
                         sx={{
-                          textDecoration: 'line-through',
-                          color: '#999',
-                        }}
-                      >
-                        36€
-                      </Typography> */}
+                        textAlign: 'center',
+                      }}
+                      >Annual Subscription</Typography>
+                      <Typography variant="h5">€19.08</Typography>
+                      <Typography variant="body1">€1.59/month, billed annually</Typography>
                     </Box>
                     <Box
                       sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'space-between',
                         gap: 1,
                         p: 2,
                         bgcolor: planType === 'monthly' ? '#fff' : '#eee',
                         boxShadow: planType === 'monthly' ? '0px 0px 10px 0px rgba(0,0,0,0.25)' : 'none',
                         height: '100%',
-                        aspectRatio: '1/1',
+                        // aspectRatio: '1/1',
                         transition: 'all 0.3s ease',
                       }}
                       onPointerDown={() => setPlanType('monthly')}
                     >
-                      <Typography variant="h6">Monthly</Typography>
-
-                      <Typography variant="h5">3€</Typography>
+                      <Typography variant="h6"   sx={{
+                        textAlign: 'center',
+                      }}>Monthly Subscription</Typography>
+                      <Typography variant="h5">€3</Typography>
+                      <Typography variant="body1">No long-term commitments</Typography>
                     </Box>
                   </Box>{' '}
                 </Box>{' '}
@@ -252,7 +260,14 @@ const Payments = () => {
             </StepContent>
           </Step>
           <Step>
-            <StepLabel StepIconComponent={props => <CustomStepIcon {...props} icon={<CreditCard />} />}>Payment details</StepLabel>
+            <StepLabel
+              onPointerDown={() => {
+                setActiveStep(1);
+              }}
+              StepIconComponent={props => <CustomStepIcon {...props} icon={<CreditCard />} />}
+            >
+              Payment details
+            </StepLabel>
             <StepContent>
               <Box sx={{ mb: 2 }}>
                 <form onSubmit={handleSubmit}>
@@ -304,29 +319,36 @@ const Payments = () => {
                     <TextField
                       id="cardNumber"
                       label="Card number"
+                      placeholder="1234 5674 9012 3456"
                       variant="outlined"
                       color="primary"
                       inputRef={cardNumberRef}
                       onBlur={checkCardNumber}
                       onInput={() => {
                         setCardNumberError('');
-                        // allow only numbers 16 digits long
-                        cardNumberRef.current.value = cardNumberRef.current.value.replace(/[^0-9]/g, '').slice(0, 16);
+                        // remove all non-digits or spaces
+                        let value = cardNumberRef.current.value.replace(/[^0-9 ]/g, '');
+                        // remove all spaces
+                        value = value.replace(/ /g, '');
+                        // add a space after every fourth digit
+                        value = value.replace(/(\d{4})/g, '$1 ').trim();
+                        // limit to 16 digits plus 3 spaces
+                        cardNumberRef.current.value = value.slice(0, 19);
                       }}
                       error={cardNumberError}
                       helperText={cardNumberError}
                       sx={{
                         width: '100%',
-                        // marginTop: '2rem',
                       }}
                     />
                     {/* </Box> */}
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                      <FormControl>
-                        <InputLabel>Mesec</InputLabel>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
+                      <FormControl fullWidth>
+                        <InputLabel>Month</InputLabel>
                         <Select
                           value={selectedMonth}
                           onChange={handleMonthChange}
+                          label="Month"
                           sx={{
                             width: '100%',
                             minWidth: '60px',
@@ -339,12 +361,13 @@ const Payments = () => {
                           ))}
                         </Select>
                       </FormControl>
-                      <FormControl>
-                        <InputLabel>Godina</InputLabel>
+                      <FormControl fullWidth>
+                        <InputLabel>Year</InputLabel>
                         <Select
                           value={selectedYear}
                           onChange={handleYearChange}
                           fullWidth
+                          label="Year"
                           sx={{
                             width: '100%',
                             minWidth: '80px',
@@ -357,26 +380,28 @@ const Payments = () => {
                           ))}
                         </Select>
                       </FormControl>
-                      <TextField
-                        id="cardCVC"
-                        label="Card CVC"
-                        variant="outlined"
-                        color="primary"
-                        inputRef={cardCVCRef}
-                        onBlur={checkCardCVC}
-                        onInput={() => {
-                          setCardCVCError('');
-                          // allow only numbers 3 digits long
-                          cardCVCRef.current.value = cardCVCRef.current.value.replace(/[^0-9]/g, '').slice(0, 3);
-                        }}
-                        error={cardCVCError}
-                        helperText={cardCVCError}
-                        // sx={{
-                        //   width: '100%',
-                        //     marginTop: '2rem',
-                        // }}
-                      />
-                    </Box>
+                    </Box>{' '}
+                    <TextField
+                      id="cardCVC"
+                      label="Card CVC"
+                      variant="outlined"
+                      color="primary"
+                      inputRef={cardCVCRef}
+                      onBlur={checkCardCVC}
+                      placeholder="123"
+                      fullWidth
+                      onInput={() => {
+                        setCardCVCError('');
+                        // allow only numbers 3 digits long
+                        cardCVCRef.current.value = cardCVCRef.current.value.replace(/[^0-9]/g, '').slice(0, 3);
+                      }}
+                      error={cardCVCError}
+                      helperText={cardCVCError}
+                      // sx={{
+                      //   width: '100%',
+                      //     marginTop: '2rem',
+                      // }}
+                    />
                     <Button
                       type="submit"
                       variant="contained"

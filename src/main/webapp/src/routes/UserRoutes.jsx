@@ -78,7 +78,7 @@ const UserRoutes = () => {
       <Route path="/thankyou" element={<ThankYou />} />
       <Route path="/history" element={<History account={account} />} />
       <Route path="/profile" element={<Profile account={account} />} />
-      <Route path="/payments" element={<Payments />} />
+      <Route path="/premium" element={<Payments />} />
     </Routes>
   );
 };

@@ -141,18 +141,18 @@ const Author = () => {
                 backgroundColor: 'hsl(144, 25%, 57%)',
                 borderRadius: '1rem',
                 boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
-                fontSize: '1.2rem',
+                fontSize: '1.2rem', 
                 mr: 2,
-              }}
+              }} 
               color="success"
               onPointerDown={() => setAddQuoteDialog(true)}
             >
               Add Quote
-            </Button>
+            </Button> 
             <Button
               variant="contained"
-              p={2}
-              sx={{
+              p={2} 
+              sx={{ 
                 backgroundColor: 'hsl(190, 50%, 40%)',
                 borderRadius: '0.8rem',
                 boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.2)',

@@ -5,6 +5,7 @@ import qq from '../assets/images/qq.png';
 import DialogStyled from './DialogStyled';
 import SlideLeft from './SlideLeft';
 import { useNavigate, useLocation } from 'react-router-dom';
+import crown from '../assets/images/crown.png';
 
 const UserNavbar = ({ home }) => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -273,16 +274,27 @@ const UserNavbar = ({ home }) => {
                 </Button>
                 <Button
                   onPointerDown={() => {
-                    navigate('/payments');
+                    navigate('/premium');
                   }}
                 >
+                  {' '}
+                  <img
+                    src={crown}
+                    alt="crown"
+                    style={{
+                      width: '1.5rem',
+                      height: '1.5rem',
+                      objectFit: 'contain',
+                      marginRight: '0.5rem',
+                    }}
+                  />
                   <Typography
                     variant="h6"
                     sx={{
                       color: 'white',
                     }}
                   >
-                    Payments
+                    Premium
                   </Typography>
                 </Button>
               </>
