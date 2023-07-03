@@ -23,16 +23,5 @@
         });
       });
     </script>
-    <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
-    <script>
-      const beamsClient = new PusherPushNotifications.Client({
-        instanceId: '99cb5cc1-5bc5-418c-a5b6-54fccaed6182',
-      });
-    
-      beamsClient.start()
-        .then(() => beamsClient.addDeviceInterest('hello'))
-        .then(() => console.log('Successfully registered and subscribed!'))
-        .catch(console.error);
-    </script>
   </body>
 </html>

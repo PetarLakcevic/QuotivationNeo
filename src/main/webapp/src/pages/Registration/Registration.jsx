@@ -19,6 +19,10 @@ const Registration = ({ setToken, parseToken }) => {
 
   const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]|.*[!@#$%^&*()\-_=+{};:,<.>]).{6,}$/;
 
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -34,6 +38,11 @@ const Registration = ({ setToken, parseToken }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (!passwordRegex.test(password) || emailError) {
+      setError(true);
+      setEmailError(true);
+      return;
+    }
     if (!passwordRegex.test(password)) {
       setError(true);
       return;
@@ -159,12 +168,31 @@ const Registration = ({ setToken, parseToken }) => {
                 inputRef={emailRef}
                 placeholder="Type your email"
                 id="input-with-icon-adornment"
+                onBlur={() => setEmailError(!emailRegex.test(email))}
+                error={emailError}
+                onChange={e => {
+                  setEmail(e.target.value);
+                  setEmailError(false);
+                }}
                 startAdornment={
                   <InputAdornment position="start">
                     <Email />
                   </InputAdornment>
                 }
               />
+              {emailError && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Please enter a valid email address
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl
               variant="standard"
