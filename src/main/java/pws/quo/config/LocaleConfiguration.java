@@ -24,19 +24,7 @@ public class LocaleConfiguration implements WebMvcConfigurer {
 //        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}")
 //            .setViewName("forward:/");
 
-        registry.addViewController("/{spring:\\w+}")
-            .setViewName("forward:/index");
-        registry.addViewController("/**/{spring:\\w+}")
-            .setViewName("forward:/index");
-        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}")
-            .setViewName("forward:/index");
 
-//        registry.addViewController("/{spring:\\w+}")
-//            .setViewName("forward:/");
-//        registry.addViewController("/**/{spring:\\w+}")
-//            .setViewName("forward:/");
-//        registry.addViewController("/{spring:^(?!.*\\.(js|css)$).*}/**")
-//            .setViewName("forward:/");
     }
 
     @Bean
