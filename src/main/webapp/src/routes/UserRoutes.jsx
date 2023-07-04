@@ -14,12 +14,21 @@ import { accountReq } from '../axios/axios';
 import ActivateAccount from '../pages/ActivateAccount/ActivateAccount';
 import Payments from '../pages/Payments/Payments';
 import PasswordChange from '../pages/PassworChange/PasswordChange';
+import { Box, Button, Paper, Slide, Snackbar, Typography } from '@mui/material';
+import crown from '../assets/images/crown.png';
+
+function TransitionUp(props) {
+  return <Slide {...props} direction="up" />;
+}
+
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     accountReq().then(res => {
@@ -69,20 +78,91 @@ const UserRoutes = () => {
     }
   }, [location]);
 
-  return (
-    <Routes>
-      <Route path="/welcome" element={<Welcome />} />
-      <Route path="/theme" element={<Theme account={account} setAccount={setAccount} />} />
-      <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
-      <Route path="/home" element={<Quote account={account} />} />
-      <Route path="/suggestions" element={<Suggestions />} />
-      <Route path="/thankyou" element={<ThankYou />} />
-      <Route path="/history" element={<History account={account} />} />
-      <Route path="/profile" element={<Profile account={account} />} />
-      <Route path="/premium" element={<Payments />} />
-      <Route path="/account/reset/finish" element={<PasswordChange />} />
+  const snackbarText = {
+    title: 'Try Quotivation Premium!',
+    body: 'Unlock everything!',
+    description: [
+      '• Original and unique quotes',
+      '• Quotes for any situation',
+      '• Unique themes',
+      '• Full reminders to change your mindset',
+      '• No watermarks, no ads',
+    ],
+  };
 
-    </Routes>
+  return (
+    <>
+      <Routes>
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/theme" element={<Theme account={account} setAccount={setAccount} />} />
+        <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
+        <Route path="/home" element={<Quote account={account} />} />
+        <Route path="/suggestions" element={<Suggestions />} />
+        <Route path="/thankyou" element={<ThankYou />} />
+        <Route path="/history" element={<History account={account} />} />
+        <Route path="/profile" element={<Profile account={account} />} />
+        <Route path="/premium" element={<Payments />} />
+        <Route path="/account/reset/finish" element={<PasswordChange />} />
+      </Routes>{' '}
+      <Snackbar open={open} autoHideDuration={6000}
+      TransitionComponent={TransitionUp}
+      >
+        <Box sx={{ width: '100%' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: '#f5f5f5',
+              // borderRadius: '10px',
+              padding: '20px',
+            }}
+            component={Paper}
+            elevation={5}
+          >
+            <img src={crown} alt="crown" style={{ width: '35px', height: '35px',
+          backgroundImage: 'linear-gradient(35deg, hsl(193, 66%, 52%), hsl(144, 25%, 57%), #aac0d0)', borderRadius: '50%', padding: '5px'
+          }} />
+            <Typography variant="h5">{snackbarText.title}</Typography>
+
+            <Typography variant="h6" sx={{
+              mb: '10px',
+            }}>{snackbarText.body}</Typography>
+
+            {snackbarText.description.map((item, index) => (
+              <Typography key={index} variant="h6">
+                {item}
+              </Typography>
+            ))}
+            <Box sx={{
+              display: 'flex',
+              gap: '10px',
+            }}>
+              <Button variant="contained" sx={{ mt: '10px',
+            backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 47%), #aac0d0)'
+            }}
+            onPointerDown={() => {
+              navigate('/premium');
+              setOpen(false);
+            }}
+            >
+                Try it now!
+              </Button>
+              <Button variant="outlined" 
+              color="success" 
+              sx={{ mt: '10px' }}
+              onPointerDown={() => {
+                setOpen(false);
+              }}
+              >
+                Remind me later
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Snackbar>
+    </>
   );
 };
 
