@@ -1,12 +1,13 @@
 import { Box, Typography, Container, FormControl, Input, Button, TextField, InputAdornment, FormHelperText } from '@mui/material';
 import logo from '../../assets/images/logo.png';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { finishResetPasswordReq, loginReq } from '../../axios/axios';
 import { AccountCircle, Lock, LockOpen } from '@mui/icons-material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 const PasswordChange = ({ setToken, parseToken }) => {
   const location = useLocation();
+
   const searchParams = new URLSearchParams(location.search);
   const key = searchParams.get('key');
   const navigate = useNavigate();
@@ -16,6 +17,25 @@ const PasswordChange = ({ setToken, parseToken }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]|.*[!@#$%^&*()\-_=+{};:,<.>]).{6,}$/;
+
+  const [expired, setExpired] = useState(false);
+  const [seconds, setSeconds] = useState(10);
+
+  useEffect(() => {
+    if (expired) {
+      const interval = setInterval(() => {
+        setSeconds(seconds => seconds - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [expired]);
+
+  useEffect(() => {
+    if (seconds === 0) {
+      navigate('/login');
+    }
+  }, [seconds]);
+
   const handleSubmit = event => {
     event.preventDefault();
     if (!passwordRegex.test(password)) {
@@ -26,7 +46,9 @@ const PasswordChange = ({ setToken, parseToken }) => {
       .then(response => {
         navigate('/login');
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        setExpired(true);
+      });
   };
   return (
     <Box
@@ -41,103 +63,141 @@ const PasswordChange = ({ setToken, parseToken }) => {
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
       }}
     >
-      <Container maxWidth="sm">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 'min(100vw, 300px)',
-            mb: '1rem',
-          }}
-        >
-          <img
-            src={logo}
-            alt="logo"
-            style={{
-              width: '6rem',
-            }}
-          />
-          <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', marginLeft: '-0.3rem' }}>
-            uotivation
-          </Typography>
-        </Box>
-        <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}>
-          Enter your new password below.
-        </Typography>
-        <form onSubmit={handleSubmit}>
+      {!expired ? (
+        <Container maxWidth="sm">
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               width: 'min(100vw, 300px)',
-              margin: '0 auto',
-              gap: '1rem',
+              mb: '1rem',
             }}
           >
-            <FormControl
-              variant="standard"
+            <img
+              src={logo}
+              alt="logo"
+              style={{
+                width: '6rem',
+              }}
+            />
+            <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', marginLeft: '-0.3rem' }}>
+              uotivation
+            </Typography>
+          </Box>
+          <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}>
+            Enter your new password below.
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <Box
               sx={{
-                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'min(100vw, 300px)',
+                margin: '0 auto',
+                gap: '1rem',
               }}
             >
-              <TextField
-                name="password"
+              <FormControl
                 variant="standard"
-                type={showPassword ? 'text' : 'password'}
-                inputRef={passwordRef}
-                placeholder="Type your password"
-                id="input-with-icon-adornmentP"
-                onBlur={() => setError(!passwordRegex.test(password))}
-                error={error}
-                onChange={e => {
-                  setPassword(e.target.value);
-                  setError(false);
+                sx={{
+                  width: '100%',
                 }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" onPointerDown={() => setShowPassword(!showPassword)}>
-                      {showPassword ? <LockOpen /> : <Lock />}
-                    </InputAdornment>
-                  ),
+              >
+                <TextField
+                  name="password"
+                  variant="standard"
+                  type={showPassword ? 'text' : 'password'}
+                  inputRef={passwordRef}
+                  placeholder="Type your password"
+                  id="input-with-icon-adornmentP"
+                  onBlur={() => setError(!passwordRegex.test(password))}
+                  error={error}
+                  onChange={e => {
+                    setPassword(e.target.value);
+                    setError(false);
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" onPointerDown={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <LockOpen /> : <Lock />}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                {error && (
+                  <FormHelperText
+                    sx={{
+                      color: '#f44336',
+                      fontSize: '0.75rem',
+                      fontWeight: '400',
+                      textAlign: 'center',
+                      textShadow: '0 0 1px  #000',
+                    }}
+                  >
+                    Password must contain at least one uppercase letter, a number or special character, and be longer than 5 characters
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <Button
+                variant="contained"
+                sx={{
+                  width: '100%',
+                  backgroundColor: 'rgb(255, 255, 255, 0.2)',
+                  elevation: 0,
+                  borderRadius: '1rem',
+                  border: '1px solid white',
+                  boxShadow: 'none',
+                  color: 'white',
+                  marginTop: '1rem',
+                }}
+                type="submit"
+              >
+                Submit 
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      ) : (
+        <Container maxWidth="sm">
+          <Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'min(100vw, 300px)',
+                mb: '1rem',
+              }}
+            >
+              <img
+                src={logo}
+                alt="logo"
+                style={{
+                  width: '6rem',
                 }}
               />
-              {error && (
-                <FormHelperText
-                  sx={{
-                    color: '#f44336',
-                    fontSize: '0.75rem',
-                    fontWeight: '400',
-                    textAlign: 'center',
-                    textShadow: '0 0 1px  #000',
-                  }}
-                >
-                  Password must contain at least one uppercase letter, a number or special character, and be longer than 5 characters
-                </FormHelperText>
-              )}
-            </FormControl>
-            <Button
-              variant="contained"
-              sx={{
-                width: '100%',
-                backgroundColor: 'rgb(255, 255, 255, 0.2)',
-                elevation: 0,
-                borderRadius: '1rem',
-                border: '1px solid white',
-                boxShadow: 'none',
-                color: 'white',
-                marginTop: '1rem',
-              }}
-              type="submit"
+              <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', marginLeft: '-0.3rem' }}>
+                uotivation
+              </Typography>
+            </Box>
+
+            <Typography
+              variant="h6"
+              sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}
             >
-              Submit code
-            </Button>
+              Your password reset link has expired. Please request a new one. You will be redirected to the <Link to="/login" style={{
+                textDecoration: 'none',
+              }}>login </Link>{' '}
+              page in {seconds} seconds.
+            </Typography>
           </Box>
-        </form>
-      </Container>
+        </Container>
+      )}
     </Box>
   );
 };

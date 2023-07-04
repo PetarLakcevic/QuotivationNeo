@@ -1,18 +1,24 @@
 import React, { useRef, useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
-import { Box, Button, FormControl, Input, InputAdornment, Typography, createTheme } from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, Input, InputAdornment, Typography, createTheme } from '@mui/material';
 import logo from '../../assets/images/logo.png';
 import { Email, PermIdentity } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { resetPasswordReq } from '../../axios/axios';
 
 const ForgotPassword = () => {
+  const [emailError, setEmailError] = useState(false);
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const emailRef = useRef(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (!emailRegex.test(emailRef.current.value)) {
+      setEmailError(true);
+      return;
+    }
     if (emailRef.current.value === '') return;
     console.log(emailRef.current.value);
     resetPasswordReq(emailRef.current.value)
@@ -111,6 +117,13 @@ const ForgotPassword = () => {
                 placeholder="Type your email"
                 aria-label="email"
                 inputRef={emailRef}
+                error={emailError}
+                onChange={() => setEmailError(false)}
+                onBlur={() => {
+                  if (!emailRegex.test(emailRef.current.value)) {
+                    setEmailError(true);
+                  }
+                }}
                 sx={{
                   color: 'white',
                 }}
@@ -120,6 +133,19 @@ const ForgotPassword = () => {
                   </InputAdornment>
                 }
               />
+              {emailError && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Please enter a valid email address
+                </FormHelperText>
+              )}
             </FormControl>
             <Typography
               variant="body2"

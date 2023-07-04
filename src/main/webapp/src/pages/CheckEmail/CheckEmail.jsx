@@ -1,9 +1,25 @@
 import { Box, Typography, Container } from '@mui/material';
 import logo from '../../assets/images/logo.png';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CheckEmail = () => {
+  const navigate = useNavigate();
+  const [seconds, setSeconds] = useState(10);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(seconds => seconds - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (seconds === 0) {
+      navigate('/login');
+    }
+  }, [seconds]);
   return (
     <Box
       sx={{
@@ -40,7 +56,16 @@ const CheckEmail = () => {
           </Typography>
         </Box>
         <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', mb: '1rem' }}>
-          Check your email for and click the link to reset your password.
+          Check your email for and click the link to reset your password. You will be redirected to the{' '}
+          <Link
+            to="/login"
+            style={{
+              textDecoration: 'none',
+            }}
+          >
+            login{' '}
+          </Link>{' '}
+          page in {seconds} seconds.
         </Typography>
       </Container>
     </Box>

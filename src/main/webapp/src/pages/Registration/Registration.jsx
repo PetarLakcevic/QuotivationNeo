@@ -15,7 +15,7 @@ const Registration = ({ setToken, parseToken }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]|.*[!@#$%^&*()\-_=+{};:,<.>]).{6,}$/;
 
@@ -23,12 +23,12 @@ const Registration = ({ setToken, parseToken }) => {
   const [emailError, setEmailError] = useState(false);
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+  const [usernameError, setUsernameError] = useState(false);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-
-  // useEffect(() => {
-  //   setError(!passwordRegex.test(password));
-  // }, [password]);
 
   const handleClose = () => {
     setOpen(false);
@@ -38,13 +38,24 @@ const Registration = ({ setToken, parseToken }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (!passwordRegex.test(password) || emailError) {
-      setError(true);
+    if (!loginRef.current.value) {
+      setUsernameError(true);
+      return;
+    }
+    if (!emailRegex.test(email)) {
       setEmailError(true);
       return;
     }
     if (!passwordRegex.test(password)) {
-      setError(true);
+      setPasswordError(true);
+      return;
+    }
+    if (!firstNameRef.current.value) {
+      setFirstNameError(true);
+      return;
+    }
+    if (!lastNameRef.current.value) {
+      setLastNameError(true);
       return;
     }
     registerReq(
@@ -150,12 +161,28 @@ const Registration = ({ setToken, parseToken }) => {
                 inputRef={loginRef}
                 placeholder="Type your username"
                 id="input-with-icon-adornment"
+                onChange={() => setUsernameError(false)}
+                onBlur={() => setUsernameError(!loginRef.current.value)}
+                error={usernameError}
                 startAdornment={
                   <InputAdornment position="start">
                     <PermIdentity />
                   </InputAdornment>
                 }
               />
+              {usernameError && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Please enter your username
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl
               variant="standard"
@@ -207,11 +234,11 @@ const Registration = ({ setToken, parseToken }) => {
                 inputRef={passwordRef}
                 placeholder="Type your password"
                 id="input-with-icon-adornment"
-                onBlur={() => setError(!passwordRegex.test(password))}
-                error={error}
+                onBlur={() => setPasswordError(!passwordRegex.test(password))}
+                error={passwordError}
                 onChange={e => {
                   setPassword(e.target.value);
-                  setError(false);
+                  setPasswordError(false);
                 }}
                 InputProps={{
                   startAdornment: (
@@ -221,7 +248,7 @@ const Registration = ({ setToken, parseToken }) => {
                   ),
                 }}
               />
-              {error && (
+              {passwordError && (
                 <FormHelperText
                   sx={{
                     color: '#f44336',
@@ -246,12 +273,28 @@ const Registration = ({ setToken, parseToken }) => {
                 inputRef={firstNameRef}
                 placeholder="Type your first name"
                 id="input-with-icon-adornment"
+                onChange={() => setFirstNameError(false)}
+                onBlur={() => setFirstNameError(!firstNameRef.current.value)}
+                error={firstNameError}
                 startAdornment={
                   <InputAdornment position="start">
                     <DriveFileRenameOutline />
                   </InputAdornment>
                 }
               />
+              {firstNameError && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Please enter your first name
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl
               variant="standard"
@@ -264,12 +307,28 @@ const Registration = ({ setToken, parseToken }) => {
                 inputRef={lastNameRef}
                 placeholder="Type your last name"
                 id="input-with-icon-adornment"
+                onChange={() => setLastNameError(false)}
+                onBlur={() => setLastNameError(!lastNameRef.current.value)}
+                error={lastNameError}
                 startAdornment={
                   <InputAdornment position="start">
                     <DriveFileRenameOutline />
                   </InputAdornment>
                 }
               />
+              {lastNameError && (
+                <FormHelperText
+                  sx={{
+                    color: '#f44336',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    textShadow: '0 0 1px  #000',
+                  }}
+                >
+                  Please enter your last name
+                </FormHelperText>
+              )}
             </FormControl>
 
             <Button
