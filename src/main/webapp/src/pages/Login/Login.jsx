@@ -166,7 +166,7 @@ const Login = ({ setToken, parseToken }) => {
               }}
             >
               <Input
-                id="input-with-icon-adornment"
+                id="input-with-icon-adornmentU"
                 placeholder="Type your username"
                 aria-label="username"
                 inputRef={userNameRef}
@@ -174,7 +174,7 @@ const Login = ({ setToken, parseToken }) => {
                   color: 'white',
                 }}
                 startAdornment={
-                  <InputAdornment position="start" inputRef={userNameRef} id="username">
+                  <InputAdornment position="start" id="username">
                     <PermIdentity />
                   </InputAdornment>
                 }
@@ -188,17 +188,12 @@ const Login = ({ setToken, parseToken }) => {
               }}
             >
               <Input
-                id="input-with-icon-adornment"
+                id="input-with-icon-adornmentP"
                 placeholder="Type your password"
                 aria-label="password"
                 inputRef={passwordRef}
                 startAdornment={
-                  <InputAdornment
-                    position="start"
-                    inputRef={passwordRef}
-                    id="password"
-                    onPointerDown={() => setShowPassword(!showPassword)}
-                  >
+                  <InputAdornment position="start" id="password" onPointerDown={() => setShowPassword(!showPassword)}>
                     {showPassword ? <LockOpen /> : <Lock />}
                   </InputAdornment>
                 }

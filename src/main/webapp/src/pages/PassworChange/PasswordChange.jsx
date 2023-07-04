@@ -22,8 +22,6 @@ const PasswordChange = ({ setToken, parseToken }) => {
       setError(true);
       return;
     }
-
-    // console.log(key);
     finishResetPasswordReq(key, passwordRef.current.value)
       .then(response => {
         navigate('/login');
@@ -65,9 +63,6 @@ const PasswordChange = ({ setToken, parseToken }) => {
             uotivation
           </Typography>
         </Box>
-        {/* <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', mb: '1rem' }}>
-          Check your email for a code to reset your password.
-        </Typography> */}
         <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', width: '90%', marginBottom: '1rem', marginInline: 'auto' }}>
           Enter your new password below.
         </Typography>
@@ -83,28 +78,6 @@ const PasswordChange = ({ setToken, parseToken }) => {
               gap: '1rem',
             }}
           >
-            {/* <FormControl
-              variant="standard"
-              sx={{
-                width: '100%',
-              }}
-            >
-              <TextField
-                name="username"
-                variant="standard"
-                type="text"
-                inputRef={usernameRef}
-                placeholder="Type your username"
-                id="input-with-icon-adornment"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl> */}
             <FormControl
               variant="standard"
               sx={{
@@ -117,7 +90,7 @@ const PasswordChange = ({ setToken, parseToken }) => {
                 type={showPassword ? 'text' : 'password'}
                 inputRef={passwordRef}
                 placeholder="Type your password"
-                id="input-with-icon-adornment"
+                id="input-with-icon-adornmentP"
                 onBlur={() => setError(!passwordRegex.test(password))}
                 error={error}
                 onChange={e => {

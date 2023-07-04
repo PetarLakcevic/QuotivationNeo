@@ -13,6 +13,7 @@ import { requestNotificationPermission, scheduleDailyNotification } from '../pus
 import { accountReq } from '../axios/axios';
 import ActivateAccount from '../pages/ActivateAccount/ActivateAccount';
 import Payments from '../pages/Payments/Payments';
+import PasswordChange from '../pages/PassworChange/PasswordChange';
 
 const UserRoutes = () => {
   const [account, setAccount] = useState(null);
@@ -79,6 +80,8 @@ const UserRoutes = () => {
       <Route path="/history" element={<History account={account} />} />
       <Route path="/profile" element={<Profile account={account} />} />
       <Route path="/premium" element={<Payments />} />
+      <Route path="/account/reset/finish" element={<PasswordChange />} />
+
     </Routes>
   );
 };

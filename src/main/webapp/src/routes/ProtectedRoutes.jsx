@@ -12,6 +12,7 @@ import Navbar from '../components/Navbar';
 // import Error from '../pages/Error/Error';
 import UserNavbar from '../components/UserNavbar';
 import CategoryAdmin from '../pages/adminPages/Categories/CategoryAdmin';
+import PasswordChange from '../pages/PassworChange/PasswordChange';
 
 const ProtectedRoutes = () => {
   return (
@@ -28,6 +29,8 @@ const ProtectedRoutes = () => {
         <Route path="/adminpanel/categories" element={<Categories />} />
         <Route path="/adminpanel/category/:id" element={<CategoryAdmin />} />
         <Route path="/adminpanel/quote_suggestions" element={<QuoteSuggestions />} />
+      <Route path="/account/reset/finish" element={<PasswordChange />} />
+
       </Routes>
     </>
   );

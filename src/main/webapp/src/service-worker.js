@@ -1,5 +1,5 @@
+/* eslint-env worker */
 /* eslint-disable no-restricted-globals */
-importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js');
 
 // This service worker can be customized!
 // See https://developers.google.com/web/tools/workbox/modules
@@ -13,6 +13,8 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+
+importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js');
 
 clientsClaim();
 

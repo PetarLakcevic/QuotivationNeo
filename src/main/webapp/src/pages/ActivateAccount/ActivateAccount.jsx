@@ -105,7 +105,7 @@ const ActivateAccount = () => {
               }}
             >
               <Input
-                id="input-with-icon-adornment"
+                id="input-with-icon-adornmentA"
                 placeholder="Type your code"
                 aria-label="code"
                 inputRef={codeRef}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const apiUrl = 'http://localhost:8080' + '/api';
-const apiUrl = window.location.origin + '/api';
+const apiUrl = window.location.origin.includes('localhost') ? 'http://localhost:8080' + '/api' : window.location.origin + '/api';
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
