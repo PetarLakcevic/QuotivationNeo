@@ -56,7 +56,7 @@ const CheckEmail = () => {
           </Typography>
         </Box>
         <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', mb: '1rem' }}>
-          Check your email for and click the link to reset your password. You will be redirected to the{' '}
+          Check your email and click the link to reset your password. You will be redirected to the{' '}
           <Link
             to="/login"
             style={{

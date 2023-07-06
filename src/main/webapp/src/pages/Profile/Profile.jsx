@@ -94,14 +94,14 @@ const Profile = ({ account }) => {
               readOnly: true,
             }}
           />
-          <TextField
+          {/* <TextField
             label="Full Name"
             variant="standard"
             value={account?.firstName + ' ' + account?.lastName}
             InputProps={{
               readOnly: true,
             }}
-          />
+          /> */}
           <Button variant="outlined" onClick={() => setChangePassDialog(true)}>
             Change Password
           </Button>

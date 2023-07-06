@@ -50,19 +50,19 @@ const Registration = ({ setToken, parseToken }) => {
       setPasswordError(true);
       return;
     }
-    if (!firstNameRef.current.value) {
-      setFirstNameError(true);
-      return;
-    }
-    if (!lastNameRef.current.value) {
-      setLastNameError(true);
-      return;
-    }
+    // if (!firstNameRef.current.value) {
+    //   setFirstNameError(true);
+    //   return;
+    // }
+    // if (!lastNameRef.current.value) {
+    //   setLastNameError(true);
+    //   return;
+    // }
     registerReq(
       loginRef.current.value,
       passwordRef.current.value,
-      firstNameRef.current.value,
-      lastNameRef.current.value,
+      // firstNameRef.current.value,
+      // lastNameRef.current.value,
       emailRef.current.value
     )
       .then(response => {
@@ -262,7 +262,7 @@ const Registration = ({ setToken, parseToken }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl
+            {/* <FormControl
               variant="standard"
               sx={{
                 width: '100%',
@@ -329,7 +329,7 @@ const Registration = ({ setToken, parseToken }) => {
                   Please enter your last name
                 </FormHelperText>
               )}
-            </FormControl>
+            </FormControl> */}
 
             <Button
               type="submit"

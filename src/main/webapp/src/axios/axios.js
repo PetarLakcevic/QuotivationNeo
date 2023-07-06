@@ -52,8 +52,8 @@ const loginReq = (username, password) => {
   return api.post('/authenticate', { username, password });
 };
 
-const registerReq = (login, password, firstName, lastName, email) => {
-  return api.post('/register', { login, password, firstName, lastName, email, authorities: ['ROLE_USER'], activated: true });
+const registerReq = (login, password, email) => {
+  return api.post('/register', { login, password, email, authorities: ['ROLE_USER'], activated: true });
 };
 
 const accountReq = () => {

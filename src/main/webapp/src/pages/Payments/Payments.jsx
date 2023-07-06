@@ -192,9 +192,6 @@ const Payments = () => {
                       p: 2,
                       bgcolor: '#fff',
                       margin: '0 auto',
-                      //   boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
-                      //   borderRadius: '10px',
-                      //   width: 'min(100vw, 300px)',
                     }}
                   >
                     <Box
@@ -213,11 +210,14 @@ const Payments = () => {
                       }}
                       onPointerDown={() => setPlanType('yearly')}
                     >
-                      <Typography variant="h6"
+                      <Typography
+                        variant="h6"
                         sx={{
-                        textAlign: 'center',
-                      }}
-                      >Annual Subscription</Typography>
+                          textAlign: 'center',
+                        }}
+                      >
+                        Annual Subscription
+                      </Typography>
                       <Typography variant="h5">€19.08</Typography>
                       <Typography variant="body1">€1.59/month, billed annually</Typography>
                     </Box>
@@ -232,19 +232,26 @@ const Payments = () => {
                         bgcolor: planType === 'monthly' ? '#fff' : '#eee',
                         boxShadow: planType === 'monthly' ? '0px 0px 10px 0px rgba(0,0,0,0.25)' : 'none',
                         height: '100%',
-                        // aspectRatio: '1/1',
                         transition: 'all 0.3s ease',
                       }}
                       onPointerDown={() => setPlanType('monthly')}
                     >
-                      <Typography variant="h6"   sx={{
-                        textAlign: 'center',
-                      }}>Monthly Subscription</Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        Monthly Subscription
+                      </Typography>
                       <Typography variant="h5">€3</Typography>
                       <Typography variant="body1">No long-term commitments</Typography>
                     </Box>
-                  </Box>{' '}
-                </Box>{' '}
+                  </Box>
+                </Box>
+                <Typography variant="body1" sx={{ mt: 2 }}>
+                  We don't store your credit card information.
+                </Typography>
                 <Button
                   variant="contained"
                   sx={{

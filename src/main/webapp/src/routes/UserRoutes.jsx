@@ -16,6 +16,9 @@ import Payments from '../pages/Payments/Payments';
 import PasswordChange from '../pages/PassworChange/PasswordChange';
 import { Box, Button, Paper, Slide, Snackbar, Typography } from '@mui/material';
 import crown from '../assets/images/crown.png';
+import Contact from '../pages/Contact/Contact';
+import Privacy from '../pages/Privacy/Privacy';
+import Refund from '../pages/Refund/Refund';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -98,6 +101,9 @@ const UserRoutes = () => {
         <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
         <Route path="/home" element={<Quote account={account} />} />
         <Route path="/suggestions" element={<Suggestions />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/refund" element={<Refund />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />

@@ -110,7 +110,7 @@ const UserNavbar = ({ home }) => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'flex-start',
-              gap: '1rem',
+              gap: '0.5rem',
             }}
           >
             {user.auth.includes('ROLE_ADMIN') ? (
@@ -270,6 +270,48 @@ const UserNavbar = ({ home }) => {
                     }}
                   >
                     Suggestions
+                  </Typography>
+                </Button>
+                <Button
+                  onPointerDown={() => {
+                    navigate('/privacy');
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'white',
+                    }}
+                  >
+                    Privacy Policy
+                  </Typography>
+                </Button>
+                <Button
+                  onPointerDown={() => {
+                    navigate('/refund');
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'white',
+                    }}
+                  >
+                    Refund Policy
+                  </Typography>
+                </Button>
+                <Button
+                  onPointerDown={() => {
+                    navigate('/contact');
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'white',
+                    }}
+                  >
+                    Contact us
                   </Typography>
                 </Button>
                 <Button
