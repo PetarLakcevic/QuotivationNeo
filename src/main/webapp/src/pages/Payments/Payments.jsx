@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserNavbar from '../../components/UserNavbar';
 import {
@@ -17,9 +17,13 @@ import {
   InputLabel,
 } from '@mui/material';
 import { CreditCard, Done, LocalOffer, SystemSecurityUpdateGood } from '@mui/icons-material';
+import axios from 'axios';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
+
+  
+  
 
   return (
     <Box
@@ -147,6 +151,31 @@ const Payments = () => {
     setSelectedYear(event.target.value);
     cardExpirationRef.current = `${selectedMonth}/${event.target.value}`;
   };
+
+  // useEffect(() => {
+  //   const url = "https://entegrasyon.asseco-see.com.tr/msu/api/v2";
+  //   const data = {
+  //     ACTION: 'SESSIONTOKEN',
+  //     MERCHANTUSER: 'nenad.pavlovic@asseco-see.rs',
+  //     MERCHANTPASSWORD: '********', // Ubacite pravi password
+  //     MERCHANT: 'chipcardtest01',
+  //     CUSTOMER: 'customer', // Ovde koristite pravu promenljivu ili vrednost iz forme
+  //     SESSIONTYPE: 'PAYMENTSESSION',
+  //     MERCHANTPAYMENTID: 'merpID', // Ovde koristite pravu promenljivu ili vrednost
+  //     AMOUNT: '750.00',
+  //     CURRENCY: 'RSD',
+  //     CUSTOMEREMAIL: 'customerEmail', // Ovde koristite pravu promenljivu ili vrednost iz forme
+  //     CUSTOMERNAME: 'customerName', // Ovde koristite pravu promenljivu ili vrednost iz forme
+  //     CUSTOMERPHONE: 'customerPhone', // Ovde koristite pravu promenljivu ili vrednost iz forme
+  //     RETURNURL: 'http://www.dummystore.com/response_from_msu.php',
+  //     ORDERITEMS: '[{"code":123456789,"name":"Proizvod1","description":"Opis1","quantity":1,"amount":500.00},{"code":987654321,"name":"Proizvod2","description":"Opis2","quantity":1,"amount":250.00}]',
+  //     // Dodajte i ostale opcione promenljive ako su potrebne
+  //   };
+  
+  //   axios.post(url, data)
+  //     .then(res => console.log(res.data))
+  //     .catch(err => console.log(err));
+  // }, [null]);
   return (
     <UserContainer>
       <UserNavbar />
