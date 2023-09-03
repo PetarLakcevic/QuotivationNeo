@@ -25,6 +25,7 @@ import master from '../../assets/images/Logotipi/Master Card/Mastercard White an
 import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
 import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
+import { Link } from 'react-router-dom';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
@@ -437,6 +438,9 @@ const Payments = () => {
             </StepContent>
           </Step> */}
         {/* </Stepper> */}
+        <Box mt={2}>
+          <Link to="/privacy-policy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link> 
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -528,14 +532,14 @@ const Payments = () => {
             margin: '5vh auto',
           }}
         >
-          <a href='https://chipcard.rs/ecommerce/' target="_blank" rel="noreferrer">
-          <img
-            src={chipcard}
-            alt="chipcard"
-            style={{
-              width: '100%',
-              objectFit: 'contain',
-            }}
+          <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
+            <img
+              src={chipcard}
+              alt="chipcard"
+              style={{
+                width: '100%',
+                objectFit: 'contain',
+              }}
             />
           </a>
         </Box>
