@@ -18,12 +18,16 @@ import {
 } from '@mui/material';
 import { CreditCard, Done, LocalOffer, SystemSecurityUpdateGood } from '@mui/icons-material';
 import axios from 'axios';
+import visaSecure from '../../assets/images/Logotipi/Visa Secure/visa-secure_blu_72dpi.png';
+import masterId from '../../assets/images/Logotipi/masterID check/mc_idcheck_vrt_rgb_pos.png';
+import maestro from '../../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_opt_pos_73_2x.png';
+import master from '../../assets/images/Logotipi/Master Card/Mastercard White and Light Backgrounds/mc_vrt_opt_pos_73_2x.png';
+import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
+import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
+import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
-
-  
-  
 
   return (
     <Box
@@ -171,7 +175,7 @@ const Payments = () => {
   //     ORDERITEMS: '[{"code":123456789,"name":"Proizvod1","description":"Opis1","quantity":1,"amount":500.00},{"code":987654321,"name":"Proizvod2","description":"Opis2","quantity":1,"amount":250.00}]',
   //     // Dodajte i ostale opcione promenljive ako su potrebne
   //   };
-  
+
   //   axios.post(url, data)
   //     .then(res => console.log(res.data))
   //     .catch(err => console.log(err));
@@ -188,114 +192,72 @@ const Payments = () => {
           p: 3,
         }}
       >
-        <Stepper activeStep={activeStep} orientation="vertical" sx={{ width: '100%' }}>
-          <Step>
-            <StepLabel
+        {/* <Stepper activeStep={activeStep} orientation="vertical" sx={{ width: '100%' }}> */}
+        {/* <Step> */}
+        {/* <StepLabel
               onPointerDown={() => {
                 setActiveStep(0);
               }}
               StepIconComponent={props => <CustomStepIcon {...props} icon={<LocalOffer />} />}
             >
-              Choose plan
-            </StepLabel>
-            <StepContent>
-              <Box
-                sx={{
-                  mb: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="h5">Choose right plan for you</Typography>
-                <Typography variant="body1">Get unlimited quotes!</Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 1,
-                      p: 2,
-                      bgcolor: '#fff',
-                      margin: '0 auto',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: 1,
-                        p: 2,
-                        bgcolor: planType === 'yearly' ? '#fff' : '#eee',
-                        boxShadow: planType === 'yearly' ? '0px 0px 10px 0px rgba(0,0,0,0.25)' : 'none',
-                        height: '100%',
-                        // aspectRatio: '1/1',
-                        transition: 'all 0.3s ease',
-                      }}
-                      onPointerDown={() => setPlanType('yearly')}
-                    >
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        Annual Subscription
-                      </Typography>
-                      <Typography variant="h5">€19.08</Typography>
-                      <Typography variant="body1">€1.59/month, billed annually</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: 1,
-                        p: 2,
-                        bgcolor: planType === 'monthly' ? '#fff' : '#eee',
-                        boxShadow: planType === 'monthly' ? '0px 0px 10px 0px rgba(0,0,0,0.25)' : 'none',
-                        height: '100%',
-                        transition: 'all 0.3s ease',
-                      }}
-                      onPointerDown={() => setPlanType('monthly')}
-                    >
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        Monthly Subscription
-                      </Typography>
-                      <Typography variant="h5">€3</Typography>
-                      <Typography variant="body1">No long-term commitments</Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Typography variant="body1" sx={{ mt: 2 }}>
-                  We don't store your credit card information.
-                </Typography>
-                <Button
-                  variant="contained"
-                  sx={{
-                    mt: 2,
-                    marginInline: 'auto',
-                    bgcolor: '#478D8A',
-                  }}
-                  onPointerDown={() => setActiveStep(1)}
-                >
-                  Continue
-                </Button>
-              </Box>
-            </StepContent>
-          </Step>
-          <Step>
+              Annual Plan
+            </StepLabel> */}
+        {/* <StepContent> */}
+        <Box
+          sx={{
+            mb: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="h5">PREMIUM</Typography>
+          <Typography variant="body1">Get unlimited quotes!</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 1,
+              p: 4,
+              bgcolor: '#fff',
+              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
+              height: '100%',
+              transition: 'all 0.3s ease',
+              mt: 2,
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="h6">
+              Annual <br /> Subscription
+            </Typography>
+            <Typography variant="h5">€19.08</Typography>
+            <Typography variant="body1">
+              €1.59/month,
+              <br /> billed annually
+            </Typography>
+          </Box>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            We don't store your credit card information.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              marginInline: 'auto',
+              bgcolor: '#478D8A',
+            }}
+            onPointerDown={() => setActiveStep(1)}
+          >
+            BUY NOW
+          </Button>
+        </Box>
+        {/* </StepContent> */}
+        {/* </Step> */}
+
+        {/* <Step>
             <StepLabel
               onPointerDown={() => {
                 setActiveStep(1);
@@ -351,7 +313,7 @@ const Payments = () => {
                         }}
                       />
                     </Box>
-                    {/* <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}> */}
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
                     <TextField
                       id="cardNumber"
                       label="Card number"
@@ -377,7 +339,7 @@ const Payments = () => {
                         width: '100%',
                       }}
                     />
-                    {/* </Box> */}
+                    </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
                       <FormControl fullWidth>
                         <InputLabel>Month</InputLabel>
@@ -453,8 +415,8 @@ const Payments = () => {
                 </form>
               </Box>
             </StepContent>
-          </Step>
-          <Step>
+          </Step> */}
+        {/* <Step>
             <StepLabel StepIconComponent={props => <CustomStepIcon {...props} icon={<SystemSecurityUpdateGood />} />}>Finish</StepLabel>
             <StepContent>
               <Box sx={{ mb: 2 }}>
@@ -473,8 +435,110 @@ const Payments = () => {
                 </Button>
               </Box>
             </StepContent>
-          </Step>
-        </Stepper>
+          </Step> */}
+        {/* </Stepper> */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            // width: '90vw',
+            margin: '5vh auto',
+          }}
+        >
+          <a
+            href="http://www.mastercard.com/rs/consumer/credit-cards.html"
+            target="_blank"
+            rel="noreferrer"
+            //   style={{
+            //       width: '50vw',
+            //   // objectFit: 'contain',
+            //       display: 'block',
+            // }
+            // }
+          >
+            <img
+              src={visaSecure}
+              alt="visa secure"
+              style={{
+                width: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </a>
+          <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
+            <img
+              src={masterId}
+              alt="master id"
+              style={{
+                width: '50%',
+                objectFit: 'contain',
+              }}
+            />
+          </a>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '90vw',
+            margin: '6vh auto 5vh',
+          }}
+        >
+          <img
+            src={maestro}
+            alt="maestro"
+            style={{
+              width: '22%',
+              objectFit: 'contain',
+            }}
+          />
+          <img
+            src={master}
+            alt="master"
+            style={{
+              width: '22%',
+              objectFit: 'contain',
+            }}
+          />
+          <img
+            src={dina}
+            alt="dina"
+            style={{
+              width: '22%',
+              objectFit: 'contain',
+            }}
+          />
+          <img
+            src={visa}
+            alt="visa"
+            style={{
+              width: '22%',
+              objectFit: 'contain',
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '90vw',
+            margin: '5vh auto',
+          }}
+        >
+          <a href='https://chipcard.rs/ecommerce/' target="_blank" rel="noreferrer">
+          <img
+            src={chipcard}
+            alt="chipcard"
+            style={{
+              width: '100%',
+              objectFit: 'contain',
+            }}
+            />
+          </a>
+        </Box>
       </Box>
     </UserContainer>
   );
