@@ -439,7 +439,7 @@ const Payments = () => {
           </Step> */}
         {/* </Stepper> */}
         <Box mt={2}>
-          <Link to="/privacy-policy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link> 
+          <Link to="/privacy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link> 
         </Box>
         <Box
           sx={{
