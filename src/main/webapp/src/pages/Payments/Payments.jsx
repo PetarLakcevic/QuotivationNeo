@@ -445,41 +445,36 @@ const Payments = () => {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             // width: '90vw',
             margin: '5vh auto',
+            gap: '2vw',
           }}
         >
-          <a
-            href="http://www.mastercard.com/rs/consumer/credit-cards.html"
+          <Link
+            to="http://www.mastercard.com/rs/consumer/credit-cards.html"
             target="_blank"
             rel="noreferrer"
-            //   style={{
-            //       width: '50vw',
-            //   // objectFit: 'contain',
-            //       display: 'block',
-            // }
-            // }
           >
             <img
               src={visaSecure}
               alt="visa secure"
               style={{
-                width: '100%',
+                width: '30vw',
                 objectFit: 'contain',
               }}
             />
-          </a>
-          <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
+          </Link>
+          <Link to="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
             <img
               src={masterId}
               alt="master id"
               style={{
-                width: '50%',
+                width: '30vw',
                 objectFit: 'contain',
               }}
             />
-          </a>
+          </Link>
         </Box>
         <Box
           sx={{
