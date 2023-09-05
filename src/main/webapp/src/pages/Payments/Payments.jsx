@@ -481,7 +481,7 @@ const Payments = () => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: '90vw',
+            // width: '90vw',
             margin: '6vh auto 5vh',
           }}
         >
@@ -523,7 +523,7 @@ const Payments = () => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            width: '90vw',
+            // width: '90vw',
             margin: '5vh auto',
           }}
         >
@@ -539,6 +539,9 @@ const Payments = () => {
           </a>
         </Box>
       </Box>
+      <Typography variant="body1" sx={{ mt: 2, textAlign: 'center' }}>
+      Wermax Consulting doo | PIB 109871829 | MB 21258385 
+      </Typography>
     </UserContainer>
   );
 };
