@@ -82,6 +82,12 @@ public class UserQuoteServiceImpl implements UserQuoteService {
 
         for (UserAdditionalFields uaf : userAdditionalFields) {
             Quote newQuote = null;
+            if(uaf.getTrialExpiry().isBefore(Instant.now())){
+                uaf.setTrialExpired(true);
+                userAdditionalFieldsRepository.save(uaf);
+                continue;
+            }
+
             List<Quote> myQuotes = findMyQuotes(uaf.getInternalUser(), userQuoteList);
             Set<Category> myCategories = uaf.getCategories();
             List<Quote> quotesByCategories = quoteRepository.findByCategoriesIn(myCategories);
