@@ -30,13 +30,20 @@ public class UserAdditionalFields implements Serializable {
 
     @Column(name = "registration_date")
     private Instant registrationDate;
-
     @Column(name = "theme_picture")
     private Integer themePicture;
-
     @OneToOne
     @JoinColumn(unique = true)
     private User internalUser;
+    @Column(name = "payment_token_expiry")
+    private Instant paymentTokenExpiry;
+    @Column(name = "trial_expiry")
+    private Instant trialExpiry;
+    @Column(name = "trial_expired")
+    private Boolean trialExpired;
+    @Column(name = "payment_token")
+    private String paymentToken;
+
 
     @ManyToMany
     @JoinTable(
@@ -60,6 +67,38 @@ public class UserAdditionalFields implements Serializable {
     public UserAdditionalFields id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Instant getTrialExpiry() {
+        return trialExpiry;
+    }
+
+    public void setTrialExpiry(Instant trialExpiry) {
+        this.trialExpiry = trialExpiry;
+    }
+
+    public Boolean getTrialExpired() {
+        return trialExpired;
+    }
+
+    public void setTrialExpired(Boolean trialExpired) {
+        this.trialExpired = trialExpired;
+    }
+
+    public Instant getPaymentTokenExpiry() {
+        return paymentTokenExpiry;
+    }
+
+    public void setPaymentTokenExpiry(Instant paymentTokenExpiry) {
+        this.paymentTokenExpiry = paymentTokenExpiry;
+    }
+
+    public String getPaymentToken() {
+        return paymentToken;
+    }
+
+    public void setPaymentToken(String paymentToken) {
+        this.paymentToken = paymentToken;
     }
 
     public void setId(Long id) {

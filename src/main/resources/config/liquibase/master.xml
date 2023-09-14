@@ -30,6 +30,7 @@
     <include file="config/liquibase/changelog/20230409142239_added_entity_constraints_QuoteSuggestion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230409142240_added_entity_constraints_Quote.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230409142242_added_entity_constraints_UserQuote.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/add_payment_columns.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

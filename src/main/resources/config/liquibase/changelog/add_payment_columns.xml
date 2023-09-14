@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="your_name">
+        <addColumn tableName="user_additional_fields">
+            <column name="payment_token_expiry" type="${datetimeType}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="trial_expiry" type="${datetimeType}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="trial_expired" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="payment_token" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <dropDefaultValue tableName="user_additional_fields" columnName="trial_expiry" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="user_additional_fields" columnName="payment_token_expiry" columnDataType="${datetimeType}"/>
+    </changeSet>
+</databaseChangeLog>
