@@ -1,5 +1,6 @@
 package pws.quo.service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -143,6 +144,9 @@ public class UserService {
         uaf.setInternalUser(saved);
         uaf.setRegistrationDate(Instant.now());
         uaf.setThemePicture(1);
+        uaf.setTrialExpired(false);
+
+        uaf.setTrialExpiry(Instant.now().plus(Duration.ofDays(7)));
         userAdditionalFieldsRepository.save(uaf);
 
         this.clearUserCaches(newUser);

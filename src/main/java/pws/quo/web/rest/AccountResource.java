@@ -1,5 +1,7 @@
 package pws.quo.web.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -7,10 +9,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import pws.quo.domain.*;
 import pws.quo.domain.dto.EmailDTO;
@@ -23,16 +31,18 @@ import pws.quo.service.UserQuoteService;
 import pws.quo.service.UserService;
 import pws.quo.service.dto.AdminUserDTO;
 import pws.quo.service.dto.PasswordChangeDTO;
+import pws.quo.service.dto.PaymentTransaction;
 import pws.quo.web.rest.errors.EmailAlreadyUsedException;
 import pws.quo.web.rest.errors.InvalidPasswordException;
 import pws.quo.web.rest.errors.LoginAlreadyUsedException;
 import pws.quo.web.rest.vm.KeyAndPasswordVM;
 import pws.quo.web.rest.vm.ManagedUserVM;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -69,6 +79,8 @@ public class AccountResource {
 
     private final UserQuoteRepository userQuoteRepository;
 
+    private final UserAdditionalFieldsRepository userAdditionalFieldsRepository;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
@@ -78,7 +90,8 @@ public class AccountResource {
         CategoryRepository categoryRepository,
         AuthorRepository authorRepository,
         QuoteRepository quoteRepository,
-        UserQuoteRepository userQuoteRepository
+        UserQuoteRepository userQuoteRepository,
+        UserAdditionalFieldsRepository userAdditionalFieldsRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -89,6 +102,7 @@ public class AccountResource {
         this.authorRepository = authorRepository;
         this.quoteRepository = quoteRepository;
         this.userQuoteRepository = userQuoteRepository;
+        this.userAdditionalFieldsRepository = userAdditionalFieldsRepository;
     }
 
     /**
@@ -113,6 +127,7 @@ public class AccountResource {
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         //mailService.sendActivationEmail(user);
     }
+
 
     /**
      * {@code GET  /activate} : activate the registered user.
@@ -164,6 +179,125 @@ public class AccountResource {
         } else {
             throw new AccountResourceException("User could not be found");
         }
+    }
+
+
+    @PostMapping("/payment/return/{token}")
+    public void paymentCallback(@PathVariable String token) {
+        Optional<UserAdditionalFields> optionalUserAdditionalFields = userAdditionalFieldsRepository.findByPaymentToken(token);
+
+        if (!optionalUserAdditionalFields.isPresent()) {
+            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN NOT FOUND");
+            return;
+        }
+
+        UserAdditionalFields userAdditionalFields = optionalUserAdditionalFields.get();
+
+        //check if token has expired
+        if (isExpiryIn1Hour(userAdditionalFields.getPaymentTokenExpiry())) {
+            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN EXPIRED");
+            return;
+        }
+
+        //set users TO PREMIUM
+        userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+        userAdditionalFieldsRepository.save(userAdditionalFields);
+    }
+
+
+    @Transactional
+    @GetMapping("/get/payment-link")
+    public String getPaymentLink() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
+            if (userAdditionalFields != null) {
+                //check if user already has premium
+                if (!isExpiryInNext7Days(userAdditionalFields.getExpiry())) {
+                    throw new AccountResourceException("You already have a premium account");
+                }
+
+                //generatePayment link for user and save it
+                userAdditionalFields.setPaymentToken(generatePaymentToken());
+                userAdditionalFields.setPaymentTokenExpiry(Instant.now().plus(Duration.ofHours(1)));
+                userAdditionalFieldsService.save(userAdditionalFields);
+
+                String link = sendPaymentRequest(userAdditionalFields);
+
+                return link;
+            } else {
+                throw new AccountResourceException("User additional fields could not be found");
+            }
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    private String generatePaymentToken() {
+        return generateRandomString(14);
+    }
+
+    private String sendPaymentRequest(UserAdditionalFields userAdditionalFields) {
+        //prepare payment transaction
+        PaymentTransaction pt = new PaymentTransaction();
+        pt.setReturnUrl("https://quotivation.io/api/payment/return/" + userAdditionalFields.getPaymentToken());
+
+        //send payment transaction
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("ACTION", pt.getSESSION_TOKEN());
+        map.add("MERCHANTUSER", pt.getMerchantUser());
+        map.add("MERCHANTPASSWORD", pt.getMerchantPassword());
+        map.add("MERCHANT", pt.getMerchant());
+        map.add("MERCHANTPAYMENTID", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+        map.add("CUSTOMER", pt.getCustomer());
+        map.add("AMOUNT", pt.getAmount());
+        map.add("CURRENCY", pt.getCurrency());
+        map.add("SESSIONTYPE", pt.getSessionType());
+        map.add("CUSTOMEREMAIL", pt.getCustomerEmail());
+        map.add("CUSTOMERNAME", pt.getCustomerName());
+        map.add("CUSTOMERPHONE", pt.getCustomerPhone());
+        map.add("RETURNURL", pt.getReturnUrl());
+        map.add("SESSIONEXPIRY", pt.getSessionExpiry());
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+        System.out.println("Response: " + resp); // Printing the entire response
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(resp);
+            String sessionToken = root.path("sessionToken").asText();
+            if (sessionToken == null || sessionToken.isEmpty()) {
+                return null;
+            }
+            return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+
+    public static String generateRandomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            stringBuilder.append(characters.charAt(randomIndex));
+        }
+
+        return stringBuilder.toString();
     }
 
     @PostMapping("/set/category")
@@ -481,5 +615,23 @@ public class AccountResource {
                 password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
                 password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
+    }
+
+    public boolean isExpiryInNext7Days(Instant expiry) {
+        if (expiry == null) {
+            return true;
+        }
+        Instant now = Instant.now();
+        Instant sevenDaysFromNow = now.plus(Duration.ofDays(7));
+        return !expiry.isBefore(now) && expiry.isBefore(sevenDaysFromNow);
+    }
+
+    public boolean isExpiryIn1Hour(Instant expiry) {
+        if (expiry == null) {
+            return false;
+        }
+        Instant now = Instant.now();
+        Instant sevenDaysFromNow = now.plus(Duration.ofHours(1));
+        return !expiry.isBefore(now) && expiry.isBefore(sevenDaysFromNow);
     }
 }

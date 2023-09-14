@@ -34,4 +34,6 @@ public interface UserAdditionalFieldsRepository
     }
 
     Optional<UserAdditionalFields> findByInternalUserId(Long id);
+
+    Optional<UserAdditionalFields> findByPaymentToken(String token);
 }
