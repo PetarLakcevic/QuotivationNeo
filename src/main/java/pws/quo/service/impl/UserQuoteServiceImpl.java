@@ -82,10 +82,14 @@ public class UserQuoteServiceImpl implements UserQuoteService {
 
         for (UserAdditionalFields uaf : userAdditionalFields) {
             Quote newQuote = null;
-            if(uaf.getTrialExpiry().isBefore(Instant.now())){
-                uaf.setTrialExpired(true);
-                userAdditionalFieldsRepository.save(uaf);
-                continue;
+            if (uaf.getTrialExpiry() != null) {
+                if (uaf.getTrialExpiry().isBefore(Instant.now())) {
+                    if (uaf.getExpiry() == null || uaf.getExpiry().isBefore(Instant.now())) {
+                        uaf.setTrialExpired(true);
+                        userAdditionalFieldsRepository.save(uaf);
+                        continue;
+                    }
+                }
             }
 
             List<Quote> myQuotes = findMyQuotes(uaf.getInternalUser(), userQuoteList);
@@ -101,7 +105,7 @@ public class UserQuoteServiceImpl implements UserQuoteService {
                 }
             }
 
-            if(newQuote != null){
+            if (newQuote != null) {
                 UserQuote uq = new UserQuote();
                 uq.setUser(uaf.getInternalUser());
                 uq.setQuote(newQuote);
@@ -118,7 +122,7 @@ public class UserQuoteServiceImpl implements UserQuoteService {
 
 
     private List<Quote> findMyQuotes(User user, List<UserQuote> userQuoteList) {
-        if(user==null){
+        if (user == null) {
             return new ArrayList<>();
         }
         List<Quote> list = new ArrayList<>();

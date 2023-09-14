@@ -38,7 +38,7 @@ public class UserAdditionalFields implements Serializable {
     @Column(name = "payment_token_expiry")
     private Instant paymentTokenExpiry;
     @Column(name = "trial_expiry")
-    private Instant trialExpiry;
+    private Instant trialExpiry = Instant.now();
     @Column(name = "trial_expired")
     private Boolean trialExpired;
     @Column(name = "payment_token")

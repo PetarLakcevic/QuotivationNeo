@@ -200,6 +200,7 @@ public class AccountResource {
         }
 
         //set users TO PREMIUM
+        userAdditionalFields.setTrialExpired(false);
         userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
         userAdditionalFieldsRepository.save(userAdditionalFields);
     }
