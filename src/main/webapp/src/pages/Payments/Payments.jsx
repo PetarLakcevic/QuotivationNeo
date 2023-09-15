@@ -26,6 +26,7 @@ import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
 import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 import { Link } from 'react-router-dom';
+import { paymentLink } from '../../axios/axios';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
@@ -157,12 +158,22 @@ const Payments = () => {
     cardExpirationRef.current = `${selectedMonth}/${event.target.value}`;
   };
 
+  const handlePaymentLink = () => {
+    paymentLink().then(res => {
+      console.log(res.data);
+      window.location.href = res.data;
+    }).catch(err => console.log(err));
+
+  };
+
+    
+
   // useEffect(() => {
   //   const url = "https://entegrasyon.asseco-see.com.tr/msu/api/v2";
   //   const data = {
   //     ACTION: 'SESSIONTOKEN',
-  //     MERCHANTUSER: 'nenad.pavlovic@asseco-see.rs',
-  //     MERCHANTPASSWORD: '********', // Ubacite pravi password
+  //     MERCHANTUSER: 'api.test@payten.com',
+  //     MERCHANTPASSWORD: 'Hephr=R4SKNycaLf', // Ubacite pravi password
   //     MERCHANT: 'chipcardtest01',
   //     CUSTOMER: 'customer', // Ovde koristite pravu promenljivu ili vrednost iz forme
   //     SESSIONTYPE: 'PAYMENTSESSION',
@@ -250,7 +261,7 @@ const Payments = () => {
               marginInline: 'auto',
               bgcolor: '#478D8A',
             }}
-            onPointerDown={() => setActiveStep(1)}
+            onPointerDown={handlePaymentLink}
           >
             BUY NOW
           </Button>

@@ -174,6 +174,10 @@ const getHistory = () => {
   return api.get('/quote/history');
 };
 
+const paymentLink = () => {
+  return api.get('/get/payment-link');
+}
+
 export {
   loginReq,
   registerReq,
@@ -206,4 +210,5 @@ export {
   getHistory,
   resetPasswordReq,
   finishResetPasswordReq,
+  paymentLink
 };
