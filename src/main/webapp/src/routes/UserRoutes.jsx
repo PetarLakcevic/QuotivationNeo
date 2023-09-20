@@ -19,6 +19,7 @@ import crown from '../assets/images/crown.png';
 import Contact from '../pages/Contact/Contact';
 import Privacy from '../pages/Privacy/Privacy';
 import Refund from '../pages/Refund/Refund';
+import ActivatePremium from '../pages/ActivatePremium/ActivatePremium';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -108,6 +109,7 @@ const UserRoutes = () => {
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
         <Route path="/premium" element={<Payments />} />
+        <Route path="/api/payment/return/:id" element={<ActivatePremium />} />
         <Route path="/account/reset/finish" element={<PasswordChange />} />
       </Routes>{' '}
       <Snackbar open={open} autoHideDuration={6000}

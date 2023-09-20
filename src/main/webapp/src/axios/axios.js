@@ -178,6 +178,10 @@ const paymentLink = () => {
   return api.get('/get/payment-link');
 }
 
+const activatePremium = (code) => {
+  return api.get('/activate/' + code);
+}
+
 export {
   loginReq,
   registerReq,
@@ -210,5 +214,6 @@ export {
   getHistory,
   resetPasswordReq,
   finishResetPasswordReq,
-  paymentLink
+  paymentLink,
+  activatePremium
 };
