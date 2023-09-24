@@ -7,11 +7,16 @@
 
     <!-- Your previous changeSets here -->
 
-    <changeSet id="1522" author="Petar">
+    <changeSet id="1522a" author="Petar">
         <addColumn tableName="payment">
             <column name="session_token" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1522b" author="Petar">
+        <addColumn tableName="payment">
             <column name="used" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
