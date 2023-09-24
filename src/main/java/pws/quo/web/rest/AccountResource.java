@@ -182,14 +182,14 @@ public class AccountResource {
 
             //set trial and stuff
             if (userAdditionalFields != null) {
-                if (userAdditionalFields.getTrialExpiry()==null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
+                if (userAdditionalFields.getTrialExpiry() == null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
                     adminUserDTO.setHasTrial(true);
-                }else{
+                } else {
                     adminUserDTO.setHasTrial(false);
                 }
-                if (userAdditionalFields.getExpiry()!=null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
+                if (userAdditionalFields.getExpiry() != null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
                     adminUserDTO.setHasPremium(true);
-                }else{
+                } else {
                     adminUserDTO.setHasPremium(false);
                 }
 
@@ -203,8 +203,6 @@ public class AccountResource {
 
 
                         //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
-                        PaymentTransaction pt = new PaymentTransaction();
-                        pt.setReturnUrl("https://quotivation.io");
 
                         //send payment transaction
                         RestTemplate restTemplate = new RestTemplate();
@@ -224,21 +222,23 @@ public class AccountResource {
 
                         System.out.println("Response: " + resp); // Printing the entire response
 
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            JsonNode root = mapper.readTree(resp);
+                            String message = root.path("responseMsg").asText();
+                            if(message.equalsIgnoreCase("Approved")){
+                                userAdditionalFields.setTrialExpired(false);
+                                userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+                                latestPayment.setUsed(true);
+                                paymentRepository.save(latestPayment);
+                                userAdditionalFieldsRepository.save(userAdditionalFields);
+                                adminUserDTO.setFirstTimePremium(true);
+                                adminUserDTO.setHasPremium(true);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-
-
-                        //TODO: proveriti da li je uspesan response, ako jeste:
-                        userAdditionalFields.setTrialExpired(false);
-                        userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
-                        latestPayment.setUsed(true);
-                        paymentRepository.save(latestPayment);
-                        userAdditionalFieldsRepository.save(userAdditionalFields);
-                        adminUserDTO.setFirstTimePremium(true);
-                        adminUserDTO.setHasPremium(true);
-
-
-
-                        //Ako nema nista nikome heh
                     }
                 }
 
