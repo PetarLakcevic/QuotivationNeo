@@ -1,16 +1,20 @@
 package pws.quo.service.dto;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.validation.constraints.*;
 import pws.quo.config.Constants;
 import pws.quo.domain.Authority;
 import pws.quo.domain.Category;
 import pws.quo.domain.User;
 import pws.quo.domain.UserAdditionalFields;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -57,6 +61,12 @@ public class AdminUserDTO implements Serializable {
     private UserAdditionalFields userAdditionalFields;
 
     private List<Category> categoryList;
+
+    private boolean hasPremium;
+
+    private boolean hasTrial;
+
+    private boolean firstTimePremium;
 
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
@@ -112,12 +122,40 @@ public class AdminUserDTO implements Serializable {
         this.categoryList = categoryList;
     }
 
+
+    public boolean isHasPremium() {
+        return hasPremium;
+    }
+
+    public void setHasPremium(boolean hasPremium) {
+        this.hasPremium = hasPremium;
+    }
+
+    public boolean isHasTrial() {
+        return hasTrial;
+    }
+
+    public void setHasTrial(boolean hasTrial) {
+        this.hasTrial = hasTrial;
+    }
+
+    public boolean isFirstTimePremium() {
+        return firstTimePremium;
+    }
+
+    public void setFirstTimePremium(boolean firstTimePremium) {
+        this.firstTimePremium = firstTimePremium;
+    }
+
     public UserAdditionalFields getUserAdditionalFields() {
         return userAdditionalFields;
     }
 
     public void setUserAdditionalFields(UserAdditionalFields userAdditionalFields) {
         this.userAdditionalFields = userAdditionalFields;
+
+
+
     }
 
     public List<Category> getCategoryList() {

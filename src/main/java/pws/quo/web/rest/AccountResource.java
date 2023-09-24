@@ -81,6 +81,8 @@ public class AccountResource {
 
     private final UserAdditionalFieldsRepository userAdditionalFieldsRepository;
 
+    private final PaymentRepository paymentRepository;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
@@ -91,7 +93,8 @@ public class AccountResource {
         AuthorRepository authorRepository,
         QuoteRepository quoteRepository,
         UserQuoteRepository userQuoteRepository,
-        UserAdditionalFieldsRepository userAdditionalFieldsRepository
+        UserAdditionalFieldsRepository userAdditionalFieldsRepository,
+        PaymentRepository paymentRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -103,6 +106,7 @@ public class AccountResource {
         this.quoteRepository = quoteRepository;
         this.userQuoteRepository = userQuoteRepository;
         this.userAdditionalFieldsRepository = userAdditionalFieldsRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     /**
@@ -161,6 +165,7 @@ public class AccountResource {
      * @return the current user.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
+    @Transactional
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
         Optional<User> user = userService.getUserWithAuthorities();
@@ -171,8 +176,73 @@ public class AccountResource {
 
             if (userAdditionalFields != null) {
                 List<Category> kate = getCategoriesForUser();
-
                 adminUserDTO.setCategoryList(kate);
+            }
+
+
+            //set trial and stuff
+            if (userAdditionalFields != null) {
+                if (userAdditionalFields.getTrialExpiry()==null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
+                    adminUserDTO.setHasTrial(true);
+                }else{
+                    adminUserDTO.setHasTrial(false);
+                }
+                if (userAdditionalFields.getExpiry()!=null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
+                    adminUserDTO.setHasPremium(true);
+                }else{
+                    adminUserDTO.setHasPremium(false);
+                }
+
+                //check if it has payments, if it has check maybe if premium is active
+                //TODO: mozda dodati sta ako uskoro istice?
+                if (adminUserDTO.isHasPremium() == false) {
+                    List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+
+                    if (paymentList.size() > 0) {
+                        Payment latestPayment = returnLatestPayment(paymentList);
+
+
+                        //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
+                        PaymentTransaction pt = new PaymentTransaction();
+                        pt.setReturnUrl("https://quotivation.io");
+
+                        //send payment transaction
+                        RestTemplate restTemplate = new RestTemplate();
+
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+
+                        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+                        map.add("ACTION", "QUERYSESSION");
+                        map.add("SESSIONTOKEN", latestPayment.getSessionToken());
+
+                        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+                        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+
+
+                        System.out.println("Response: " + resp); // Printing the entire response
+
+
+
+
+                        //TODO: proveriti da li je uspesan response, ako jeste:
+                        userAdditionalFields.setTrialExpired(false);
+                        userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+                        latestPayment.setUsed(true);
+                        paymentRepository.save(latestPayment);
+                        userAdditionalFieldsRepository.save(userAdditionalFields);
+                        adminUserDTO.setFirstTimePremium(true);
+                        adminUserDTO.setHasPremium(true);
+
+
+
+                        //Ako nema nista nikome heh
+                    }
+                }
+
+
             }
 
             return adminUserDTO;
@@ -181,29 +251,39 @@ public class AccountResource {
         }
     }
 
-
-    @PostMapping("/payment/return/{token}")
-    public void paymentCallback(@PathVariable String token) {
-        Optional<UserAdditionalFields> optionalUserAdditionalFields = userAdditionalFieldsRepository.findByPaymentToken(token);
-
-        if (!optionalUserAdditionalFields.isPresent()) {
-            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN NOT FOUND");
-            return;
+    private Payment returnLatestPayment(List<Payment> paymentList) {
+        Payment latestPayment = paymentList.get(0);
+        for (Payment payment : paymentList) {
+            if (payment.getPaymentDate().isAfter(latestPayment.getPaymentDate())) {
+                latestPayment = payment;
+            }
         }
-
-        UserAdditionalFields userAdditionalFields = optionalUserAdditionalFields.get();
-
-        //check if token has expired
-        if (isExpiryIn1Hour(userAdditionalFields.getPaymentTokenExpiry())) {
-            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN EXPIRED");
-            return;
-        }
-
-        //set users TO PREMIUM
-        userAdditionalFields.setTrialExpired(false);
-        userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
-        userAdditionalFieldsRepository.save(userAdditionalFields);
+        return latestPayment;
     }
+
+
+//    @PostMapping("/payment/return/{token}")
+//    public void paymentCallback(@PathVariable String token) {
+//        Optional<UserAdditionalFields> optionalUserAdditionalFields = userAdditionalFieldsRepository.findByPaymentToken(token);
+//
+//        if (!optionalUserAdditionalFields.isPresent()) {
+//            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN NOT FOUND");
+//            return;
+//        }
+//
+//        UserAdditionalFields userAdditionalFields = optionalUserAdditionalFields.get();
+//
+//        //check if token has expired
+//        if (isExpiryIn1Hour(userAdditionalFields.getPaymentTokenExpiry())) {
+//            System.out.println("::::::::::::::::::::::::::::::ERROR - TOKEN EXPIRED");
+//            return;
+//        }
+//
+//        //set users TO PREMIUM
+//        userAdditionalFields.setTrialExpired(false);
+//        userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+//        userAdditionalFieldsRepository.save(userAdditionalFields);
+//    }
 
 
     @Transactional
@@ -219,13 +299,28 @@ public class AccountResource {
                 }
 
                 //generatePayment link for user and save it
-                userAdditionalFields.setPaymentToken(generatePaymentToken());
+//                userAdditionalFields.setPaymentToken(generatePaymentToken());
                 userAdditionalFields.setPaymentTokenExpiry(Instant.now().plus(Duration.ofHours(1)));
                 userAdditionalFieldsService.save(userAdditionalFields);
 
-                String link = sendPaymentRequest(userAdditionalFields);
 
-                return link;
+                Payment payment = new Payment();
+                payment.setPaymentDate(Instant.now().plus(Duration.ofHours(1)));
+
+                //get session
+                String sessionToken = sendPaymentRequest(userAdditionalFields, payment.getPaymentDate());
+                payment.setSessionToken(sessionToken);
+                payment.setUserAdditionalFields(userAdditionalFields);
+
+                payment.setSessionToken(sessionToken);
+                paymentRepository.save(payment);
+
+                if (sessionToken == null) {
+                    return null;
+                }
+
+
+                return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
             } else {
                 throw new AccountResourceException("User additional fields could not be found");
             }
@@ -238,10 +333,10 @@ public class AccountResource {
         return generateRandomString(14);
     }
 
-    private String sendPaymentRequest(UserAdditionalFields userAdditionalFields) {
+    private String sendPaymentRequest(UserAdditionalFields userAdditionalFields, Instant paymentDate) {
         //prepare payment transaction
         PaymentTransaction pt = new PaymentTransaction();
-        pt.setReturnUrl("https://quotivation.io/api/payment/return/" + userAdditionalFields.getPaymentToken());
+        pt.setReturnUrl("https://quotivation.io");
 
         //send payment transaction
         RestTemplate restTemplate = new RestTemplate();
@@ -255,7 +350,7 @@ public class AccountResource {
         map.add("MERCHANTUSER", pt.getMerchantUser());
         map.add("MERCHANTPASSWORD", pt.getMerchantPassword());
         map.add("MERCHANT", pt.getMerchant());
-        map.add("MERCHANTPAYMENTID", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+        map.add("MERCHANTPAYMENTID", new SimpleDateFormat("yyyyMMddHHmmss").format(Date.from(paymentDate)));
         map.add("CUSTOMER", pt.getCustomer());
         map.add("AMOUNT", pt.getAmount());
         map.add("CURRENCY", pt.getCurrency());
@@ -269,7 +364,7 @@ public class AccountResource {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
-        System.out.println("Response: " + resp); // Printing the entire response
+        //  System.out.println("Response: " + resp); // Printing the entire response
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -278,7 +373,7 @@ public class AccountResource {
             if (sessionToken == null || sessionToken.isEmpty()) {
                 return null;
             }
-            return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+            return sessionToken;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -28,6 +28,12 @@ public class Payment implements Serializable {
     @JsonIgnoreProperties(value = { "internalUser", "categories", "payments" }, allowSetters = true)
     private UserAdditionalFields userAdditionalFields;
 
+    @Column(name = "session_token")
+    private String sessionToken;
+
+    @Column(name = "used")
+    private boolean used;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -37,6 +43,22 @@ public class Payment implements Serializable {
     public Payment id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
     }
 
     public void setId(Long id) {
