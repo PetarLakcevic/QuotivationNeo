@@ -18,7 +18,7 @@
     <changeSet id="1522b" author="Petar">
         <addColumn tableName="payment">
             <column name="used" type="BOOLEAN">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </addColumn>
     </changeSet>
