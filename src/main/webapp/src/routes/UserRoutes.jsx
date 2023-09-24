@@ -76,11 +76,11 @@ const UserRoutes = () => {
     initNotifications();
   }, []);
 
-  useEffect(() => {
-    if (location.pathname === '/login') {
-      navigate('/');
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.pathname === '/login') {
+  //     navigate('/');
+  //   }
+  // }, [location]);
 
   const snackbarText = {
     title: 'Try Quotivation Premium!',

@@ -1,19 +1,35 @@
 import { ArrowBack, Sort } from '@mui/icons-material';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import qq from '../assets/images/qq.png';
 import DialogStyled from './DialogStyled';
 import SlideLeft from './SlideLeft';
 import { useNavigate, useLocation } from 'react-router-dom';
 import crown from '../assets/images/crown.png';
+import { accountReq } from '../axios/axios';
 
 const UserNavbar = ({ home }) => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [account, setAccount] = useState(null);
+  const [firstTimeModal, setFirstTimeModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const [previousPath, setPreviousPath] = useState('');
   const currentPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    accountReq().then(res => {
+      setAccount(res.data);
+      // console.log(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (account?.firstTimePremium) {
+      setFirstTimeModal(true);
+    }
+  }, [account]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -59,6 +75,57 @@ const UserNavbar = ({ home }) => {
         width: '100%',
       }}
     >
+      <Modal open={firstTimeModal} onClose={() => setFirstTimeModal(false)}>
+        <Box
+          sx={{
+            width: '90vw',
+            height: '90vh',
+            backgroundColor: 'white',
+            borderRadius: '10px',
+            padding: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '1rem',
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: 'black',
+            }}
+          >
+            Congratulations!
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              color: 'black',
+            }}
+          >
+            Your Premium Membership is Now Active.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              marginInline: 'auto',
+              bgcolor: '#478D8A',
+            }}
+            onPointerDown={() => {
+              setFirstTimeModal(false);
+              // navigate('/premium');
+            }}
+          >
+            Continue
+          </Button>
+        </Box>
+      </Modal>
       <ArrowBack
         sx={{
           color: 'white',
@@ -314,31 +381,33 @@ const UserNavbar = ({ home }) => {
                     Contact us
                   </Typography>
                 </Button>
-                <Button
-                  onPointerDown={() => {
-                    navigate('/premium');
-                  }}
-                >
-                  {' '}
-                  <img
-                    src={crown}
-                    alt="crown"
-                    style={{
-                      width: '1.5rem',
-                      height: '1.5rem',
-                      objectFit: 'contain',
-                      marginRight: '0.5rem',
-                    }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: 'white',
+                {!account?.hasPremium && (
+                  <Button
+                    onPointerDown={() => {
+                      navigate('/premium');
                     }}
                   >
-                    Premium
-                  </Typography>
-                </Button>
+                    {' '}
+                    <img
+                      src={crown}
+                      alt="crown"
+                      style={{
+                        width: '1.5rem',
+                        height: '1.5rem',
+                        objectFit: 'contain',
+                        marginRight: '0.5rem',
+                      }}
+                    />
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: 'white',
+                      }}
+                    >
+                      Premium
+                    </Typography>
+                  </Button>
+                )}
               </>
             )}
           </Box>

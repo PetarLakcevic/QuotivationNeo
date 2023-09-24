@@ -15,6 +15,9 @@ import {
   TextFieldItem,
   FormControl,
   InputLabel,
+  Checkbox,
+  CircularProgress,
+  Fade,
 } from '@mui/material';
 import { CreditCard, Done, LocalOffer, SystemSecurityUpdateGood } from '@mui/icons-material';
 import axios from 'axios';
@@ -158,15 +161,22 @@ const Payments = () => {
     cardExpirationRef.current = `${selectedMonth}/${event.target.value}`;
   };
 
-  const handlePaymentLink = () => {
-    paymentLink().then(res => {
-      console.log(res.data);
-      window.location.href = res.data;
-    }).catch(err => console.log(err));
+  const [loading, setLoading] = useState(false);
 
+  const handlePaymentLink = () => {
+    setLoading(true);
+    paymentLink()
+      .then(res => {
+        setLoading(false);
+        console.log(res.data);
+        // const timer = setTimeout(() => {
+        window.location.href = res.data;
+        // }, 1000);
+      })
+      .catch(err => console.log(err));
   };
 
-    
+  const [accepted, setAccepted] = useState(false);
 
   // useEffect(() => {
   //   const url = "https://entegrasyon.asseco-see.com.tr/msu/api/v2";
@@ -195,6 +205,33 @@ const Payments = () => {
   return (
     <UserContainer>
       <UserNavbar />
+      <Fade in={loading} timeout={500}>
+        <Box
+          sx={{
+            // display: loading ? 'block' : 'none',
+            position: 'fixed',
+            top: '0%',
+            left: '0%',
+            width: '100vw !important',
+            // bgcolor: 'rgba(0,0,0,0.5)',
+            height: '100vh',
+            // right: '0%',
+            // bottom: '0%',
+            color: '#000',
+            zIndex: 9999,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress
+            sx={{
+              color: 'black',
+            }}
+          />
+        </Box>
+      </Fade>
+
       <Box
         sx={{
           display: 'flex',
@@ -202,19 +239,9 @@ const Payments = () => {
           justifyContent: 'center',
           alignItems: 'center',
           p: 3,
+          opacity: loading ? 0.5 : 1,
         }}
       >
-        {/* <Stepper activeStep={activeStep} orientation="vertical" sx={{ width: '100%' }}> */}
-        {/* <Step> */}
-        {/* <StepLabel
-              onPointerDown={() => {
-                setActiveStep(0);
-              }}
-              StepIconComponent={props => <CustomStepIcon {...props} icon={<LocalOffer />} />}
-            >
-              Annual Plan
-            </StepLabel> */}
-        {/* <StepContent> */}
         <Box
           sx={{
             mb: 2,
@@ -254,6 +281,16 @@ const Payments = () => {
           <Typography variant="body1" sx={{ mt: 2 }}>
             We don't store your credit card information.
           </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and <Link to="/refund">Refund Policy</Link>.
+            </Typography>
+          </Box>
           <Button
             variant="contained"
             sx={{
@@ -262,195 +299,14 @@ const Payments = () => {
               bgcolor: '#478D8A',
             }}
             onPointerDown={handlePaymentLink}
+            disabled={!accepted}
           >
             BUY NOW
           </Button>
         </Box>
-        {/* </StepContent> */}
-        {/* </Step> */}
 
-        {/* <Step>
-            <StepLabel
-              onPointerDown={() => {
-                setActiveStep(1);
-              }}
-              StepIconComponent={props => <CustomStepIcon {...props} icon={<CreditCard />} />}
-            >
-              Payment details
-            </StepLabel>
-            <StepContent>
-              <Box sx={{ mb: 2 }}>
-                <form onSubmit={handleSubmit}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      // minHeight: '100vh',
-                      width: 'min(100vw, 300px)',
-                      margin: '0 auto',
-                      gap: '1rem',
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                      <TextField
-                        id="firstName"
-                        label="First name"
-                        variant="outlined"
-                        color="primary"
-                        inputRef={firstNameRef}
-                        onBlur={checkFirstName}
-                        onInput={checkFirstName}
-                        error={firstNameError}
-                        helperText={firstNameError}
-                        sx={{
-                          width: '100%',
-                          //   marginTop: '2rem',
-                        }}
-                      />
-                      <TextField
-                        id="lastName"
-                        label="Last name"
-                        variant="outlined"
-                        color="primary"
-                        inputRef={lastNameRef}
-                        onBlur={checkLastName}
-                        onInput={checkLastName}
-                        error={lastNameError}
-                        helperText={lastNameError}
-                        sx={{
-                          width: '100%',
-                          //   marginTop: '2rem',
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                    <TextField
-                      id="cardNumber"
-                      label="Card number"
-                      placeholder="1234 5674 9012 3456"
-                      variant="outlined"
-                      color="primary"
-                      inputRef={cardNumberRef}
-                      onBlur={checkCardNumber}
-                      onInput={() => {
-                        setCardNumberError('');
-                        // remove all non-digits or spaces
-                        let value = cardNumberRef.current.value.replace(/[^0-9 ]/g, '');
-                        // remove all spaces
-                        value = value.replace(/ /g, '');
-                        // add a space after every fourth digit
-                        value = value.replace(/(\d{4})/g, '$1 ').trim();
-                        // limit to 16 digits plus 3 spaces
-                        cardNumberRef.current.value = value.slice(0, 19);
-                      }}
-                      error={cardNumberError}
-                      helperText={cardNumberError}
-                      sx={{
-                        width: '100%',
-                      }}
-                    />
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
-                      <FormControl fullWidth>
-                        <InputLabel>Month</InputLabel>
-                        <Select
-                          value={selectedMonth}
-                          onChange={handleMonthChange}
-                          label="Month"
-                          sx={{
-                            width: '100%',
-                            minWidth: '60px',
-                          }}
-                        >
-                          {months.map((month, index) => (
-                            <MenuItem key={index} value={month}>
-                              {month}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <FormControl fullWidth>
-                        <InputLabel>Year</InputLabel>
-                        <Select
-                          value={selectedYear}
-                          onChange={handleYearChange}
-                          fullWidth
-                          label="Year"
-                          sx={{
-                            width: '100%',
-                            minWidth: '80px',
-                          }}
-                        >
-                          {years.map((year, index) => (
-                            <MenuItem key={index} value={year}>
-                              {year}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Box>{' '}
-                    <TextField
-                      id="cardCVC"
-                      label="Card CVC"
-                      variant="outlined"
-                      color="primary"
-                      inputRef={cardCVCRef}
-                      onBlur={checkCardCVC}
-                      placeholder="123"
-                      fullWidth
-                      onInput={() => {
-                        setCardCVCError('');
-                        // allow only numbers 3 digits long
-                        cardCVCRef.current.value = cardCVCRef.current.value.replace(/[^0-9]/g, '').slice(0, 3);
-                      }}
-                      error={cardCVCError}
-                      helperText={cardCVCError}
-                      // sx={{
-                      //   width: '100%',
-                      //     marginTop: '2rem',
-                      // }}
-                    />
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        mt: 2,
-                        marginInline: 'auto',
-                        bgcolor: '#478D8A',
-                      }}
-                    >
-                      Continue
-                    </Button>
-                  </Box>
-                </form>
-              </Box>
-            </StepContent>
-          </Step> */}
-        {/* <Step>
-            <StepLabel StepIconComponent={props => <CustomStepIcon {...props} icon={<SystemSecurityUpdateGood />} />}>Finish</StepLabel>
-            <StepContent>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="h5">Thank you for your payment!</Typography>
-                <Typography variant="body1">You will receive an email with your receipt.</Typography>
-                <Button
-                  variant="contained"
-                  sx={{
-                    mt: 2,
-                    marginInline: 'auto',
-                    bgcolor: '#478D8A',
-                  }}
-                  onPointerDown={() => setActiveStep(0)}
-                >
-                  Go back
-                </Button>
-              </Box>
-            </StepContent>
-          </Step> */}
-        {/* </Stepper> */}
         <Box mt={2}>
-          <Link to="/privacy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link> 
+          <Link to="/privacy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link>
         </Box>
         <Box
           sx={{
@@ -462,11 +318,7 @@ const Payments = () => {
             gap: '2vw',
           }}
         >
-          <Link
-            to="http://www.mastercard.com/rs/consumer/credit-cards.html"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Link to="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
             <img
               src={visaSecure}
               alt="visa secure"
@@ -551,7 +403,7 @@ const Payments = () => {
         </Box>
       </Box>
       <Typography variant="body1" sx={{ mt: 2, textAlign: 'center' }}>
-      Wermax Consulting doo | PIB 109871829 | MB 21258385 
+        Wermax Consulting doo | PIB 109871829 | MB 21258385
       </Typography>
     </UserContainer>
   );

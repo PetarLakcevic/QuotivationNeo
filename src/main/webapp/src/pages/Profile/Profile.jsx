@@ -9,7 +9,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { changePasswordReq } from '../../axios/axios';
 import logo from '../../assets/images/logo.png';
 
-
 const Profile = ({ account }) => {
   const [changePassDialog, setChangePassDialog] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -41,7 +40,8 @@ const Profile = ({ account }) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
+            alignItems: 'center',
+            justifyContent: 'center',
             gap: 3,
             padding: 3,
             mt: 3,
@@ -56,27 +56,49 @@ const Profile = ({ account }) => {
             }}
           >
             <Avatar
-            sx={{
-              bgcolor: '#fff',
-              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
-              width: '50px',
-              height: '50px',
-            }}
-           
-            >
-              <img src={logo} alt="logo" 
-              style={{
-                width: '80%',
-                height: '80%',
-                objectFit: 'contain',
-
+              sx={{
+                bgcolor: '#fff',
+                boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
+                width: '50px',
+                height: '50px',
               }}
+            >
+              <img
+                src={logo}
+                alt="logo"
+                style={{
+                  width: '80%',
+                  height: '80%',
+                  objectFit: 'contain',
+                }}
               />
-              </Avatar>
+            </Avatar>
             <Box>
               <Typography variant="h5">Profile</Typography>
               <Typography variant="subtitle1">{account?.login}</Typography>
             </Box>
+          </Box>{' '}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              textAlign: 'center',
+            }}
+          >
+            {account?.hasPremium && (
+              <Typography variant="body1">
+                Enjoy your premium features until {new Date(account?.userAdditionalFields.paymentTokenExpiry).toLocaleDateString()}.
+              </Typography>
+            )}
+            {!account?.hasPremium && account?.hasTrial && (
+              <Typography variant="body1">
+                Take full advantage of your trial until {new Date(account?.userAdditionalFields.trialExpiry).toLocaleDateString()}.
+              </Typography>
+            )}
+            {!account?.hasPremium && !account.hasTrial && (
+              <Typography variant="body1">Your trial period has expired. Upgrade to premium to continue enjoying our services.</Typography>
+            )}
           </Box>
           <TextField
             label="Username"
