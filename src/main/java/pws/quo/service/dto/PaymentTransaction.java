@@ -25,7 +25,7 @@ public class PaymentTransaction {
         this.merchant = "ems02";
         this.merchantPaymentId = new Date();
         this.customer = "Milos_Test";
-        this.amount = "0.1";
+        this.amount = "19.08";
         this.currency = "EUR";
         this.sessionType = "PAYMENTSESSION";
         this.customerEmail = "email@email.com";
