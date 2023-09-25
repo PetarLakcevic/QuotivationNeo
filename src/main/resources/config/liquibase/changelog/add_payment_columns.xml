@@ -9,26 +9,16 @@
             <column name="payment_token_expiry" type="${datetimeType}">
                 <constraints nullable="true"/>
             </column>
-        </addColumn>
-
-        <addColumn tableName="user_additional_fields">
             <column name="trial_expiry" type="${datetimeType}">
                 <constraints nullable="true"/>
             </column>
-        </addColumn>
-
-        <addColumn tableName="user_additional_fields">
             <column name="trial_expired" type="BOOLEAN">
                 <constraints nullable="true"/>
             </column>
-        </addColumn>
-
-        <addColumn tableName="user_additional_fields">
             <column name="payment_token" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
         </addColumn>
-
         <dropDefaultValue tableName="user_additional_fields" columnName="trial_expiry" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="user_additional_fields" columnName="payment_token_expiry" columnDataType="${datetimeType}"/>
     </changeSet>
