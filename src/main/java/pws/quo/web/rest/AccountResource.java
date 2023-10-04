@@ -227,7 +227,7 @@ public class AccountResource {
                             JsonNode root = mapper.readTree(resp);
                             String message = root.path("responseMsg").asText();
                             if(message.equalsIgnoreCase("Approved")){
-                                userAdditionalFields.setTrialExpired(false);
+
                                 userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
                                 latestPayment.setUsed(true);
                                 paymentRepository.save(latestPayment);
