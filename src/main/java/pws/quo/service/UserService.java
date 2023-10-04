@@ -144,7 +144,7 @@ public class UserService {
         uaf.setInternalUser(saved);
         uaf.setRegistrationDate(Instant.now());
         uaf.setThemePicture(1);
-        uaf.setTrialExpired(false);
+
 
         uaf.setTrialExpiry(Instant.now().plus(Duration.ofDays(7)));
         userAdditionalFieldsRepository.save(uaf);

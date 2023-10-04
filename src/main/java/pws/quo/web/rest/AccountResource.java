@@ -227,7 +227,7 @@ public class AccountResource {
                             JsonNode root = mapper.readTree(resp);
                             String message = root.path("responseMsg").asText();
                             if(message.equalsIgnoreCase("Approved")){
-                                userAdditionalFields.setTrialExpired(false);
+
                                 userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
                                 latestPayment.setUsed(true);
                                 paymentRepository.save(latestPayment);
@@ -335,8 +335,8 @@ public class AccountResource {
 
     private String sendPaymentRequest(UserAdditionalFields userAdditionalFields, Instant paymentDate) {
         //prepare payment transaction
-        PaymentTransaction pt = new PaymentTransaction();
-        pt.setReturnUrl("https://quotivation.io");
+        PaymentTransaction pt = new PaymentTransaction(userAdditionalFields);
+
 
         //send payment transaction
         RestTemplate restTemplate = new RestTemplate();

@@ -24,10 +24,8 @@ public class UserAdditionalFields implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
-
     @Column(name = "expiry")
     private Instant expiry;
-
     @Column(name = "registration_date")
     private Instant registrationDate;
     @Column(name = "theme_picture")
@@ -39,8 +37,6 @@ public class UserAdditionalFields implements Serializable {
     private Instant paymentTokenExpiry;
     @Column(name = "trial_expiry")
     private Instant trialExpiry = Instant.now();
-    @Column(name = "trial_expired")
-    private Boolean trialExpired;
     @Column(name = "payment_token")
     private String paymentToken;
 
@@ -77,13 +73,6 @@ public class UserAdditionalFields implements Serializable {
         this.trialExpiry = trialExpiry;
     }
 
-    public Boolean getTrialExpired() {
-        return trialExpired;
-    }
-
-    public void setTrialExpired(Boolean trialExpired) {
-        this.trialExpired = trialExpired;
-    }
 
     public Instant getPaymentTokenExpiry() {
         return paymentTokenExpiry;
