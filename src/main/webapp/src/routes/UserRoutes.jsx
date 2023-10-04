@@ -20,6 +20,7 @@ import Contact from '../pages/Contact/Contact';
 import Privacy from '../pages/Privacy/Privacy';
 import Refund from '../pages/Refund/Refund';
 import ActivatePremium from '../pages/ActivatePremium/ActivatePremium';
+import Terms from '../pages/Terms/Terms';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -104,12 +105,13 @@ const UserRoutes = () => {
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/refund" element={<Refund />} />
+        <Route path="/terms-&-conditions" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
         <Route path="/premium" element={<Payments />} />
-        <Route path="/api/payment/return/:id" element={<ActivatePremium />} />
+        <Route path="/payment-status" element={<ActivatePremium />} />
         <Route path="/account/reset/finish" element={<PasswordChange />} />
       </Routes>{' '}
       <Snackbar open={open} autoHideDuration={6000}

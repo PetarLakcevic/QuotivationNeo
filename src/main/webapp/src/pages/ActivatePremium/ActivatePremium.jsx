@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { activatePremium } from '../../axios/axios';
+import { paymentStatus } from '../../axios/axios';
 import { useParams } from 'react-router-dom';
 import UserNavbar from '../../components/UserNavbar';
 import UserContainer from '../../components/UserContainer';
@@ -9,7 +9,7 @@ const ActivatePremium = () => {
   const code = useParams().id;
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    activatePremium(code)
+    paymentStatus()
       .then(res => {
         console.log(res);
         const timer = setTimeout(() => {

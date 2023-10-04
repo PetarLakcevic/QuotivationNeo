@@ -18,6 +18,7 @@ import {
   Checkbox,
   CircularProgress,
   Fade,
+  Modal,
 } from '@mui/material';
 import { CreditCard, Done, LocalOffer, SystemSecurityUpdateGood } from '@mui/icons-material';
 import axios from 'axios';
@@ -163,6 +164,8 @@ const Payments = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+
   const handlePaymentLink = () => {
     setLoading(true);
     paymentLink()
@@ -178,30 +181,6 @@ const Payments = () => {
 
   const [accepted, setAccepted] = useState(false);
 
-  // useEffect(() => {
-  //   const url = "https://entegrasyon.asseco-see.com.tr/msu/api/v2";
-  //   const data = {
-  //     ACTION: 'SESSIONTOKEN',
-  //     MERCHANTUSER: 'api.test@payten.com',
-  //     MERCHANTPASSWORD: 'Hephr=R4SKNycaLf', // Ubacite pravi password
-  //     MERCHANT: 'chipcardtest01',
-  //     CUSTOMER: 'customer', // Ovde koristite pravu promenljivu ili vrednost iz forme
-  //     SESSIONTYPE: 'PAYMENTSESSION',
-  //     MERCHANTPAYMENTID: 'merpID', // Ovde koristite pravu promenljivu ili vrednost
-  //     AMOUNT: '750.00',
-  //     CURRENCY: 'RSD',
-  //     CUSTOMEREMAIL: 'customerEmail', // Ovde koristite pravu promenljivu ili vrednost iz forme
-  //     CUSTOMERNAME: 'customerName', // Ovde koristite pravu promenljivu ili vrednost iz forme
-  //     CUSTOMERPHONE: 'customerPhone', // Ovde koristite pravu promenljivu ili vrednost iz forme
-  //     RETURNURL: 'http://www.dummystore.com/response_from_msu.php',
-  //     ORDERITEMS: '[{"code":123456789,"name":"Proizvod1","description":"Opis1","quantity":1,"amount":500.00},{"code":987654321,"name":"Proizvod2","description":"Opis2","quantity":1,"amount":250.00}]',
-  //     // Dodajte i ostale opcione promenljive ako su potrebne
-  //   };
-
-  //   axios.post(url, data)
-  //     .then(res => console.log(res.data))
-  //     .catch(err => console.log(err));
-  // }, [null]);
   return (
     <UserContainer>
       <UserNavbar />
@@ -260,25 +239,25 @@ const Payments = () => {
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 1,
-              p: 4,
+              p: 2,
               bgcolor: '#fff',
-              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
               height: '100%',
               transition: 'all 0.3s ease',
-              mt: 2,
+              mt: 1,
               textAlign: 'center',
             }}
           >
-            <Typography variant="h6">
-              Annual <br /> Subscription
-            </Typography>
-            <Typography variant="h5">€19.08</Typography>
+            <Typography variant="h6">Annual Subscription</Typography>
+            <Typography variant="h5">2,000.00 RSD</Typography>
+            <Typography variant="h6">~ 17 EUR</Typography>
             <Typography variant="body1">
-              €1.59/month,
+              166.67 RSD/month,
               <br /> billed annually
             </Typography>
+            <Typography variant="body2">~ 1.42 EUR/month</Typography>
+            <Typography variant="body2">Conversion rate: 117.2</Typography>
           </Box>
-          <Typography variant="body1" sx={{ mt: 2 }}>
+          <Typography variant="body1" sx={{ mt: 1 }}>
             We don't store your credit card information.
           </Typography>
           <Box
@@ -288,7 +267,13 @@ const Payments = () => {
           >
             <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
             <Typography variant="body1" sx={{ mt: 2 }}>
-              By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and <Link to="/refund">Refund Policy</Link>.
+              By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
+              <Link
+                to="/terms-&-conditions"
+              >
+                Terms & Conditions
+              </Link>
+              .
             </Typography>
           </Box>
           <Button
@@ -298,15 +283,63 @@ const Payments = () => {
               marginInline: 'auto',
               bgcolor: '#478D8A',
             }}
-            onPointerDown={handlePaymentLink}
+            onPointerDown={() => setShowModal(true)}
             disabled={!accepted}
           >
             BUY NOW
           </Button>
         </Box>
+        <Modal open={showModal} onClose={() => setShowModal(false)}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '80vw',
+              maxWidth: '500px',
+              bgcolor: '#fff',
+              p: 2,
+              borderRadius: '0.5em',
+              outline: 'none',
+            }}
+          >
+            <Typography variant="h5" sx={{ textAlign: 'center' }}>
+              Complete Your Premium Subscription
+            </Typography>
+            <Typography variant="body1" sx={{ textAlign: 'center', mt: 2 }}>
+              Unlock unlimited access to all of our exclusive features for an entire year!
+            </Typography>
+            <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
+              Annual Plan: 2,000.00 RSD (~19.2 EUR at a conversion rate of 117.2)
+            </Typography>
+            <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
+              That's only 166.67 RSD (~1.42 EUR) per month, billed annually.
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                mt: 2,
+                bgcolor: '#478D8A',
+                color: '#fff',
+                marginInline: 'auto',
+                display: 'block',
+              }}
+              onClick={handlePaymentLink}
+            >
+              Continue to Payment
+            </Button>
+          </Box>
+        </Modal>
 
         <Box mt={2}>
-          <Link to="/privacy">Privacy Policy</Link> | <Link to="/refund">Refund Policy</Link>
+          <Link to="/privacy">Privacy Policy</Link> |{' '}
+          <Link
+            to="/
+          terms-&-conditions"
+          >
+            Terms & Conditions
+          </Link>
         </Box>
         <Box
           sx={{
