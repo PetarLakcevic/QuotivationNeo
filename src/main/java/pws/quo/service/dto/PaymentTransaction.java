@@ -1,4 +1,7 @@
 package pws.quo.service.dto;
+
+import pws.quo.domain.UserAdditionalFields;
+
 import java.util.Date;
 
 public class PaymentTransaction {
@@ -18,25 +21,27 @@ public class PaymentTransaction {
     private String returnUrl;
     private String sessionExpiry;
 
-    public PaymentTransaction() {
+    public PaymentTransaction(UserAdditionalFields userAdditionalFields) {
         // Initialize with your test data
         this.merchantUser = "npavlovi@nassan.rs";
         this.merchantPassword = "+5UQ8@NDVm@*=r3";
         this.merchant = "ems02";
+
+
+
         this.merchantPaymentId = new Date();
-        this.customer = "Milos_Test";
-        this.amount = "19.08";
-        this.currency = "EUR";
+        this.customer = userAdditionalFields.getInternalUser().getLogin();
+        this.amount = "2000";
+        this.currency = "RSD";
         this.sessionType = "PAYMENTSESSION";
-        this.customerEmail = "email@email.com";
-        this.customerName = "Ime";
-        this.customerPhone = "123456789";
-        this.returnUrl = "TVOJ RETURN URL";
+        this.customerEmail = userAdditionalFields.getInternalUser().getEmail();
+        this.customerName = "/";
+        this.customerPhone = "/";
+        this.returnUrl = "https://quotivation.io";
         this.sessionExpiry = "1h";
     }
 
     // Getters, setters, and other methods can be added here
-
 
     public String getSESSION_TOKEN() {
         return SESSION_TOKEN;

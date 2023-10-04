@@ -335,8 +335,8 @@ public class AccountResource {
 
     private String sendPaymentRequest(UserAdditionalFields userAdditionalFields, Instant paymentDate) {
         //prepare payment transaction
-        PaymentTransaction pt = new PaymentTransaction();
-        pt.setReturnUrl("https://quotivation.io");
+        PaymentTransaction pt = new PaymentTransaction(userAdditionalFields);
+
 
         //send payment transaction
         RestTemplate restTemplate = new RestTemplate();
