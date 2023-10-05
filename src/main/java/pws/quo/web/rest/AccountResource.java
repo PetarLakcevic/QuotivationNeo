@@ -238,8 +238,6 @@ public class AccountResource {
 //        }
 //        return null;
 //    }
-
-
     @Transactional
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
@@ -309,7 +307,6 @@ public class AccountResource {
                             JsonNode root = mapper.readTree(resp);
 
 
-
                             JsonNode transactionList = root.path("transactionList");
                             String transactionStatus = null;
                             System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
@@ -320,11 +317,13 @@ public class AccountResource {
                                 break;
                             }
 
-                            if(transactionStatus == null){
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+                            if (transactionStatus == null) {
+                                userAdditionalFields.setFailedPayment(true);
+                                userAdditionalFieldsRepository.save(userAdditionalFields);
+                                adminUserDTO.setFailedPayment(true);
                                 return adminUserDTO;
+
+
                             }
                             //TODO: SWITCH CASE ZA SVE TRANS STATUSE
 
@@ -332,12 +331,42 @@ public class AccountResource {
 
                                 userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
                                 latestPayment.setUsed(true);
+
+
+                                MultiValueMap<String, String> mapica = new LinkedMultiValueMap<>();
+                                mapica.add("Outcome", "Successful – Credit card account charged.");
+
+                                mapica.add("Name", userAdditionalFields.getInternalUser().getFirstName() + " " + userAdditionalFields.getInternalUser().getLastName());
+                                mapica.add("Email", userAdditionalFields.getInternalUser().getEmail());
+
+                                mapica.add("Item bought", "Premium account");
+                                mapica.add("Price", "2000.00 RSD");
+                                mapica.add("Tax", "0.0 RSD");
+                                mapica.add("Total price", "2000.00 RSD");
+
+                                mapica.add("Order number", new SimpleDateFormat("yyyyMMddHHmmss").format(Date.from(latestPayment.getPaymentDate())));
+                                mapica.add("Transaction status", "Approved");
+
+
+                                latestPayment.setPaymentDataJson(mapica.toString());
+
+                                adminUserDTO.setPaymentDataJson(mapica.toString());
+
+
                                 paymentRepository.save(latestPayment);
                                 userAdditionalFields.setFirstTimePremium(true);
                                 userAdditionalFieldsRepository.save(userAdditionalFields);
                                 adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
                                 adminUserDTO.setHasPremium(true);
-                                System.out.println("_______________________________________IDE GAS____________________________________");
+
+
+                            } else {
+                                userAdditionalFields.setFailedPayment(true);
+                                userAdditionalFieldsRepository.save(userAdditionalFields);
+                                adminUserDTO.setFailedPayment(true);
+
+
+                                return adminUserDTO;
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -351,6 +380,32 @@ public class AccountResource {
             throw new AccountResourceException("User could not be found");
         }
     }
+
+
+    @PatchMapping("/ok-premium")
+    public void okPremium() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            UserAdditionalFields uaf = userAdditionalFieldsService.findByUser(user.get());
+            uaf.setFirstTimePremium(false);
+            userAdditionalFieldsRepository.save(uaf);
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
+    @PatchMapping("/ok-failed")
+    public void okFailed() {
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            UserAdditionalFields uaf = userAdditionalFieldsService.findByUser(user.get());
+            uaf.setFailedPayment(false);
+            userAdditionalFieldsRepository.save(uaf);
+        } else {
+            throw new AccountResourceException("User could not be found");
+        }
+    }
+
 
     private Payment returnLatestPayment(List<Payment> paymentList) {
         Payment latestPayment = paymentList.get(0);
@@ -413,7 +468,6 @@ public class AccountResource {
                 String sessionToken = sendPaymentRequest(userAdditionalFields, payment.getPaymentDate());
 
 
-
                 payment.setSessionToken(sessionToken);
 
                 payment.setSessionToken(sessionToken);
@@ -464,6 +518,12 @@ public class AccountResource {
         map.add("CUSTOMERPHONE", pt.getCustomerPhone());
         map.add("RETURNURL", pt.getReturnUrl());
         map.add("SESSIONEXPIRY", pt.getSessionExpiry());
+        map.add("ORDERITEMS[0].NAME", "Premium account");
+        map.add("ORDERITEMS[0].DESCRIPTION", "1 year of daily quotes");
+        map.add("ORDERITEMS[0].QUANTITY", "1");
+        map.add("ORDERITEMS[0].AMOUNT", "2000.00");
+        map.add("ORDERITEMS[0].CODE", "premium");
+
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 

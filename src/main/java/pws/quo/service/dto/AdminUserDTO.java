@@ -66,7 +66,11 @@ public class AdminUserDTO implements Serializable {
 
     private boolean hasTrial;
 
-    private Boolean firstTimePremium;
+    private Boolean firstTimePremium = false;
+
+    private Boolean failedPayment = false;
+
+    private String paymentDataJson;
 
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
@@ -122,6 +126,22 @@ public class AdminUserDTO implements Serializable {
         this.categoryList = categoryList;
     }
 
+
+    public String getPaymentDataJson() {
+        return paymentDataJson;
+    }
+
+    public void setPaymentDataJson(String paymentDataJson) {
+        this.paymentDataJson = paymentDataJson;
+    }
+
+    public Boolean getFailedPayment() {
+        return failedPayment;
+    }
+
+    public void setFailedPayment(Boolean failedPayment) {
+        this.failedPayment = failedPayment;
+    }
 
     public boolean isHasPremium() {
         return hasPremium;

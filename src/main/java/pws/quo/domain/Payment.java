@@ -1,6 +1,8 @@
 package pws.quo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
@@ -33,6 +35,11 @@ public class Payment implements Serializable {
 
     @Column(name = "used")
     private boolean used;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "payment_data_json")
+    private String paymentDataJson;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -72,6 +79,14 @@ public class Payment implements Serializable {
     public Payment paymentDate(Instant paymentDate) {
         this.setPaymentDate(paymentDate);
         return this;
+    }
+
+    public String getPaymentDataJson() {
+        return paymentDataJson;
+    }
+
+    public void setPaymentDataJson(String paymentDataJson) {
+        this.paymentDataJson = paymentDataJson;
     }
 
     public void setPaymentDate(Instant paymentDate) {

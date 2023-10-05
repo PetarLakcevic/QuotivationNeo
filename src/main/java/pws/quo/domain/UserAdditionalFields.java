@@ -57,6 +57,9 @@ public class UserAdditionalFields implements Serializable {
     @Column(name = "first_time_premium")
     private Boolean firstTimePremium = false;
 
+    @Column(name = "failed_payment")
+    private Boolean failedPayment = false;
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -67,6 +70,14 @@ public class UserAdditionalFields implements Serializable {
     public UserAdditionalFields id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Boolean getFailedPayment() {
+        return failedPayment;
+    }
+
+    public void setFailedPayment(Boolean failedPayment) {
+        this.failedPayment = failedPayment;
     }
 
     public Boolean getFirstTimePremium() {
