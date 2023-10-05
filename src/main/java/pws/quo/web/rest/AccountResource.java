@@ -288,6 +288,9 @@ public class AccountResource {
             //Parse response
             String transactionStatus = getTransactionStatus(resp);
 
+            if (transactionStatus==null){
+                transactionStatus="NULL";
+            }
             switch (transactionStatus) {
                 case "IP":
                     System.out.println("In Progress");
