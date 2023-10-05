@@ -37,7 +37,7 @@ const Terms = () => {
     },
     {
       title: 'VAT INFORMATION',
-      text: 'Please note that our company is not in the VAT system.',
+      text: 'Please note that Wermax Consulting doo is not in the VAT system.',
     },
   ];
 
@@ -72,7 +72,7 @@ const Terms = () => {
     },
     {
       title: 'INFORMACIJE O PDV-U',
-      text: 'Napomena: Naša firma nije u sistemu PDV-a.',
+      text: 'Napomena: Wermax Consulting doo nije u sistemu PDV-a.',
     },
   ];
 
