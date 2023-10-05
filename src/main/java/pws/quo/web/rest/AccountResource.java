@@ -213,8 +213,18 @@ public class AccountResource {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 JsonNode root = mapper.readTree(resp);
-                String message = root.path("responseMsg").asText();
-                if (message.equalsIgnoreCase("Approved")) {
+                JsonNode transactionList = root.path("transactionList");
+                String transactionStatus = null;
+                if (transactionList.isArray()) {
+                    for (JsonNode transaction : transactionList) {
+                        transactionStatus = transaction.get("transactionStatus").asText();
+                        System.out.println("/////////////////"+transactionStatus+"/////////////////////");
+                        break;
+                    }
+                }
+
+
+                if (transactionStatus.equalsIgnoreCase("AP")) {
 
                     userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
                     latestPayment.setUsed(true);

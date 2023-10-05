@@ -47,12 +47,12 @@ public class PaymentResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new payment, or with status {@code 400 (Bad Request)} if the payment has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-      @PostMapping("/payment-status/process")
-      public String createPayment(@RequestBody Object object) throws URISyntaxException {
-          System.out.println(":::::::::::::::::::::::::::::THEY-CALLED:::::::::::::::::::::::::::::::::::::::::");
-          System.out.println(object.toString());
-          return "redirect:/payment-status";
-      }
+//      @PostMapping("/payment-status/process")
+//      public String createPayment(@RequestBody Object object) throws URISyntaxException {
+//          System.out.println(":::::::::::::::::::::::::::::THEY-CALLED:::::::::::::::::::::::::::::::::::::::::");
+//          System.out.println(object.toString());
+//          return "redirect:/payment-status";
+//      }
     //
     //    /**
     //     * {@code PUT  /payments/:id} : Updates an existing payment.

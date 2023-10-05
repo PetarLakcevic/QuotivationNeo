@@ -37,7 +37,7 @@ public class PaymentTransaction {
         this.customerEmail = userAdditionalFields.getInternalUser().getEmail();
         this.customerName = "/";
         this.customerPhone = "/";
-        this.returnUrl = "https://quotivation.io/payment-status/process";
+        this.returnUrl = "https://quotivation.io/payment-status";
         this.sessionExpiry = "1h";
     }
 
