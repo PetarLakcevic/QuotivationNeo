@@ -166,79 +166,78 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
 
-    @GetMapping("/payment-status/me")
-    public Object getPaymentStatus() {
-        System.out.println("::::::::::::::::::::::::::::::CHECK PAYMENT ME:::::::::::::::::::::::::::::::::");
-
-        Optional<User> optionalUser = userService.getUserWithAuthorities();
-        if (!optionalUser.isPresent()) {
-            return null;
-        }
-
-        User user = optionalUser.get();
-        UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user);
-
-        Object o = checkForLastPaymentPremium(userAdditionalFields);
-        return o;
-
-    }
-
-    private Object checkForLastPaymentPremium(UserAdditionalFields userAdditionalFields) {
-
-        List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
-
-        if (paymentList.size() > 0) {
-            Payment latestPayment = returnLatestPayment(paymentList);
-
-
-            //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
-
-            //send payment transaction
-            RestTemplate restTemplate = new RestTemplate();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-
-            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-            map.add("ACTION", "QUERYTRANSACTION");
-            map.add("SESSIONTOKEN", latestPayment.getSessionToken());
-
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
-            String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
-
-            System.out.println("Response: " + resp); // Printing the entire response
-
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                JsonNode root = mapper.readTree(resp);
-                JsonNode transactionList = root.path("transactionList");
-                String transactionStatus = null;
-                if (transactionList.isArray()) {
-                    for (JsonNode transaction : transactionList) {
-                        transactionStatus = transaction.get("transactionStatus").asText();
-                        System.out.println("/////////////////"+transactionStatus+"/////////////////////");
-                        break;
-                    }
-                }
-
-
-                if (transactionStatus.equalsIgnoreCase("AP")) {
-
-                    userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
-                    latestPayment.setUsed(true);
-                    paymentRepository.save(latestPayment);
-                    userAdditionalFieldsRepository.save(userAdditionalFields);
-
-                }
-                return root;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
+//    @GetMapping("/payment-status/me")
+//    public Object getPaymentStatus() {
+//        System.out.println("::::::::::::::::::::::::::::::CHECK PAYMENT ME:::::::::::::::::::::::::::::::::");
+//
+//        Optional<User> optionalUser = userService.getUserWithAuthorities();
+//        if (!optionalUser.isPresent()) {
+//            return null;
+//        }
+//
+//        User user = optionalUser.get();
+//        UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user);
+//
+//        Object o = checkForLastPaymentPremium(userAdditionalFields);
+//        return o;
+//
+//    }
+//    private Object checkForLastPaymentPremium(UserAdditionalFields userAdditionalFields) {
+//
+//        List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+//
+//        if (paymentList.size() > 0) {
+//            Payment latestPayment = returnLatestPayment(paymentList);
+//
+//
+//            //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
+//
+//            //send payment transaction
+//            RestTemplate restTemplate = new RestTemplate();
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//
+//            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+//            map.add("ACTION", "QUERYTRANSACTION");
+//            map.add("SESSIONTOKEN", latestPayment.getSessionToken());
+//
+//            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+//
+//            String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+//
+//            System.out.println("Response: " + resp); // Printing the entire response
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            try {
+//                JsonNode root = mapper.readTree(resp);
+//                JsonNode transactionList = root.path("transactionList");
+//                String transactionStatus = null;
+//                System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
+//
+//                for (JsonNode transaction : transactionList) {
+//                    transactionStatus = transaction.get("transactionStatus").asText();
+//                    System.out.println("/////////////////" + transactionStatus + "/////////////////////");
+//                    break;
+//                }
+//
+//
+//                if (transactionStatus.equalsIgnoreCase("AP")) {
+//
+//                    userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+//                    latestPayment.setUsed(true);
+//                    paymentRepository.save(latestPayment);
+//                    userAdditionalFieldsRepository.save(userAdditionalFields);
+//
+//                }
+//                return resp;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return null;
+//    }
 
 
     @Transactional
@@ -255,6 +254,7 @@ public class AccountResource {
                 List<Category> kate = getCategoriesForUser();
                 adminUserDTO.setCategoryList(kate);
             }
+            adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
 
 
             //set trial and stuff
@@ -270,9 +270,14 @@ public class AccountResource {
                     adminUserDTO.setHasPremium(false);
                 }
 
+
+                System.out.println("-------------------------------PREMIUM-------------------------------------");
+                System.out.println(adminUserDTO.isHasPremium());
+                System.out.println("-------------------------------========-------------------------------------");
                 //check if it has payments, if it has check maybe if premium is active
                 //TODO: mozda dodati sta ako uskoro istice?
                 if (adminUserDTO.isHasPremium() == false) {
+
                     List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
 
                     if (paymentList.size() > 0) {
@@ -302,24 +307,43 @@ public class AccountResource {
                         ObjectMapper mapper = new ObjectMapper();
                         try {
                             JsonNode root = mapper.readTree(resp);
-                            String message = root.path("responseMsg").asText();
-                            if (message.equalsIgnoreCase("Approved")) {
 
-                                userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+
+
+                            JsonNode transactionList = root.path("transactionList");
+                            String transactionStatus = null;
+                            System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
+
+                            for (JsonNode transaction : transactionList) {
+                                transactionStatus = transaction.get("transactionStatus").asText();
+                                System.out.println("/////////////////" + transactionStatus + "/////////////////////");
+                                break;
+                            }
+
+                            if(transactionStatus == null){
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+                                return adminUserDTO;
+                            }
+                            //TODO: SWITCH CASE ZA SVE TRANS STATUSE
+
+                            if (transactionStatus.equalsIgnoreCase("AP")) {
+
+                                userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
                                 latestPayment.setUsed(true);
                                 paymentRepository.save(latestPayment);
+                                userAdditionalFields.setFirstTimePremium(true);
                                 userAdditionalFieldsRepository.save(userAdditionalFields);
-                                adminUserDTO.setFirstTimePremium(true);
+                                adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
                                 adminUserDTO.setHasPremium(true);
+                                System.out.println("_______________________________________IDE GAS____________________________________");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
                 }
-
-
             }
 
             return adminUserDTO;
@@ -383,11 +407,14 @@ public class AccountResource {
 
                 Payment payment = new Payment();
                 payment.setPaymentDate(Instant.now().plus(Duration.ofHours(1)));
+                payment.setUserAdditionalFields(userAdditionalFields);
 
                 //get session
                 String sessionToken = sendPaymentRequest(userAdditionalFields, payment.getPaymentDate());
+
+
+
                 payment.setSessionToken(sessionToken);
-                payment.setUserAdditionalFields(userAdditionalFields);
 
                 payment.setSessionToken(sessionToken);
                 paymentRepository.save(payment);

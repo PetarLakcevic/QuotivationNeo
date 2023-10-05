@@ -54,6 +54,10 @@ public class UserAdditionalFields implements Serializable {
     @JsonIgnoreProperties(value = { "userAdditionalFields" }, allowSetters = true)
     private Set<Payment> payments = new HashSet<>();
 
+    @Column(name = "first_time_premium")
+    private Boolean firstTimePremium = false;
+
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -63,6 +67,14 @@ public class UserAdditionalFields implements Serializable {
     public UserAdditionalFields id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Boolean getFirstTimePremium() {
+        return firstTimePremium;
+    }
+
+    public void setFirstTimePremium(Boolean firstTimePremium) {
+        this.firstTimePremium = firstTimePremium;
     }
 
     public Instant getTrialExpiry() {

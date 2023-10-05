@@ -66,7 +66,7 @@ public class AdminUserDTO implements Serializable {
 
     private boolean hasTrial;
 
-    private boolean firstTimePremium;
+    private Boolean firstTimePremium;
 
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
@@ -139,11 +139,12 @@ public class AdminUserDTO implements Serializable {
         this.hasTrial = hasTrial;
     }
 
-    public boolean isFirstTimePremium() {
+
+    public Boolean getFirstTimePremium() {
         return firstTimePremium;
     }
 
-    public void setFirstTimePremium(boolean firstTimePremium) {
+    public void setFirstTimePremium(Boolean firstTimePremium) {
         this.firstTimePremium = firstTimePremium;
     }
 

@@ -35,9 +35,9 @@ public class PaymentTransaction {
         this.currency = "RSD";
         this.sessionType = "PAYMENTSESSION";
         this.customerEmail = userAdditionalFields.getInternalUser().getEmail();
-        this.customerName = "/";
+        this.customerName = userAdditionalFields.getInternalUser().getFirstName()+" "+userAdditionalFields.getInternalUser().getLastName();
         this.customerPhone = "/";
-        this.returnUrl = "https://quotivation.io/payment-status";
+        this.returnUrl = "https://quotivation.io";
         this.sessionExpiry = "1h";
     }
 
