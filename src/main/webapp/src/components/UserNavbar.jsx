@@ -339,7 +339,7 @@ const UserNavbar = ({ home }) => {
                     Suggestions
                   </Typography>
                 </Button>
-                <Button
+                {/* <Button
                   onPointerDown={() => {
                     navigate('/privacy');
                   }}
@@ -355,7 +355,7 @@ const UserNavbar = ({ home }) => {
                 </Button>
                 <Button
                   onPointerDown={() => {
-                    navigate('/refund');
+                    navigate('/terms-&-conditions');
                   }}
                 >
                   <Typography
@@ -364,9 +364,9 @@ const UserNavbar = ({ home }) => {
                       color: 'white',
                     }}
                   >
-                    Refund Policy
+                    Terms & Conditions
                   </Typography>
-                </Button>
+                </Button> */}
                 <Button
                   onPointerDown={() => {
                     navigate('/contact');

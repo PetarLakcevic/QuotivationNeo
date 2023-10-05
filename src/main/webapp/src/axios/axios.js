@@ -52,8 +52,8 @@ const loginReq = (username, password) => {
   return api.post('/authenticate', { username, password });
 };
 
-const registerReq = (login, password, email) => {
-  return api.post('/register', { login, password, email, authorities: ['ROLE_USER'], activated: true });
+const registerReq = (login, password, email, firstName, lastName) => {
+  return api.post('/register', { login, password, email, firstName, lastName, authorities: ['ROLE_USER'], activated: true });
 };
 
 const accountReq = () => {
@@ -186,6 +186,14 @@ const paymentStatus = () => {
   return api.get('/payment-status/me');
 }
 
+const okPremium = () => {
+  return api.patch('/ok-premium');
+}
+
+const okFailed = () => {
+  return api.patch('/ok-failed');
+}
+
 export {
   loginReq,
   registerReq,
@@ -221,4 +229,6 @@ export {
   paymentLink,
   activatePremium,
   paymentStatus,
+  okPremium,
+  okFailed,
 };
