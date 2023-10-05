@@ -35,6 +35,10 @@ const Terms = () => {
       title: 'REFUND PROCEDURE',
       text: 'In the event of returning goods and refunding a customer who previously paid using a payment card, either partially or in full, regardless of the reason for the return, Quotivation.io is obliged to make the refund exclusively through VISA, EC/MC, and Maestro payment methods.',
     },
+    {
+      title: 'VAT INFORMATION',
+      text: 'Please note that Wermax Consulting doo is not in the VAT system.',
+    },
   ];
 
   const dataSrb = [
@@ -65,6 +69,10 @@ const Terms = () => {
     {
       title: 'POVRAĆAJ SREDSTAVA',
       text: 'U slučaju vraćanja robe i povraćaja sredstava kupcu koji je prethodno platio nekom od platnih kartica, delimično ili u celosti, i bez obzira na razlog vraćanja, Quotivation.io je u obavezi da povraćaj sredstava vrši isključivo preko VISA, EC/MC, i Maestro metoda plaćanja.',
+    },
+    {
+      title: 'INFORMACIJE O PDV-U',
+      text: 'Napomena: Wermax Consulting doo nije u sistemu PDV-a.',
     },
   ];
 
@@ -184,29 +192,32 @@ const Terms = () => {
               <Typography variant="body1">{item.text}</Typography>
             </>
           ))}
-          {contacts.map((item, index) => (
-            <Box
-              sx={{
-                display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
-                      gap: 1,
-                      width: '100%',
-                    //   textAlign: 'center',
-                      textDecoration: 'none', 
-                }}
-            >
-              <Typography
-                variant="body1"
+          <Typography variant="h5">Contact</Typography>
+          <Box>
+            {contacts.map((item, index) => (
+              <Box
                 sx={{
-                  fontWeight: 'bold',
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  gap: 1,
+                  width: '100%',
+                  //   textAlign: 'center',
+                  textDecoration: 'none',
                 }}
               >
-                {item.title}:{' '}
-              </Typography>
-              <Typography variant="body1"> {item.text}</Typography>
-            </Box>
-          ))}
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {item.title}:{' '}
+                </Typography>
+                <Typography variant="body1"> {item.text}</Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </UserContent>
     </UserContainer>

@@ -25,11 +25,11 @@ const UserNavbar = ({ home }) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (account?.firstTimePremium) {
-      setFirstTimeModal(true);
-    }
-  }, [account]);
+  // useEffect(() => {
+  //   if (account?.firstTimePremium) {
+  //     setFirstTimeModal(true);
+  //   }
+  // }, [account]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -75,7 +75,7 @@ const UserNavbar = ({ home }) => {
         width: '100%',
       }}
     >
-      <Modal open={firstTimeModal} onClose={() => setFirstTimeModal(false)}>
+      {/* <Modal open={firstTimeModal} onClose={() => setFirstTimeModal(false)}>
         <Box
           sx={{
             width: '90vw',
@@ -125,7 +125,7 @@ const UserNavbar = ({ home }) => {
             Continue
           </Button>
         </Box>
-      </Modal>
+      </Modal> */}
       <ArrowBack
         sx={{
           color: 'white',
@@ -339,7 +339,7 @@ const UserNavbar = ({ home }) => {
                     Suggestions
                   </Typography>
                 </Button>
-                <Button
+                {/* <Button
                   onPointerDown={() => {
                     navigate('/privacy');
                   }}
@@ -355,7 +355,7 @@ const UserNavbar = ({ home }) => {
                 </Button>
                 <Button
                   onPointerDown={() => {
-                    navigate('/refund');
+                    navigate('/terms-&-conditions');
                   }}
                 >
                   <Typography
@@ -364,9 +364,9 @@ const UserNavbar = ({ home }) => {
                       color: 'white',
                     }}
                   >
-                    Refund Policy
+                    Terms & Conditions
                   </Typography>
-                </Button>
+                </Button> */}
                 <Button
                   onPointerDown={() => {
                     navigate('/contact');

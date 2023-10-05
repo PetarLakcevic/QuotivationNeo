@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserContent from '../../components/UserContent';
 import UserNavbar from '../../components/UserNavbar';
-import { getCurrentQuote, getHistory } from '../../axios/axios';
+import { getCurrentQuote, getHistory, okFailed, okPremium } from '../../axios/axios';
 import hope from '../../assets/images/hope.jpg';
 import rain from '../../assets/images/rain.jpg';
 import sandColor from '../../assets/images/sandcolor.jpg';
@@ -18,7 +18,7 @@ import road from '../../assets/images/road.jpeg';
 import droneview from '../../assets/images/droneview.jpeg';
 import logo from '../../assets/images/logo.png';
 import { Box } from '@mui/system';
-import { Dialog, IconButton, Slide, Typography } from '@mui/material';
+import { Button, Dialog, IconButton, Modal, Slide, Typography } from '@mui/material';
 import { Download, Email, Facebook, Share, Twitter, WhatsApp } from '@mui/icons-material';
 import { toPng } from 'html-to-image';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton, ViberIcon, ViberShareButton, WhatsappShareButton } from 'react-share';
@@ -106,8 +106,129 @@ const Quote = ({ account }) => {
     };
   };
 
+  const [firstTimeModal, setFirstTimeModal] = useState(false);
+  const [failedModal, setFailedModal] = useState(false);
+
+  const handleConfirmPremium = () => {
+    okPremium().then(res => {
+      console.log(res);
+      setFirstTimeModal(false);
+    });
+  };
+
+  const handleUnsuccessfulPayment = () => {
+    okFailed().then(res => {
+      console.log(res);
+      setFailedModal(false);
+    });
+  };
+
+  useEffect(() => {
+    if (account?.userAdditionalFields?.firstTimePremium) {
+      setFirstTimeModal(true);
+    } 
+    if (account?.userAdditionalFields?.failedPayment) {
+      setFailedModal(true);
+    }
+  }, [account]);
+
   return (
     <>
+      <Modal open={firstTimeModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80vw',
+            maxWidth: '500px',
+            maxHeight: '80vh',
+            overflowY: 'scroll',
+            bgcolor: '#fff',
+            p: 2,
+            borderRadius: '0.5em',
+            outline: 'none',
+          }}
+        >
+          <Typography variant="h4" sx={{ textAlign: 'center' }}>
+            Payment Confirmation
+          </Typography>
+          <Typography variant="body1">Your payment has been successfully processed and your account has been charged.</Typography>
+          <ul style={{ paddingLeft: '20px' }}>
+            <li>Outcome of Payment: Successful – account charged</li>
+            <li>User Information: [First and Last Name], [Email], [Address], [Delivery Address]</li>
+            <li>Order Details: [List of items], [Unit Price], [Quantity], [Tax], [Total Price], [Order JIB]</li>
+            <li>Merchant Information: [Name], [Tax Identification Number], [Address]</li>
+            <li>
+              Transaction Information:
+              <ul style={{ paddingLeft: '20px' }}>
+                <li>Order Number: [Order Number]</li>
+                <li>Authorization Code: [Authorization Code]</li>
+                <li>Transaction Status: [Status]</li>
+                <li>Transaction Status Code: [Status Code]</li>
+                <li>Transaction Number: [Transaction Number]</li>
+                <li>Transaction Date: [Transaction Date]</li>
+                <li>Transaction Amount: [Transaction Amount]</li>
+                <li>Transaction Reference ID: [Reference ID]</li>
+              </ul>
+            </li>
+          </ul>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              bgcolor: '#478D8A',
+              color: '#fff',
+              marginInline: 'auto',
+              display: 'block',
+            }}
+            onClick={handleConfirmPremium}
+          >
+            Confirm
+          </Button>
+        </Box>
+      </Modal>
+      <Modal open={failedModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80vw',
+            maxWidth: '500px',
+            maxHeight: '80vh',
+            overflowY: 'scroll',
+            bgcolor: '#fff',
+            p: 2,
+            borderRadius: '0.5em',
+            outline: 'none',
+          }}
+        >
+          <Typography variant="h4" sx={{ textAlign: 'center' }}>
+            Payment Confirmation
+          </Typography>
+          <Typography variant="body1" mt={2}>
+            The payment was unsuccessful, your account has not been charged. The most common cause is an incorrectly entered card number,
+            expiration date, or security code. Please try again, and in the case of repeated errors, contact your bank.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              bgcolor: '#478D8A',
+              color: '#fff',
+              marginInline: 'auto',
+              display: 'block',
+            }}
+            onClick={handleUnsuccessfulPayment}
+          >
+            Confirm
+          </Button>
+        </Box>
+      </Modal>
+
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <Box
         sx={{
@@ -158,7 +279,7 @@ const Quote = ({ account }) => {
               }}
               ref={quoteRef}
             >
-              {quote?.text} 
+              {quote?.text}
             </Typography>
             <Typography
               variant="h6"
