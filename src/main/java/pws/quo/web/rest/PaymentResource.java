@@ -1,34 +1,26 @@
 package pws.quo.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import pws.quo.domain.Payment;
 import pws.quo.repository.PaymentRepository;
 import pws.quo.service.PaymentQueryService;
 import pws.quo.service.PaymentService;
-import pws.quo.service.criteria.PaymentCriteria;
 import pws.quo.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
-import tech.jhipster.web.util.ResponseUtil;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * REST controller for managing {@link pws.quo.domain.Payment}.
  */
 @RestController
-@RequestMapping("/api")
 public class PaymentResource {
 
     private final Logger log = LoggerFactory.getLogger(PaymentResource.class);
@@ -52,22 +44,14 @@ public class PaymentResource {
     /**
      * {@code POST  /payments} : Create a new payment.
      *
-     * @param payment the payment to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new payment, or with status {@code 400 (Bad Request)} if the payment has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    //    @PostMapping("/payments")
-    //    public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) throws URISyntaxException {
-    //        log.debug("REST request to save Payment : {}", payment);
-    //        if (payment.getId() != null) {
-    //            throw new BadRequestAlertException("A new payment cannot already have an ID", ENTITY_NAME, "idexists");
-    //        }
-    //        Payment result = paymentService.save(payment);
-    //        return ResponseEntity
-    //            .created(new URI("/api/payments/" + result.getId()))
-    //            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-    //            .body(result);
-    //    }
+      @PostMapping("/payment-status")
+      public void createPayment(@RequestBody Object object) throws URISyntaxException {
+          System.out.println(":::::::::::::::::::::::::::::THEY-CALLED:::::::::::::::::::::::::::::::::::::::::");
+          System.out.println(object.toString());
+      }
     //
     //    /**
     //     * {@code PUT  /payments/:id} : Updates an existing payment.

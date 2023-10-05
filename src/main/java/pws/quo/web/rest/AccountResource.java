@@ -165,9 +165,76 @@ public class AccountResource {
      * @return the current user.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
+
+    @GetMapping("/payment-status/me")
+    public Object getPaymentStatus() {
+        System.out.println("::::::::::::::::::::::::::::::CHECK PAYMENT ME:::::::::::::::::::::::::::::::::");
+
+        Optional<User> optionalUser = userService.getUserWithAuthorities();
+        if (!optionalUser.isPresent()) {
+            return null;
+        }
+
+        User user = optionalUser.get();
+        UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user);
+
+        Object o = checkForLastPaymentPremium(userAdditionalFields);
+        return o;
+
+    }
+
+    private Object checkForLastPaymentPremium(UserAdditionalFields userAdditionalFields) {
+
+        List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+
+        if (paymentList.size() > 0) {
+            Payment latestPayment = returnLatestPayment(paymentList);
+
+
+            //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
+
+            //send payment transaction
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("ACTION", "QUERYTRANSACTION");
+            map.add("SESSIONTOKEN", latestPayment.getSessionToken());
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+            String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+
+            System.out.println("Response: " + resp); // Printing the entire response
+
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                JsonNode root = mapper.readTree(resp);
+                String message = root.path("responseMsg").asText();
+                if (message.equalsIgnoreCase("Approved")) {
+
+                    userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
+                    latestPayment.setUsed(true);
+                    paymentRepository.save(latestPayment);
+                    userAdditionalFieldsRepository.save(userAdditionalFields);
+
+                }
+                return root;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
     @Transactional
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
+        System.out.println("::::::::::::::::::::::::::::::GETTING ACCOUNT:::::::::::::::::::::::::::::::::");
         Optional<User> user = userService.getUserWithAuthorities();
         if (user.isPresent()) {
             AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
@@ -212,7 +279,7 @@ public class AccountResource {
 
 
                         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-                        map.add("ACTION", "QUERYSESSION");
+                        map.add("ACTION", "QUERYTRANSACTION");
                         map.add("SESSIONTOKEN", latestPayment.getSessionToken());
 
                         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
@@ -226,7 +293,7 @@ public class AccountResource {
                         try {
                             JsonNode root = mapper.readTree(resp);
                             String message = root.path("responseMsg").asText();
-                            if(message.equalsIgnoreCase("Approved")){
+                            if (message.equalsIgnoreCase("Approved")) {
 
                                 userAdditionalFields.setExpiry(Instant.now().plus(Duration.ofDays(365)));
                                 latestPayment.setUsed(true);
