@@ -253,7 +253,22 @@ public class AccountResource {
                 adminUserDTO.setCategoryList(kate);
             }
             adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
+            adminUserDTO.setFailedPayment(userAdditionalFields.getFailedPayment());
 
+
+
+            if(adminUserDTO.getFirstTimePremium()==true || adminUserDTO.getFailedPayment()==true){
+                List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+
+                if (paymentList.size() > 0) {
+                    Payment latestPayment = returnLatestPayment(paymentList);
+                    adminUserDTO.setPaymentDataJson(latestPayment.getPaymentDataJson());
+                }
+
+
+
+
+            }
 
             //set trial and stuff
             if (userAdditionalFields != null) {
@@ -319,11 +334,11 @@ public class AccountResource {
 
                             if (transactionStatus == null) {
                                 userAdditionalFields.setFailedPayment(true);
+                                userAdditionalFields.setFirstTimePremium(false);
                                 userAdditionalFieldsRepository.save(userAdditionalFields);
                                 adminUserDTO.setFailedPayment(true);
+
                                 return adminUserDTO;
-
-
                             }
                             //TODO: SWITCH CASE ZA SVE TRANS STATUSE
 
@@ -352,8 +367,11 @@ public class AccountResource {
 
                                 adminUserDTO.setPaymentDataJson(mapica.toString());
 
+                                adminUserDTO.setFailedPayment(userAdditionalFields.getFailedPayment());
+
 
                                 paymentRepository.save(latestPayment);
+                                userAdditionalFields.setFailedPayment(false);
                                 userAdditionalFields.setFirstTimePremium(true);
                                 userAdditionalFieldsRepository.save(userAdditionalFields);
                                 adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
@@ -362,6 +380,7 @@ public class AccountResource {
 
                             } else {
                                 userAdditionalFields.setFailedPayment(true);
+                                userAdditionalFields.setFirstTimePremium(false);
                                 userAdditionalFieldsRepository.save(userAdditionalFields);
                                 adminUserDTO.setFailedPayment(true);
 
