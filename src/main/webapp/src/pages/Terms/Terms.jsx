@@ -83,7 +83,7 @@ const Terms = () => {
     },
     {
       title: 'Address',
-      text: '21, Beograd, Srbija',
+      text: 'Hiladnarska 21, Beograd, Srbija',
     },
     {
       title: 'Company Registration Number',
@@ -122,7 +122,7 @@ const Terms = () => {
     },
     {
       title: 'Adresa',
-      text: '21, Beograd, Srbija',
+      text: 'Hiladnarska 21, Beograd, Srbija',
     },
     {
       title: 'Matični broj',
