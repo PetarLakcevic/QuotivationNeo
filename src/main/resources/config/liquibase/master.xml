@@ -35,6 +35,7 @@
     <include file="config/liquibase/changelog/add_ftp.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/add_lob.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/add_failed.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/add_order_id.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

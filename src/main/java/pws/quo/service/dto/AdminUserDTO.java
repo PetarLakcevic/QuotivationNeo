@@ -66,10 +66,6 @@ public class AdminUserDTO implements Serializable {
 
     private boolean hasTrial;
 
-    private Boolean firstTimePremium = false;
-
-    private Boolean failedPayment = false;
-
     private String paymentDataJson;
 
     public AdminUserDTO() {
@@ -135,13 +131,6 @@ public class AdminUserDTO implements Serializable {
         this.paymentDataJson = paymentDataJson;
     }
 
-    public Boolean getFailedPayment() {
-        return failedPayment;
-    }
-
-    public void setFailedPayment(Boolean failedPayment) {
-        this.failedPayment = failedPayment;
-    }
 
     public boolean isHasPremium() {
         return hasPremium;
@@ -160,25 +149,11 @@ public class AdminUserDTO implements Serializable {
     }
 
 
-    public Boolean getFirstTimePremium() {
-        return firstTimePremium;
-    }
-
-    public void setFirstTimePremium(Boolean firstTimePremium) {
-        this.firstTimePremium = firstTimePremium;
-    }
-
     public UserAdditionalFields getUserAdditionalFields() {
         return userAdditionalFields;
     }
 
-    public void setUserAdditionalFields(UserAdditionalFields userAdditionalFields) {
-        this.userAdditionalFields = userAdditionalFields;
-
-
-
-    }
-
+    public void setUserAdditionalFields(UserAdditionalFields userAdditionalFields) {this.userAdditionalFields = userAdditionalFields;}
     public List<Category> getCategoryList() {
         return categoryList;
     }
