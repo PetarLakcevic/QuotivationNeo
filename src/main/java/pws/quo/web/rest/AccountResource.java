@@ -289,7 +289,9 @@ public class AccountResource {
             String transactionStatus = getTransactionStatus(resp);
 
             if (transactionStatus==null){
-                transactionStatus="NULL";
+                latestPayment.setUsed(true);
+                paymentRepository.save(latestPayment);
+                return adminUserDTO;
             }
             switch (transactionStatus) {
                 case "IP":
