@@ -183,7 +183,7 @@ const Quote = ({ account }) => {
                 <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
                 {/* <li>Authorization Code: [Authorization Code]</li> */}
                 <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
-                <li>Transaction Status Code: {paymentData?.transactionStatus[0].pgTranReturnCode}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
                 <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
                 <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
                 <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
@@ -255,7 +255,7 @@ const Quote = ({ account }) => {
                 <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
                 {/* <li>Authorization Code: [Authorization Code]</li> */}
                 <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
-                <li>Transaction Status Code: {paymentData?.transactionStatus[0].pgTranReturnCode}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
                 <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
                 <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
                 <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
