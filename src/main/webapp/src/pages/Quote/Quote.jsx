@@ -131,6 +131,7 @@ const Quote = ({ account }) => {
     }
     if (account?.userAdditionalFields?.failedPayment) {
       setFailedModal(true);
+      setPaymentData(JSON.parse(account?.paymentDataJson));
     }
   }, [account]);
 
@@ -223,24 +224,26 @@ const Quote = ({ account }) => {
             outline: 'none',
           }}
         >
-         <Box
+          <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Cancel sx={{
-              color: '#d32f2f',
-              fontSize: '2rem'
-            }} />
+            <Cancel
+              sx={{
+                color: '#d32f2f',
+                fontSize: '2rem',
+              }}
+            />
             <Typography variant="h4" sx={{ textAlign: 'center' }}>
               Payment Confirmation
             </Typography>
             <CheckCircle sx={{ color: '#478D8A00', fontSize: '2rem' }} />
           </Box>
           <ul style={{ paddingLeft: '20px' }}>
-            <li>Outcome of Payment: Successful – account charged</li>
+            <li>Outcome of Payment: Unsuccessful – account not charged</li>
             <li>
               User Information: {account?.firstName} {account?.lastName}, {account?.emal}
             </li>
