@@ -289,7 +289,7 @@ public class AccountResource {
             String transactionStatus = getTransactionStatus(resp);
 
             if (transactionStatus==null){
-                transactionStatus="NULL";
+                return adminUserDTO;
             }
             switch (transactionStatus) {
                 case "IP":
