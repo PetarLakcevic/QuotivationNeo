@@ -171,7 +171,7 @@ const Quote = ({ account }) => {
           <ul style={{ paddingLeft: '20px' }}>
             <li>Outcome of Payment: Successful – account charged</li>
             <li>
-              User Information: {account?.firstName} {account?.lastName}, {account?.emal}
+              User Information: {account?.firstName} {account?.lastName}, {account?.email}
             </li>
             <li>
               Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
@@ -245,7 +245,7 @@ const Quote = ({ account }) => {
           <ul style={{ paddingLeft: '20px' }}>
             <li>Outcome of Payment: Unsuccessful – account not charged</li>
             <li>
-              User Information: {account?.firstName} {account?.lastName}, {account?.emal}
+              User Information: {account?.firstName} {account?.lastName}, {account?.email}
             </li>
             <li>
               Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
