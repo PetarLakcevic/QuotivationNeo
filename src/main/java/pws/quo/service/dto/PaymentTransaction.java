@@ -22,23 +22,23 @@ public class PaymentTransaction {
     private String sessionExpiry;
 
     public PaymentTransaction(UserAdditionalFields userAdditionalFields) {
-        // Initialize with your test data
+        // MERCHANT DATA - CHANGE
         this.merchantUser = "npavlovi@nassan.rs";
         this.merchantPassword = "+5UQ8@NDVm@*=r3";
         this.merchant = "ems02";
 
 
-
+        // TRANSACTION DATA - DONT CHANGE
         this.merchantPaymentId = new Date();
         this.customer = userAdditionalFields.getInternalUser().getLogin();
-        this.amount = "2000";
+        this.amount = "2000.00";
         this.currency = "RSD";
         this.sessionType = "PAYMENTSESSION";
         this.customerEmail = userAdditionalFields.getInternalUser().getEmail();
         this.customerName = userAdditionalFields.getInternalUser().getFirstName()+" "+userAdditionalFields.getInternalUser().getLastName();
         this.customerPhone = "/";
         this.returnUrl = "https://quotivation.io";
-        this.sessionExpiry = "1h";
+        this.sessionExpiry = "12h";
     }
 
     // Getters, setters, and other methods can be added here

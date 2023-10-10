@@ -19,7 +19,7 @@ import droneview from '../../assets/images/droneview.jpeg';
 import logo from '../../assets/images/logo.png';
 import { Box } from '@mui/system';
 import { Button, Dialog, IconButton, Modal, Slide, Typography } from '@mui/material';
-import { Download, Email, Facebook, Share, Twitter, WhatsApp } from '@mui/icons-material';
+import { Cancel, CheckCircle, ClearAllRounded, Download, Email, Facebook, Share, Twitter, WhatsApp } from '@mui/icons-material';
 import { toPng } from 'html-to-image';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton, ViberIcon, ViberShareButton, WhatsappShareButton } from 'react-share';
 
@@ -108,6 +108,7 @@ const Quote = ({ account }) => {
 
   const [firstTimeModal, setFirstTimeModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
 
   const handleConfirmPremium = () => {
     okPremium().then(res => {
@@ -126,9 +127,11 @@ const Quote = ({ account }) => {
   useEffect(() => {
     if (account?.userAdditionalFields?.firstTimePremium) {
       setFirstTimeModal(true);
-    } 
+      setPaymentData(JSON.parse(account?.paymentDataJson));
+    }
     if (account?.userAdditionalFields?.failedPayment) {
       setFailedModal(true);
+      setPaymentData(JSON.parse(account?.paymentDataJson));
     }
   }, [account]);
 
@@ -151,26 +154,41 @@ const Quote = ({ account }) => {
             outline: 'none',
           }}
         >
-          <Typography variant="h4" sx={{ textAlign: 'center' }}>
-            Payment Confirmation
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CheckCircle sx={{ color: '#478D8A', fontSize: '2rem' }} />
+            <Typography variant="h4" sx={{ textAlign: 'center' }}>
+              Payment Confirmation
+            </Typography>
+            <CheckCircle sx={{ color: '#478D8A00', fontSize: '2rem' }} />
+          </Box>
           <Typography variant="body1">Your payment has been successfully processed and your account has been charged.</Typography>
           <ul style={{ paddingLeft: '20px' }}>
             <li>Outcome of Payment: Successful – account charged</li>
-            <li>User Information: [First and Last Name], [Email], [Address], [Delivery Address]</li>
-            <li>Order Details: [List of items], [Unit Price], [Quantity], [Tax], [Total Price], [Order JIB]</li>
-            <li>Merchant Information: [Name], [Tax Identification Number], [Address]</li>
+            <li>
+              User Information: {account?.firstName} {account?.lastName}, {account?.email}
+            </li>
+            <li>
+              Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
+              {paymentData?.transactionList[0]?.pgOrderId}
+            </li>
+            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>
             <li>
               Transaction Information:
               <ul style={{ paddingLeft: '20px' }}>
-                <li>Order Number: [Order Number]</li>
-                <li>Authorization Code: [Authorization Code]</li>
-                <li>Transaction Status: [Status]</li>
-                <li>Transaction Status Code: [Status Code]</li>
-                <li>Transaction Number: [Transaction Number]</li>
-                <li>Transaction Date: [Transaction Date]</li>
-                <li>Transaction Amount: [Transaction Amount]</li>
-                <li>Transaction Reference ID: [Reference ID]</li>
+                <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
+                {/* <li>Authorization Code: [Authorization Code]</li> */}
+                <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
+                <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
+                <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
+                <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
+                <li>Transaction Reference ID: {paymentData?.transactionList[0].pgTranRefId}</li>
               </ul>
             </li>
           </ul>
@@ -206,9 +224,48 @@ const Quote = ({ account }) => {
             outline: 'none',
           }}
         >
-          <Typography variant="h4" sx={{ textAlign: 'center' }}>
-            Payment Confirmation
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Cancel
+              sx={{
+                color: '#d32f2f',
+                fontSize: '2rem',
+              }}
+            />
+            <Typography variant="h4" sx={{ textAlign: 'center' }}>
+              Payment Confirmation
+            </Typography>
+            <CheckCircle sx={{ color: '#478D8A00', fontSize: '2rem' }} />
+          </Box>
+          <ul style={{ paddingLeft: '20px' }}>
+            <li>Outcome of Payment: Unsuccessful – account not charged</li>
+            <li>
+              User Information: {account?.firstName} {account?.lastName}, {account?.email}
+            </li>
+            <li>
+              Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
+              {paymentData?.transactionList[0]?.pgOrderId}
+            </li>
+            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>
+            <li>
+              Transaction Information:
+              <ul style={{ paddingLeft: '20px' }}>
+                <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
+                {/* <li>Authorization Code: [Authorization Code]</li> */}
+                <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
+                <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
+                <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
+                <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
+                <li>Transaction Reference ID: {paymentData?.transactionList[0].pgTranRefId}</li>
+              </ul>
+            </li>
+          </ul>
           <Typography variant="body1" mt={2}>
             The payment was unsuccessful, your account has not been charged. The most common cause is an incorrectly entered card number,
             expiration date, or security code. Please try again, and in the case of repeated errors, contact your bank.

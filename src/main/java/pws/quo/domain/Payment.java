@@ -41,6 +41,9 @@ public class Payment implements Serializable {
     @Column(name = "payment_data_json")
     private String paymentDataJson;
 
+    @Column(name = "order_id")
+    private String orderId;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -50,6 +53,14 @@ public class Payment implements Serializable {
     public Payment id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public boolean isUsed() {

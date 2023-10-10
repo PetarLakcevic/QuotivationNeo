@@ -83,19 +83,7 @@ public class AccountResource {
 
     private final PaymentRepository paymentRepository;
 
-    public AccountResource(
-        UserRepository userRepository,
-        UserService userService,
-        MailService mailService,
-        UserAdditionalFieldsService userAdditionalFieldsService,
-        UserQuoteService userQuoteService,
-        CategoryRepository categoryRepository,
-        AuthorRepository authorRepository,
-        QuoteRepository quoteRepository,
-        UserQuoteRepository userQuoteRepository,
-        UserAdditionalFieldsRepository userAdditionalFieldsRepository,
-        PaymentRepository paymentRepository
-    ) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserAdditionalFieldsService userAdditionalFieldsService, UserQuoteService userQuoteService, CategoryRepository categoryRepository, AuthorRepository authorRepository, QuoteRepository quoteRepository, UserQuoteRepository userQuoteRepository, UserAdditionalFieldsRepository userAdditionalFieldsRepository, PaymentRepository paymentRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
@@ -240,146 +228,314 @@ public class AccountResource {
 //    }
     @Transactional
     @GetMapping("/account")
-    public AdminUserDTO getAccount() {
+    public AdminUserDTO getAccountNew() {
         System.out.println("::::::::::::::::::::::::::::::GETTING ACCOUNT:::::::::::::::::::::::::::::::::");
-        Optional<User> user = userService.getUserWithAuthorities();
-        if (user.isPresent()) {
-            AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
-            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
-            adminUserDTO.setUserAdditionalFields(userAdditionalFields);
+        Optional<User> optionalUser = userService.getUserWithAuthorities();
+        if (!optionalUser.isPresent()) throw new AccountResourceException("User could not be found");
 
-            if (userAdditionalFields != null) {
-                List<Category> kate = getCategoriesForUser();
-                adminUserDTO.setCategoryList(kate);
-            }
-            adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
+        User user = optionalUser.get();
+        UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user);
 
-
-            //set trial and stuff
-            if (userAdditionalFields != null) {
-                if (userAdditionalFields.getTrialExpiry() == null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
-                    adminUserDTO.setHasTrial(true);
-                } else {
-                    adminUserDTO.setHasTrial(false);
-                }
-                if (userAdditionalFields.getExpiry() != null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
-                    adminUserDTO.setHasPremium(true);
-                } else {
-                    adminUserDTO.setHasPremium(false);
-                }
-
-
-                System.out.println("-------------------------------PREMIUM-------------------------------------");
-                System.out.println(adminUserDTO.isHasPremium());
-                System.out.println("-------------------------------========-------------------------------------");
-                //check if it has payments, if it has check maybe if premium is active
-                //TODO: mozda dodati sta ako uskoro istice?
-                if (adminUserDTO.isHasPremium() == false) {
-
-                    List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
-
-                    if (paymentList.size() > 0) {
-                        Payment latestPayment = returnLatestPayment(paymentList);
-
-
-                        //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
-
-                        //send payment transaction
-                        RestTemplate restTemplate = new RestTemplate();
-
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-
-                        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-                        map.add("ACTION", "QUERYTRANSACTION");
-                        map.add("SESSIONTOKEN", latestPayment.getSessionToken());
-
-                        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
-                        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
-
-
-                        System.out.println("Response: " + resp); // Printing the entire response
-
-                        ObjectMapper mapper = new ObjectMapper();
-                        try {
-                            JsonNode root = mapper.readTree(resp);
-
-
-                            JsonNode transactionList = root.path("transactionList");
-                            String transactionStatus = null;
-                            System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
-
-                            for (JsonNode transaction : transactionList) {
-                                transactionStatus = transaction.get("transactionStatus").asText();
-                                System.out.println("/////////////////" + transactionStatus + "/////////////////////");
-                                break;
-                            }
-
-                            if (transactionStatus == null) {
-                                userAdditionalFields.setFailedPayment(true);
-                                userAdditionalFieldsRepository.save(userAdditionalFields);
-                                adminUserDTO.setFailedPayment(true);
-                                return adminUserDTO;
-
-
-                            }
-                            //TODO: SWITCH CASE ZA SVE TRANS STATUSE
-
-                            if (transactionStatus.equalsIgnoreCase("AP")) {
-
-                                userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
-                                latestPayment.setUsed(true);
-
-
-                                MultiValueMap<String, String> mapica = new LinkedMultiValueMap<>();
-                                mapica.add("Outcome", "Successful – Credit card account charged.");
-
-                                mapica.add("Name", userAdditionalFields.getInternalUser().getFirstName() + " " + userAdditionalFields.getInternalUser().getLastName());
-                                mapica.add("Email", userAdditionalFields.getInternalUser().getEmail());
-
-                                mapica.add("Item bought", "Premium account");
-                                mapica.add("Price", "2000.00 RSD");
-                                mapica.add("Tax", "0.0 RSD");
-                                mapica.add("Total price", "2000.00 RSD");
-
-                                mapica.add("Order number", new SimpleDateFormat("yyyyMMddHHmmss").format(Date.from(latestPayment.getPaymentDate())));
-                                mapica.add("Transaction status", "Approved");
-
-
-                                latestPayment.setPaymentDataJson(mapica.toString());
-
-                                adminUserDTO.setPaymentDataJson(mapica.toString());
-
-
-                                paymentRepository.save(latestPayment);
-                                userAdditionalFields.setFirstTimePremium(true);
-                                userAdditionalFieldsRepository.save(userAdditionalFields);
-                                adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
-                                adminUserDTO.setHasPremium(true);
-
-
-                            } else {
-                                userAdditionalFields.setFailedPayment(true);
-                                userAdditionalFieldsRepository.save(userAdditionalFields);
-                                adminUserDTO.setFailedPayment(true);
-
-
-                                return adminUserDTO;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-
+        AdminUserDTO adminUserDTO = new AdminUserDTO(user);
+        if (userAdditionalFields == null) {
             return adminUserDTO;
-        } else {
-            throw new AccountResourceException("User could not be found");
         }
+
+        adminUserDTO.setUserAdditionalFields(userAdditionalFields);
+        adminUserDTO.setCategoryList(getCategoriesForUser());
+
+        //check if premium active
+        if (userAdditionalFields.getTrialExpiry() == null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
+            adminUserDTO.setHasTrial(true);
+        } else {
+            adminUserDTO.setHasTrial(false);
+        }
+        if (userAdditionalFields.getExpiry() != null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
+            adminUserDTO.setHasPremium(true);
+        } else {
+            adminUserDTO.setHasPremium(false);
+        }
+
+
+        //set last payment data
+        if (userAdditionalFields.getFirstTimePremium() == true || userAdditionalFields.getFailedPayment() == true) {
+            Payment payment = getLatestPayment(userAdditionalFields);
+            adminUserDTO.setPaymentDataJson(payment.getPaymentDataJson());
+        }
+
+        System.out.println("-------------------------------PREMIUM-------------------------------------");
+        System.out.println(adminUserDTO.isHasPremium());
+        System.out.println("-------------------------------========-------------------------------------");
+
+
+        //if no premium check maybe he bought ??
+        if (adminUserDTO.isHasPremium() == false) {
+            Payment latestPayment = getLatestPaymentNotUsed(userAdditionalFields);
+            if (latestPayment == null)
+                return adminUserDTO;
+
+            //Call the new Endpoint to check transaction status
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("ACTION", "QUERYTRANSACTION");
+            map.add("SESSIONTOKEN", latestPayment.getSessionToken());
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+            String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+
+
+            //Parse response
+            String transactionStatus = getTransactionStatus(resp);
+
+            if (transactionStatus==null){
+                latestPayment.setUsed(true);
+                paymentRepository.save(latestPayment);
+                return adminUserDTO;
+            }
+            switch (transactionStatus) {
+                case "IP":
+                    System.out.println("In Progress");
+                    //TODO: mozda izmeniti?
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                case "CA":
+                    System.out.println("Cancelled");
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                case "FA":
+                    System.out.println("Failed");
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                case "AP":
+                    System.out.println("Approved");
+                    succeededTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                case "VD":
+                    System.out.println("Voided");
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                case "MR":
+                    System.out.println("Marked as Refund");
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+
+                    break;
+                default:
+                    System.out.println("Unknown transaction status");
+                    failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
+                    break;
+            }
+
+        }
+
+        return adminUserDTO;
     }
+
+    private void succeededTransactionStatus(String resp, AdminUserDTO adminUserDTO, UserAdditionalFields userAdditionalFields, Payment latestPayment) {
+        latestPayment.setUsed(true);
+        latestPayment.setPaymentDataJson(resp);
+        paymentRepository.save(latestPayment);
+
+        userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
+        userAdditionalFields.setFailedPayment(false);
+        userAdditionalFields.setFirstTimePremium(true);
+        userAdditionalFieldsRepository.save(userAdditionalFields);
+
+        adminUserDTO.setPaymentDataJson(resp);
+        adminUserDTO.setHasPremium(true);
+    }
+
+    private void failedTransactionStatus(String resp, AdminUserDTO adminUserDTO, UserAdditionalFields userAdditionalFields, Payment latestPayment) {
+        latestPayment.setUsed(true);
+        latestPayment.setPaymentDataJson(resp);
+        paymentRepository.save(latestPayment);
+
+        userAdditionalFields.setFailedPayment(true);
+        userAdditionalFields.setFirstTimePremium(false);
+        userAdditionalFieldsRepository.save(userAdditionalFields);
+
+        adminUserDTO.setPaymentDataJson(resp);
+    }
+
+    private String getTransactionStatus(String resp) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(resp);
+            JsonNode transactionList = root.path("transactionList");
+            String transactionStatus = null;
+            for (JsonNode transaction : transactionList) {
+                transactionStatus = transaction.get("transactionStatus").asText();
+                return transactionStatus;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Payment getLatestPaymentNotUsed(UserAdditionalFields userAdditionalFields) {
+        List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+
+        if (paymentList.size() > 0) {
+            Payment latestPayment = returnLatestPayment(paymentList);
+            return latestPayment;
+        }
+        return null;
+    }
+
+    private Payment getLatestPayment(UserAdditionalFields userAdditionalFields) {
+        List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFields(userAdditionalFields);
+        if (paymentList.size() > 0) {
+            Payment latestPayment = returnLatestPayment(paymentList);
+            return latestPayment;
+        }
+        return null;
+    }
+
+
+//    @Transactional
+//    @GetMapping("/account")
+//    public AdminUserDTO getAccount() {
+//        System.out.println("::::::::::::::::::::::::::::::GETTING ACCOUNT:::::::::::::::::::::::::::::::::");
+//        Optional<User> user = userService.getUserWithAuthorities();
+//        if (user.isPresent()) {
+//            AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
+//            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
+//            adminUserDTO.setUserAdditionalFields(userAdditionalFields);
+//
+//            if (userAdditionalFields != null) {
+//                List<Category> kate = getCategoriesForUser();
+//                adminUserDTO.setCategoryList(kate);
+//            }
+//
+//
+//            if (userAdditionalFields.getFirstTimePremium() == true || userAdditionalFields.getFailedPayment() == true) {
+//                List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+//                if (paymentList.size() > 0) {
+//                    Payment latestPayment = returnLatestPayment(paymentList);
+//                    adminUserDTO.setPaymentDataJson(latestPayment.getPaymentDataJson());
+//                }
+//            }
+//
+//            //set trial and stuff
+//            if (userAdditionalFields != null) {
+//                if (userAdditionalFields.getTrialExpiry() == null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
+//                    adminUserDTO.setHasTrial(true);
+//                } else {
+//                    adminUserDTO.setHasTrial(false);
+//                }
+//                if (userAdditionalFields.getExpiry() != null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
+//                    adminUserDTO.setHasPremium(true);
+//                } else {
+//                    adminUserDTO.setHasPremium(false);
+//                }
+//
+//
+//                System.out.println("-------------------------------PREMIUM-------------------------------------");
+//                System.out.println(adminUserDTO.isHasPremium());
+//                System.out.println("-------------------------------========-------------------------------------");
+//                //check if it has payments, if it has check maybe if premium is active
+//                //TODO: mozda dodati sta ako uskoro istice?
+//                if (adminUserDTO.isHasPremium() == false) {
+//
+//                    List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
+//
+//                    if (paymentList.size() > 0) {
+//                        Payment latestPayment = returnLatestPayment(paymentList);
+//
+//
+//                        //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
+//
+//                        //send payment transaction
+//                        RestTemplate restTemplate = new RestTemplate();
+//
+//                        HttpHeaders headers = new HttpHeaders();
+//                        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//
+//                        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+//                        map.add("ACTION", "QUERYTRANSACTION");
+//                        map.add("SESSIONTOKEN", latestPayment.getSessionToken());
+//
+//                        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+//
+//                        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+//
+//
+//                        System.out.println("Response: " + resp); // Printing the entire response
+//
+//                        ObjectMapper mapper = new ObjectMapper();
+//                        try {
+//                            JsonNode root = mapper.readTree(resp);
+//
+//
+//                            JsonNode transactionList = root.path("transactionList");
+//                            String transactionStatus = null;
+//                            System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
+//
+//                            for (JsonNode transaction : transactionList) {
+//                                transactionStatus = transaction.get("transactionStatus").asText();
+//                                System.out.println("/////////////////" + transactionStatus + "/////////////////////");
+//                                break;
+//                            }
+//
+//                            if (transactionStatus == null) {
+//                                userAdditionalFields.setFailedPayment(true);
+//                                userAdditionalFields.setFirstTimePremium(false);
+//                                userAdditionalFieldsRepository.save(userAdditionalFields);
+//                                adminUserDTO.setFailedPayment(true);
+//
+//                                return adminUserDTO;
+//                            }
+//                            //TODO: SWITCH CASE ZA SVE TRANS STATUSE
+//
+//                            if (transactionStatus.equalsIgnoreCase("AP")) {
+//
+//                                userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
+//                                latestPayment.setUsed(true);
+//
+//
+//                                latestPayment.setPaymentDataJson(mapica.toString());
+//
+//                                adminUserDTO.setPaymentDataJson(mapica.toString());
+//
+//                                adminUserDTO.setFailedPayment(userAdditionalFields.getFailedPayment());
+//
+//
+//                                paymentRepository.save(latestPayment);
+//                                userAdditionalFields.setFailedPayment(false);
+//                                userAdditionalFields.setFirstTimePremium(true);
+//                                userAdditionalFieldsRepository.save(userAdditionalFields);
+//                                adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
+//                                adminUserDTO.setHasPremium(true);
+//
+//
+//                            } else {
+//                                userAdditionalFields.setFailedPayment(true);
+//                                userAdditionalFields.setFirstTimePremium(false);
+//                                userAdditionalFieldsRepository.save(userAdditionalFields);
+//                                adminUserDTO.setFailedPayment(true);
+//
+//
+//                                return adminUserDTO;
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return adminUserDTO;
+//        } else {
+//            throw new AccountResourceException("User could not be found");
+//        }
+//    }
 
 
     @PatchMapping("/ok-premium")
@@ -446,59 +602,45 @@ public class AccountResource {
     @GetMapping("/get/payment-link")
     public String getPaymentLink() {
         Optional<User> user = userService.getUserWithAuthorities();
-        if (user.isPresent()) {
-            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
-            if (userAdditionalFields != null) {
-                //check if user already has premium
-                if (!isExpiryInNext7Days(userAdditionalFields.getExpiry())) {
-                    throw new AccountResourceException("You already have a premium account");
-                }
 
-                //generatePayment link for user and save it
-//                userAdditionalFields.setPaymentToken(generatePaymentToken());
-                userAdditionalFields.setPaymentTokenExpiry(Instant.now().plus(Duration.ofHours(1)));
-                userAdditionalFieldsService.save(userAdditionalFields);
-
-
-                Payment payment = new Payment();
-                payment.setPaymentDate(Instant.now().plus(Duration.ofHours(1)));
-                payment.setUserAdditionalFields(userAdditionalFields);
-
-                //get session
-                String sessionToken = sendPaymentRequest(userAdditionalFields, payment.getPaymentDate());
-
-
-                payment.setSessionToken(sessionToken);
-
-                payment.setSessionToken(sessionToken);
-                paymentRepository.save(payment);
-
-                if (sessionToken == null) {
-                    return null;
-                }
-
-
-                return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
-            } else {
-                throw new AccountResourceException("User additional fields could not be found");
-            }
-        } else {
+        if (!user.isPresent()) {
             throw new AccountResourceException("User could not be found");
         }
+        UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
+        if (userAdditionalFields == null) {
+            throw new AccountResourceException("User additional fields could not be found");
+        }
+        //check if user already has premium
+        if (!isExpiryInNext7Days(userAdditionalFields.getExpiry())) {
+            throw new AccountResourceException("You already have a premium account");
+        }
+
+        Payment payment = new Payment();
+        payment.setPaymentDate(Instant.now().plus(Duration.ofHours(1)));
+        payment.setUserAdditionalFields(userAdditionalFields);
+        payment.setOrderId(new SimpleDateFormat("yyyyMMddHHmmss").format(Date.from(payment.getPaymentDate())));
+
+        //Call ChipCard to get session
+        String sessionToken = sendPaymentRequest(userAdditionalFields, payment.getOrderId());
+
+        payment.setSessionToken(sessionToken);
+        paymentRepository.save(payment);
+
+        if (sessionToken == null) {
+            return null;
+        }
+
+
+        return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+
     }
 
-    private String generatePaymentToken() {
-        return generateRandomString(14);
-    }
 
-    private String sendPaymentRequest(UserAdditionalFields userAdditionalFields, Instant paymentDate) {
+    private String sendPaymentRequest(UserAdditionalFields userAdditionalFields, String paymentId) {
         //prepare payment transaction
         PaymentTransaction pt = new PaymentTransaction(userAdditionalFields);
-
-
         //send payment transaction
         RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -508,7 +650,7 @@ public class AccountResource {
         map.add("MERCHANTUSER", pt.getMerchantUser());
         map.add("MERCHANTPASSWORD", pt.getMerchantPassword());
         map.add("MERCHANT", pt.getMerchant());
-        map.add("MERCHANTPAYMENTID", new SimpleDateFormat("yyyyMMddHHmmss").format(Date.from(paymentDate)));
+
         map.add("CUSTOMER", pt.getCustomer());
         map.add("AMOUNT", pt.getAmount());
         map.add("CURRENCY", pt.getCurrency());
@@ -518,15 +660,16 @@ public class AccountResource {
         map.add("CUSTOMERPHONE", pt.getCustomerPhone());
         map.add("RETURNURL", pt.getReturnUrl());
         map.add("SESSIONEXPIRY", pt.getSessionExpiry());
+
         map.add("ORDERITEMS[0].NAME", "Premium account");
         map.add("ORDERITEMS[0].DESCRIPTION", "1 year of daily quotes");
         map.add("ORDERITEMS[0].QUANTITY", "1");
         map.add("ORDERITEMS[0].AMOUNT", "2000.00");
         map.add("ORDERITEMS[0].CODE", "premium");
 
+        map.add("MERCHANTPAYMENTID", paymentId);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
         String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
         //  System.out.println("Response: " + resp); // Printing the entire response
 
@@ -546,22 +689,8 @@ public class AccountResource {
 
     }
 
-
-    public static String generateRandomString(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuilder stringBuilder = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            stringBuilder.append(characters.charAt(randomIndex));
-        }
-
-        return stringBuilder.toString();
-    }
-
     @PostMapping("/set/category")
-    public List<Category> setCatgories(@RequestBody List<Category> kategorije) {
+    public List<Category> setCategories(@RequestBody List<Category> kategorije) {
         Optional<User> user = userService.getUserWithAuthorities();
         if (user.isPresent()) {
             List<Category> categoryList = userAdditionalFieldsService.saveCategoriesForUser(kategorije, user.get());
@@ -632,9 +761,7 @@ public class AccountResource {
      */
     @PostMapping("/account")
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
-        String userLogin = SecurityUtils
-            .getCurrentUserLogin()
-            .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
@@ -643,13 +770,7 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("User could not be found");
         }
-        userService.updateUser(
-            userDTO.getFirstName(),
-            userDTO.getLastName(),
-            userDTO.getEmail(),
-            userDTO.getLangKey(),
-            userDTO.getImageUrl()
-        );
+        userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getLangKey(), userDTO.getImageUrl());
     }
 
     /**
@@ -789,8 +910,7 @@ public class AccountResource {
                     break;
                 }
             }
-            if (found)
-                continue;
+            if (found) continue;
 
 
             List<String> names = new ArrayList<>();
@@ -870,11 +990,7 @@ public class AccountResource {
     }
 
     private static boolean isPasswordLengthInvalid(String password) {
-        return (
-            StringUtils.isEmpty(password) ||
-                password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
-                password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
-        );
+        return (StringUtils.isEmpty(password) || password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH || password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH);
     }
 
     public boolean isExpiryInNext7Days(Instant expiry) {
