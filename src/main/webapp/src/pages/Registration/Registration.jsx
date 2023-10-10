@@ -123,6 +123,7 @@ const Registration = ({ setToken, parseToken }) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: 'min(100vw, 300px)',
+            margin: '0 auto',
             mb: '1rem',
           }}
         >

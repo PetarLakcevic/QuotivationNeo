@@ -18,6 +18,8 @@ const Welcome = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '2rem',
+          maxWidth: '760px',
+          margin: '0 auto',
         }}>
           <Box
             sx={{
@@ -34,7 +36,9 @@ const Welcome = () => {
             <Typography variant="h6">Thank you for registering. Please proceed to the next step.</Typography>
           </Box>
           <Button variant='outlined' color='primary'
-          onPointerDown={() => navigate('/category')}
+          onPointerDown={() => navigate('/category')} sx={{
+            mt: 2
+          }}
           >
             <Typography variant="h6">Next</Typography>
           </Button>

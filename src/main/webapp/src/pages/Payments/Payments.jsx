@@ -232,7 +232,7 @@ const Payments = ({ isLandscape }) => {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h5">PREMIUM</Typography>
+          <Typography variant="h4">PREMIUM</Typography>
           <Typography variant="body1">Get unlimited quotes!</Typography>
           <Box
             sx={{
@@ -354,8 +354,7 @@ const Payments = ({ isLandscape }) => {
         <Box mt={2}>
           <Link to="/privacy">Privacy Policy</Link> |{' '}
           <Link
-            to="/
-          terms-&-conditions"
+            to="/terms-&-conditions"
           >
             Terms & Conditions
           </Link>
