@@ -20,7 +20,7 @@ import droneview from '../../assets/images/droneview.jpeg';
 
 import { setTheme } from '../../axios/axios';
 import { useNavigate } from 'react-router-dom';
-const Theme = ({ account, setAccount }) => {
+const Theme = ({ account, setAccount, isLandscape }) => {
   const imageArray = [rain, sandColor, seapink, sky, sunset, golden, sandbrown, sandgray, reddoor, pencil, road, droneview];
   const [selectedIndex, setSelectedIndex] = useState(1);
 
@@ -74,8 +74,14 @@ const Theme = ({ account, setAccount }) => {
             <Box
               sx={{
                 display: 'flex',
+                flexDirection:  'row',
                 justifyContent: 'space-between',
-                width: `${imageArray.length * 80}%`,
+                gap: isLandscape ? 5 : 2,
+                width: isLandscape ? "100vw" : `${imageArray.length * 80}%`,
+                margin: '0 auto',
+                flexWrap: 'wrap',
+                padding: '1rem',
+
               }}
             >
               {imageArray.map((image, index) => (
@@ -83,7 +89,7 @@ const Theme = ({ account, setAccount }) => {
                   key={index}
                   sx={{
                     position: 'relative',
-                    width: `60vw`,
+                    width: isLandscape ? '20vw' : `60vw`,
                     aspectRatio: '9/12',
                     borderRadius: '1rem',
                     overflow: 'hidden',

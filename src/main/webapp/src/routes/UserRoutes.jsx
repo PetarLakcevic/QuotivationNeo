@@ -26,8 +26,7 @@ function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
 }
 
-
-const UserRoutes = () => {
+const UserRoutes = ({ isLandscape }) => {
   const [account, setAccount] = useState(null);
 
   const location = useLocation();
@@ -97,9 +96,19 @@ const UserRoutes = () => {
 
   return (
     <>
+      {/* <Box
+        sx={{
+          position: 'fixed',
+          top: 10,
+          left: 10,
+          zIndex: '1000',
+        }}
+      >
+        <img src={crown} alt="crown" style={{ width: '35px', height: '35px' }} />
+      </Box> */}
       <Routes>
         <Route path="/welcome" element={<Welcome />} />
-        <Route path="/theme" element={<Theme account={account} setAccount={setAccount} />} />
+        <Route path="/theme" element={<Theme account={account} setAccount={setAccount} isLandscape={isLandscape} />} />
         <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
         <Route path="/home" element={<Quote account={account} />} />
         <Route path="/suggestions" element={<Suggestions />} />
@@ -110,13 +119,11 @@ const UserRoutes = () => {
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
-        <Route path="/premium" element={<Payments />} />
+        <Route path="/premium" element={<Payments isLandscape={isLandscape} />} />
         <Route path="/payment-status" element={<ActivatePremium />} />
         <Route path="/account/reset/finish" element={<PasswordChange />} />
       </Routes>{' '}
-      <Snackbar open={open} autoHideDuration={6000}
-      TransitionComponent={TransitionUp}
-      >
+      <Snackbar open={open} autoHideDuration={6000} TransitionComponent={TransitionUp}>
         <Box sx={{ width: '100%' }}>
           <Box
             sx={{
@@ -131,40 +138,56 @@ const UserRoutes = () => {
             component={Paper}
             elevation={5}
           >
-            <img src={crown} alt="crown" style={{ width: '35px', height: '35px',
-          backgroundImage: 'linear-gradient(35deg, hsl(193, 66%, 52%), hsl(144, 25%, 57%), #aac0d0)', borderRadius: '50%', padding: '5px'
-          }} />
+            <img
+              src={crown}
+              alt="crown"
+              style={{
+                width: '35px',
+                height: '35px',
+                backgroundImage: 'linear-gradient(35deg, hsl(193, 66%, 52%), hsl(144, 25%, 57%), #aac0d0)',
+                borderRadius: '50%',
+                padding: '5px',
+              }}
+            />
             <Typography variant="h5">{snackbarText.title}</Typography>
 
-            <Typography variant="h6" sx={{
-              mb: '10px',
-            }}>{snackbarText.body}</Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                mb: '10px',
+              }}
+            >
+              {snackbarText.body}
+            </Typography>
 
             {snackbarText.description.map((item, index) => (
               <Typography key={index} variant="h6">
                 {item}
               </Typography>
             ))}
-            <Box sx={{
-              display: 'flex',
-              gap: '10px',
-            }}>
-              <Button variant="contained" sx={{ mt: '10px',
-            backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 47%), #aac0d0)'
-            }}
-            onPointerDown={() => {
-              navigate('/premium');
-              setOpen(false);
-            }}
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+              }}
             >
+              <Button
+                variant="contained"
+                sx={{ mt: '10px', backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 47%), #aac0d0)' }}
+                onPointerDown={() => {
+                  navigate('/premium');
+                  setOpen(false);
+                }}
+              >
                 Try it now!
               </Button>
-              <Button variant="outlined" 
-              color="success" 
-              sx={{ mt: '10px' }}
-              onPointerDown={() => {
-                setOpen(false);
-              }}
+              <Button
+                variant="outlined"
+                color="success"
+                sx={{ mt: '10px' }}
+                onPointerDown={() => {
+                  setOpen(false);
+                }}
               >
                 Remind me later
               </Button>

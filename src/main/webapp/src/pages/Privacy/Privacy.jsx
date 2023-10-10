@@ -18,6 +18,8 @@ const Privacy = () => {
             gap: 3,
             textAlign: 'center',
             textDecoration: 'none',
+            maxWidth: '760px',
+            margin: '0 auto',
           }}
         >
           <Typography variant="h4">Privacy Policy for Quotivation App</Typography>

@@ -96,7 +96,7 @@ const Profile = ({ account }) => {
                 Take full advantage of your trial until {new Date(account?.userAdditionalFields.trialExpiry).toLocaleDateString()}.
               </Typography>
             )}
-            {!account?.hasPremium && !account.hasTrial && (
+            {!account?.hasPremium && !account?.hasTrial && (
               <Typography variant="body1">Your trial period has expired. Upgrade to premium to continue enjoying our services.</Typography>
             )}
           </Box>

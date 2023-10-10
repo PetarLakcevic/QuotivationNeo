@@ -23,6 +23,8 @@ const Suggestions = () => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             width: '100%',
+            maxWidth: '760px',
+            margin: '0 auto',
           }}
         >
           <Typography variant="h5" mt={3}>

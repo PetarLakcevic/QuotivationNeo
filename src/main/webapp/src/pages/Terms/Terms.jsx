@@ -179,6 +179,8 @@ const Terms = () => {
             gap: 3,
             textAlign: 'center',
             textDecoration: 'none',
+            maxWidth: '760px',
+            margin: '0 auto',
           }}
         >
           <Select native defaultValue="en" sx={{ width: '100%' }} onChange={e => setLanguage(e.target.value)}>

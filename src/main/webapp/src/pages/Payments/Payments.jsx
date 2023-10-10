@@ -53,7 +53,7 @@ function CustomStepIcon(props) {
   );
 }
 
-const Payments = () => {
+const Payments = ({ isLandscape }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [planType, setPlanType] = useState('yearly');
 
@@ -218,11 +218,13 @@ const Payments = () => {
           justifyContent: 'center',
           alignItems: 'center',
           p: 3,
+          pb: 0,
           opacity: loading ? 0.5 : 1,
         }}
       >
         <Box
           sx={{
+            mt: isLandscape ? 10 : 2,
             mb: 2,
             display: 'flex',
             flexDirection: 'column',
@@ -238,8 +240,9 @@ const Payments = () => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: 1,
+              gap: isLandscape ? 0 : 1,
               p: 2,
+              pb: 0,
               bgcolor: '#fff',
               height: '100%',
               transition: 'all 0.3s ease',
@@ -248,13 +251,33 @@ const Payments = () => {
             }}
           >
             <Typography variant="h6">Annual Subscription</Typography>
-            <Typography variant="h5">2,000.00 RSD</Typography>
-            <Typography variant="h6">~ 17 EUR</Typography>
-            <Typography variant="body1">
-              166.67 RSD/month,
-              <br /> billed annually
-            </Typography>
-            <Typography variant="body2">~ 1.42 EUR/month</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: isLandscape ? 'row' : 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: isLandscape ? '2vw' : '0',
+              }}
+            >
+              <Typography variant="h5">2,000.00 RSD</Typography>
+              <Typography variant="h6">~ 17 EUR</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: isLandscape ? 'row' : 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: isLandscape ? '2vw' : '0',
+              }}
+            >
+              <Typography variant="body1">
+                166.67 RSD/month,
+                {!isLandscape && <br />} billed annually
+              </Typography>
+              <Typography variant="body2">~ 1.42 EUR/month</Typography>{' '}
+            </Box>
             <Typography variant="body2">Conversion rate: 117.2</Typography>
           </Box>
           <Typography variant="body1" sx={{ mt: 1 }}>
@@ -263,17 +286,14 @@ const Payments = () => {
           <Box
             sx={{
               display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
             <Typography variant="body1" sx={{ mt: 2 }}>
               By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
-              <Link
-                to="/terms-&-conditions"
-              >
-                Terms & Conditions
-              </Link>
-              .
+              <Link to="/terms-&-conditions">Terms & Conditions</Link>.
             </Typography>
           </Box>
           <Button
@@ -331,7 +351,6 @@ const Payments = () => {
             </Button>
           </Box>
         </Modal>
-
         <Box mt={2}>
           <Link to="/privacy">Privacy Policy</Link> |{' '}
           <Link
@@ -344,83 +363,106 @@ const Payments = () => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            // width: '90vw',
-            margin: '5vh auto',
-            gap: '2vw',
-          }}
-        >
-          <Link to="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
-            <img
-              src={visaSecure}
-              alt="visa secure"
-              style={{
-                width: '30vw',
-                objectFit: 'contain',
-              }}
-            />
-          </Link>
-          <Link to="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
-            <img
-              src={masterId}
-              alt="master id"
-              style={{
-                width: '30vw',
-                objectFit: 'contain',
-              }}
-            />
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
+            flexDirection: isLandscape ? 'row' : 'column',
             justifyContent: 'space-between',
-            // width: '90vw',
-            margin: '6vh auto 5vh',
+            alignItems: 'flex-start',
+            gap: isLandscape ? '40vw' : '0',
+            width: '100%',
+            mt: 10,
           }}
         >
-          <img
-            src={maestro}
-            alt="maestro"
-            style={{
-              width: '22%',
-              objectFit: 'contain',
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              // width: '90vw',
+              margin: isLandscape ? '0vh auto' : '5vh auto',
+              gap: '2vw',
             }}
-          />
-          <img
-            src={master}
-            alt="master"
-            style={{
-              width: '22%',
-              objectFit: 'contain',
+          >
+            <Link to="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
+              <img
+                src={visaSecure}
+                alt="visa secure"
+                style={{
+                  width: '30vw',
+                  objectFit: 'contain',
+                  maxWidth: isLandscape ? '10vw' : '100%',
+                }}
+              />
+            </Link>
+            <Link
+              to="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html "
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                src={masterId}
+                alt="master id"
+                style={{
+                  width: '30vw',
+                  objectFit: 'contain',
+                  maxWidth: isLandscape ? '10vw' : '100%',
+                }}
+              />
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              // width: '90vw',
+              margin: '0vh auto 0vh',
+              // maxWidth: isLandscape ? '10vw' : '100%',
             }}
-          />
-          <img
-            src={dina}
-            alt="dina"
-            style={{
-              width: '22%',
-              objectFit: 'contain',
-            }}
-          />
-          <img
-            src={visa}
-            alt="visa"
-            style={{
-              width: '22%',
-              objectFit: 'contain',
-            }}
-          />
-        </Box>
+          >
+            <img
+              src={maestro}
+              alt="maestro"
+              style={{
+                width: '22%',
+                objectFit: 'contain',
+                maxWidth: isLandscape ? '10vw' : '100%',
+              }}
+            />
+            <img
+              src={master}
+              alt="master"
+              style={{
+                width: '22%',
+                objectFit: 'contain',
+                maxWidth: isLandscape ? '10vw' : '100%',
+              }}
+            />
+            <img
+              src={dina}
+              alt="dina"
+              style={{
+                width: '22%',
+                objectFit: 'contain',
+                maxWidth: isLandscape ? '10vw' : '100%',
+              }}
+            />
+            <img
+              src={visa}
+              alt="visa"
+              style={{
+                width: '22%',
+                objectFit: 'contain',
+                maxWidth: isLandscape ? '10vw' : '100%',
+              }}
+            />
+          </Box>
+        </Box>{' '}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
             // width: '90vw',
-            margin: '5vh auto',
+            margin: isLandscape ? '2vh auto' : '5vh auto',
           }}
         >
           <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
@@ -430,12 +472,13 @@ const Payments = () => {
               style={{
                 width: '100%',
                 objectFit: 'contain',
+                maxWidth: isLandscape ? '10vw' : '100%',
               }}
             />
           </a>
         </Box>
       </Box>
-      <Typography variant="body1" sx={{ mt: 2, textAlign: 'center' }}>
+      <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
         Wermax Consulting doo | PIB 109871829 | MB 21258385
       </Typography>
     </UserContainer>

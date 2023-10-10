@@ -126,6 +126,16 @@ const UserNavbar = ({ home }) => {
           </Button>
         </Box>
       </Modal> */}
+       <img
+          src={crown}
+          alt="qq"
+          style={{
+            // width: '50%',
+            maxHeight: '2rem',
+            objectFit: 'contain',
+            opacity: account?.hasPremium ? 1 : 0,
+          }}
+        />
       <ArrowBack
         sx={{
           color: 'white',
@@ -339,7 +349,7 @@ const UserNavbar = ({ home }) => {
                     Suggestions
                   </Typography>
                 </Button>
-                {/* <Button
+                <Button
                   onPointerDown={() => {
                     navigate('/privacy');
                   }}
@@ -366,7 +376,7 @@ const UserNavbar = ({ home }) => {
                   >
                     Terms & Conditions
                   </Typography>
-                </Button> */}
+                </Button>
                 <Button
                   onPointerDown={() => {
                     navigate('/contact');

@@ -15,23 +15,42 @@ import ProtectedRoutes from './routes/ProtectedRoutes';
 import UserRoutes from './routes/UserRoutes';
 import { Outlet } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useTheme } from '@emotion/react';
+import { Landscape } from '@mui/icons-material';
 
 function App() {
   const userNameRef = useRef(null);
   const passwordRef = useRef(null);
   const [token, setToken] = useLocalStorage('token', '');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
 
+  useEffect(() => {
+    if (window.innerHeight > window.innerWidth) {
+      setIsLandscape(false);
+    } else {
+      setIsLandscape(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerHeight > window.innerWidth) {
+        setIsLandscape(false);
+      } else {
+        setIsLandscape(true);
+      }
+    });
+  }, []);
 
   const parseToken = t => {
     return JSON.parse(atob(t.split('.')[1]));
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) { 
+    if (localStorage.getItem('token')) {
       setToken(localStorage.getItem('token'));
       console.log(parseToken(localStorage.getItem('token')));
-    
     }
   }, []);
 
@@ -41,8 +60,6 @@ function App() {
     }
   }, [token]);
 
-
-
   const renderRoutes = () => {
     if (!token) {
       return <AppRoutes token={token} setToken={setToken} loggedIn={loggedIn} parseToken={parseToken} />;
@@ -51,7 +68,7 @@ function App() {
       return <ProtectedRoutes />;
     }
     if (token && parseToken(token).auth.includes('ROLE_USER')) {
-      return <UserRoutes />;
+      return <UserRoutes isLandscape={isLandscape} />;
     }
   };
 
@@ -74,7 +91,6 @@ function App() {
           {renderRoutes()}
         </BrowserRouter>
       </Box>
-      
     </GoogleOAuthProvider>
   );
 }

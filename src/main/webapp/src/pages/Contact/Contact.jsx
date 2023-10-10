@@ -18,6 +18,8 @@ const Contact = () => {
             gap: 3,
             textAlign: 'center',
             textDecoration: 'none',
+            maxWidth: '760px',
+            margin: '0 auto',
           }}
         >
           <Typography variant="h3">Contact</Typography>
