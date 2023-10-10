@@ -301,7 +301,7 @@ const Quote = ({ account }) => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100vw',
-          height: '100vh',
+          height: window.innerHeight,
           backgroundImage: `url(${imageArray[account?.userAdditionalFields?.themePicture - 1]})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
