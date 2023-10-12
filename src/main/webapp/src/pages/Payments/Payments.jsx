@@ -31,6 +31,8 @@ import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 import { Link } from 'react-router-dom';
 import { paymentLink } from '../../axios/axios';
+import Footer from '../../components/Footer';
+import TermsModal from './TermsModal';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
@@ -165,6 +167,7 @@ const Payments = ({ isLandscape }) => {
   const [loading, setLoading] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(true);
 
   const handlePaymentLink = () => {
     setLoading(true);
@@ -183,303 +186,203 @@ const Payments = ({ isLandscape }) => {
 
   return (
     <UserContainer>
-      <UserNavbar />
-      <Fade in={loading} timeout={500}>
-        <Box
-          sx={{
-            // display: loading ? 'block' : 'none',
-            position: 'fixed',
-            top: '0%',
-            left: '0%',
-            width: '100vw !important',
-            // bgcolor: 'rgba(0,0,0,0.5)',
-            height: '100vh',
-            // right: '0%',
-            // bottom: '0%',
-            color: '#000',
-            zIndex: 9999,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress
-            sx={{
-              color: 'black',
-            }}
-          />
-        </Box>
-      </Fade>
-
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          p: 3,
-          pb: 0,
-          opacity: loading ? 0.5 : 1,
+          width: '100%',
+          justifyContent: 'space-between',
+          minHeight: '100vh',
         }}
       >
-        <Box
-          sx={{
-            mt: isLandscape ? 10 : 2,
-            mb: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="h4">PREMIUM</Typography>
-          <Typography variant="body1">Get unlimited quotes!</Typography>
+        <UserNavbar />
+        <Fade in={loading} timeout={500}>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: isLandscape ? 0 : 1,
-              p: 2,
-              pb: 0,
-              bgcolor: '#fff',
-              height: '100%',
-              transition: 'all 0.3s ease',
-              mt: 1,
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant="h6">Annual Subscription</Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: isLandscape ? 'row' : 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: isLandscape ? '2vw' : '0',
-              }}
-            >
-              <Typography variant="h5">2,000.00 RSD</Typography>
-              <Typography variant="h6">~ 17 EUR</Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: isLandscape ? 'row' : 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: isLandscape ? '2vw' : '0',
-              }}
-            >
-              <Typography variant="body1">
-                166.67 RSD/month,
-                {!isLandscape && <br />} billed annually
-              </Typography>
-              <Typography variant="body2">~ 1.42 EUR/month</Typography>{' '}
-            </Box>
-            <Typography variant="body2">Conversion rate: 117.2</Typography>
-          </Box>
-          <Typography variant="body1" sx={{ mt: 1 }}>
-            We don't store your credit card information.
-          </Typography>
-          <Box
-            sx={{
+              // display: loading ? 'block' : 'none',
+              position: 'fixed',
+              top: '0%',
+              left: '0%',
+              width: '100vw !important',
+              // bgcolor: 'rgba(0,0,0,0.5)',
+              height: '100vh',
+              // right: '0%',
+              // bottom: '0%',
+              color: '#000',
+              zIndex: 9999,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
-              <Link to="/terms-&-conditions">Terms & Conditions</Link>.
-            </Typography>
+            <CircularProgress
+              sx={{
+                color: 'black',
+              }}
+            />
           </Box>
-          <Button
-            variant="contained"
-            sx={{
-              mt: 2,
-              marginInline: 'auto',
-              bgcolor: '#478D8A',
-            }}
-            onPointerDown={() => setShowModal(true)}
-            disabled={!accepted}
-          >
-            BUY NOW
-          </Button>
-        </Box>
-        <Modal open={showModal} onClose={() => setShowModal(false)}>
+        </Fade>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 3,
+            pb: 0,
+            opacity: loading ? 0.5 : 1,
+          }}
+        >
           <Box
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '80vw',
-              maxWidth: '500px',
-              bgcolor: '#fff',
-              p: 2,
-              borderRadius: '0.5em',
-              outline: 'none',
+              mt: isLandscape ? 10 : 2,
+              mb: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            <Typography variant="h5" sx={{ textAlign: 'center' }}>
-              Complete Your Premium Subscription
+            <Typography
+              variant="h5"
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              BUY PREMIUM <br /> SUBSCRIPTION
             </Typography>
-            <Typography variant="body1" sx={{ textAlign: 'center', mt: 2 }}>
-              Unlock unlimited access to all of our exclusive features for an entire year!
+            <Typography variant="body1">Get unlimited quotes!</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: isLandscape ? 0 : 1,
+                p: 2,
+                pb: 0,
+                bgcolor: '#fff',
+                height: '100%',
+                transition: 'all 0.3s ease',
+                mt: 1,
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant="h6">Annual Subscription</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: isLandscape ? 'row' : 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: isLandscape ? '2vw' : '0',
+                }}
+              >
+                <Typography variant="h5">2,000.00 RSD</Typography>
+                <Typography variant="h6">~ 17 EUR</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: isLandscape ? 'row' : 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: isLandscape ? '2vw' : '0',
+                }}
+              >
+                <Typography variant="body1">
+                  166.67 RSD/month,
+                  {!isLandscape && <br />} billed annually
+                </Typography>
+                <Typography variant="body2">~ 1.42 EUR/month</Typography>{' '}
+              </Box>
+              <Typography variant="body2">Conversion rate: 117.2</Typography>
+            </Box>
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              We don't store your credit card information.
             </Typography>
-            <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
-              Annual Plan: 2,000.00 RSD (~19.2 EUR at a conversion rate of 117.2)
-            </Typography>
-            <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
-              That's only 166.67 RSD (~1.42 EUR) per month, billed annually.
-            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
+              <Typography variant="body1" sx={{ mt: 2 }}>
+                By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
+                <Link to="/terms-&-conditions">Terms & Conditions</Link>.
+              </Typography>
+            </Box>
             <Button
               variant="contained"
               sx={{
                 mt: 2,
-                bgcolor: '#478D8A',
-                color: '#fff',
+                mb: 2,
                 marginInline: 'auto',
-                display: 'block',
+                bgcolor: '#478D8A',
               }}
-              onClick={handlePaymentLink}
+              onPointerDown={() => setShowModal(true)}
+              disabled={!accepted}
             >
-              Continue to Payment
+              BUY NOW
             </Button>
           </Box>
-        </Modal>
-        <Box mt={2}>
-          <Link to="/privacy">Privacy Policy</Link> |{' '}
-          <Link
-            to="/terms-&-conditions"
-          >
-            Terms & Conditions
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: isLandscape ? 'row' : 'column',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: isLandscape ? '40vw' : '0',
-            width: '100%',
-            mt: 10,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              // width: '90vw',
-              margin: isLandscape ? '0vh auto' : '5vh auto',
-              gap: '2vw',
-            }}
-          >
-            <Link to="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
-              <img
-                src={visaSecure}
-                alt="visa secure"
-                style={{
-                  width: '30vw',
-                  objectFit: 'contain',
-                  maxWidth: isLandscape ? '10vw' : '100%',
-                }}
-              />
-            </Link>
-            <Link
-              to="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html "
-              target="_blank"
-              rel="noreferrer"
+          <Modal open={showModal} onClose={() => setShowModal(false)}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '80vw',
+                maxWidth: '500px',
+                bgcolor: '#fff',
+                p: 2,
+                borderRadius: '0.5em',
+                outline: 'none',
+              }}
             >
-              <img
-                src={masterId}
-                alt="master id"
-                style={{
-                  width: '30vw',
-                  objectFit: 'contain',
-                  maxWidth: isLandscape ? '10vw' : '100%',
+              <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                Complete Your Premium Subscription
+              </Typography>
+              <Typography variant="body1" sx={{ textAlign: 'center', mt: 2 }}>
+                Unlock unlimited access to all of our exclusive features for an entire year!
+              </Typography>
+              <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
+                Annual Plan: 2,000.00 RSD (~19.2 EUR at a conversion rate of 117.2)
+              </Typography>
+              <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
+                That's only 166.67 RSD (~1.42 EUR) per month, billed annually.
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  bgcolor: '#478D8A',
+                  color: '#fff',
+                  marginInline: 'auto',
+                  display: 'block',
                 }}
-              />
-            </Link>
+                onClick={handlePaymentLink}
+              >
+                Continue to Payment
+              </Button>
+            </Box>
+          </Modal>
+          <Modal open={showModal2}>
+<TermsModal setShowModal2={setShowModal2} />
+          </Modal>
+          <Box mt={2}>
+            <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms-&-conditions">Terms & Conditions</Link>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              // width: '90vw',
-              margin: '0vh auto 0vh',
-              // maxWidth: isLandscape ? '10vw' : '100%',
-            }}
-          >
-            <img
-              src={maestro}
-              alt="maestro"
-              style={{
-                width: '22%',
-                objectFit: 'contain',
-                maxWidth: isLandscape ? '10vw' : '100%',
-              }}
-            />
-            <img
-              src={master}
-              alt="master"
-              style={{
-                width: '22%',
-                objectFit: 'contain',
-                maxWidth: isLandscape ? '10vw' : '100%',
-              }}
-            />
-            <img
-              src={dina}
-              alt="dina"
-              style={{
-                width: '22%',
-                objectFit: 'contain',
-                maxWidth: isLandscape ? '10vw' : '100%',
-              }}
-            />
-            <img
-              src={visa}
-              alt="visa"
-              style={{
-                width: '22%',
-                objectFit: 'contain',
-                maxWidth: isLandscape ? '10vw' : '100%',
-              }}
-            />
-          </Box>
-        </Box>{' '}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            // width: '90vw',
-            margin: isLandscape ? '2vh auto' : '5vh auto',
-          }}
-        >
-          <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
-            <img
-              src={chipcard}
-              alt="chipcard"
-              style={{
-                width: '100%',
-                objectFit: 'contain',
-                maxWidth: isLandscape ? '10vw' : '100%',
-              }}
-            />
-          </a>
         </Box>
-      </Box>
-      <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
+        <Footer />
+        {/* <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
         Wermax Consulting doo | PIB 109871829 | MB 21258385
-      </Typography>
+      </Typography> */}
+      </Box>
     </UserContainer>
   );
 };

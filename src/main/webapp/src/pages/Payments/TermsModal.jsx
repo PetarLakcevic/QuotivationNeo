@@ -2,9 +2,18 @@ import React, { useEffect, useState } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
-import { Box, Select, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Select, Typography } from '@mui/material';
+import { Check } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import visaSecure from '../../assets/images/Logotipi/Visa Secure/visa-secure_blu_72dpi.png';
+import masterId from '../../assets/images/Logotipi/masterID check/mc_idcheck_vrt_rgb_pos.png';
+import maestro from '../../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_opt_pos_73_2x.png';
+import master from '../../assets/images/Logotipi/Master Card/Mastercard White and Light Backgrounds/mc_vrt_opt_pos_73_2x.png';
+import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
+import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
+import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.jpg';
 
-const Terms = () => {
+const TermsModal = ({ setShowModal2 }) => {
   const [language, setLanguage] = useState('en');
   const dataEng = [
     {
@@ -157,6 +166,8 @@ const Terms = () => {
   const [data, setData] = useState(dataEng);
   const [contacts, setContacts] = useState(contactsEng);
 
+  const [agree, setAgree] = useState(false);
+
   useEffect(() => {
     if (language === 'en') {
       setData(dataEng);
@@ -167,67 +178,199 @@ const Terms = () => {
     }
   }, [language]);
   return (
-    <UserContainer>
-      <UserNavbar />
-      <UserContent>
+    <Box
+      sx={{
+        position: 'absolute',
+        bgcolor: '#fff',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflowY: 'scroll',
+        width: '90%',
+        height: '90%',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 3,
+        textAlign: 'center',
+        textDecoration: 'none',
+        maxWidth: '760px',
+        margin: '0 auto',
+      }}
+    >
+      <Select native defaultValue="en" sx={{ width: '100%' }} onChange={e => setLanguage(e.target.value)}>
+        <option value="en">English</option>
+        <option value="sr">Srpski</option>
+      </Select>
+      <Typography variant="h4"></Typography>
+      {data.map((item, index) => (
+        <>
+          <Typography variant="h6">{item.title}</Typography>
+          <Typography variant="body1">{item.text}</Typography>
+        </>
+      ))}
+       <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            alignItems: 'center',
+            //   justifyContent: 'flex-end',
+            // justifySelf: 'flex-end',
+            // justifyItems: 'flex-end',
+            marginLeft: 'auto',
+            gap: '3px',
+          }}
+        >
+          {' '}
+          <img
+            src={visa}
+            alt="visa"
+            style={{
+              width: '65px',
+              height: '50px',
+              objectFit: 'contain',
+              backgroundColor: 'white',
+              padding: '5px',
+              // maxWidth: isLandscape ? '10vw' : '100%',
+            }}
+          />{' '}
+          <img
+            src={master}
+            alt="master"
+            style={{
+              width: '65px',
+              height: '50px',
+              objectFit: 'contain',
+              backgroundColor: 'white',
+              padding: '5px',
+              // maxWidth: isLandscape ? '10vw' : '100%',
+            }}
+          />
+          <img
+            src={maestro}
+            alt="maestro"
+            style={{
+              width: '65px',
+              height: '50px',
+              objectFit: 'contain',
+              backgroundColor: 'white',
+              padding: '5px',
+              // maxWidth: isLandscape ? '10vw' : '100%',
+            }}
+          />
+          <img
+            src={dina}
+            alt="dina"
+            style={{
+              width: '65px',
+              height: '50px',
+              objectFit: 'contain',
+              backgroundColor: 'white',
+              padding: '5px',
+            }}
+          />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
+            <img
+              src={chipcard}
+              alt="chipcard"
+              style={{
+                width: '75px',
+                height: '50px',
+                objectFit: 'contain',
+                backgroundColor: 'white',
+                padding: '5px',
+              }}
+            />
+          </a>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
+            <img
+              src={visaSecure}
+              alt="visa secure"
+              style={{
+                width: '75px',
+                height: '50px',
+                objectFit: 'contain',
+                backgroundColor: 'white',
+                padding: '5px',
+              }}
+            />
+          </a>
+          <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
+            <img
+              src={masterId}
+              alt="master id"
+              style={{
+                width: '75px',
+                height: '50px',
+                objectFit: 'contain',
+                backgroundColor: 'white',
+                padding: '5px',
+              }}
+            />
+          </a>
+        </Box>
+      <Typography variant="h5">{language === 'en' ? 'Contact' : 'Kontakt'}</Typography>
+      <Box>
+        {contacts.map((item, index) => (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              gap: 1,
+              width: '100%',
+              //   textAlign: 'center',
+              textDecoration: 'none',
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
+              {item.title}:{' '}
+            </Typography>
+            <Typography variant="body1"> {item.text}</Typography>
+          </Box>
+        ))}
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             alignItems: 'center',
-            gap: 3,
-            textAlign: 'center',
-            textDecoration: 'none',
-            maxWidth: '760px',
-            margin: '0 auto',
           }}
         >
-          <Select native defaultValue="en" sx={{ width: '100%' }} onChange={e => setLanguage(e.target.value)}>
-            <option value="en">English</option>
-            <option value="sr">Srpski</option>
-          </Select>
-          <Typography variant="h4">
-            {language === 'en' ? 'Terms and Conditions' : 'Uslovi korišćenja'}
+          <Checkbox checked={agree} onChange={() => setAgree(!agree)} />{' '}
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
+            <Link to="/terms-&-conditions">Terms & Conditions</Link>.
           </Typography>
-          {data.map((item, index) => (
-            <>
-              <Typography variant="h6">{item.title}</Typography>
-              <Typography variant="body1">{item.text}</Typography>
-            </>
-          ))}
-          <Typography variant="h5">
-            {language === 'en' ? 'Contact' : 'Kontakt'}
+        </Box>{' '}
+        <Button
+          variant="contained"
+          sx={{
+            mt: 2,
+            mb: 2,
+            marginInline: 'auto',
+            bgcolor: '#478D8A',
+          }}
+          onPointerDown={() => setShowModal2(false)}
+          disabled={!agree}
+        >
+          {' '}
+          <Typography variant="body1" sx={{ color: '#fff' }}>
+            Continue
           </Typography>
-          <Box>
-            {contacts.map((item, index) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  gap: 1,
-                  width: '100%',
-                  //   textAlign: 'center',
-                  textDecoration: 'none',
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {item.title}:{' '}
-                </Typography>
-                <Typography variant="body1"> {item.text}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </UserContent>
-    </UserContainer>
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
-export default Terms;
+export default TermsModal;

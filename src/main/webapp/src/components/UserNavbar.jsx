@@ -414,7 +414,7 @@ const UserNavbar = ({ home }) => {
                         color: 'white',
                       }}
                     >
-                      Premium
+                      Premium subscription
                     </Typography>
                   </Button>
                 )}

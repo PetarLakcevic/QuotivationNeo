@@ -7,6 +7,7 @@ const UserContainer = ({children}) => {
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
+          minHeight: '100vh',
           // height: window.innerHeight,
       }}>
           {children}
