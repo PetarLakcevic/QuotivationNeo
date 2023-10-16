@@ -201,13 +201,12 @@ public class MailService {
         Locale locale = Locale.ENGLISH;
         String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl()+"/favicon.ico");
         content = content.replace("{1}", user.getFirstName()+ " " + user.getLastName());
-        content = content.replace("{2}", latestPayment.toString());
+        content = content.replace("{2}", latestPayment.getPaymentDataJson().toString());
         //Payment to map
         //String paymentString = getPaymentString(latestPayment);
 
-        content = content.replace("{2}", latestPayment.getPaymentDataJson());
 
-        content = content.replace("{3}", latestPayment.getPaymentDataJson());
+
         String subject = "Quotivation - Payment successful - Premium subscription activated";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
