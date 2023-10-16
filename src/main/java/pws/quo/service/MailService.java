@@ -77,7 +77,6 @@ public class MailService {
         "  <head>\n" +
         "    <title>Payment Successful - Quotivation</title>\n" +
         "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
-        "    <link>{0}</link>\n" +
         "  </head>\n" +
         "  <body>\n" +
         "    <p>Dear {1},</p>\n" +
@@ -88,9 +87,6 @@ public class MailService {
         "      You can now enjoy the full features of Quotivation.\n" +
         "    </p>\n" +
         "    <p><b>You can view detailed payment information below:</b></p>\n" +
-        "    <p>\n" +
-        "      Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija\n" +
-        "    </p>\n" +
         "    <p>{2}</p>\n" +
         "    <p>\n" +
         "      <span>Regards, </span>\n" +
@@ -215,8 +211,8 @@ public class MailService {
         }
         log.debug("Sending password reset email to '{}'", user.getEmail());
         Locale locale = Locale.ENGLISH;
-        String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
-        content = content.replace("{1}", user.getFirstName() + " " + user.getLastName());
+        //    String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
+        String content = successEmail.replace("{1}", user.getFirstName() + " " + user.getLastName());
 
         //Payment to map
         String paymentString = null;
