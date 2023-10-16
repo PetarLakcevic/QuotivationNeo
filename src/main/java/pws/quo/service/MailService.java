@@ -55,7 +55,7 @@ public class MailService {
         "              User Information: {firstName} {lastName}, {email}\n" +
         "            </li>\n" +
         "            <li>\n" +
-        "              Order Details: Premium, {amount} {currency}, Order ID:{' '}\n" +
+        "              Order Details: Premium, {amount} {currency}, Order ID:{orderId}\n" +
         "              {pgOrderId}\n" +
         "            </li>\n" +
         "            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>\n" +
@@ -79,7 +79,7 @@ public class MailService {
         "              User Information: {firstName} {lastName}, {email}\n" +
         "            </li>\n" +
         "            <li>\n" +
-        "              Order Details: Premium, {amount} {currency}, Order ID:{' '}\n" +
+        "              Order Details: Premium, {amount} {currency}, Order ID:{orderId}\n" +
         "              {pgOrderId}\n" +
         "            </li>\n" +
         "            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>\n" +
