@@ -83,6 +83,30 @@ public class AccountResource {
 
     private final PaymentRepository paymentRepository;
 
+    private final String paymentInfo = " <ul style={{ paddingLeft: '20px' }}>\n" +
+        "            <li>Outcome of Payment: Successful – account charged</li>\n" +
+        "            <li>\n" +
+        "              User Information: {firstName} {lastName}, {email}\n" +
+        "            </li>\n" +
+        "            <li>\n" +
+        "              Order Details: Premium, {amount} {currency}, Order ID:{orderId}\n" +
+        "              {pgOrderId}\n" +
+        "            </li>\n" +
+        "            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>\n" +
+        "            <li>\n" +
+        "              Transaction Information:\n" +
+        "              <ul style={{ paddingLeft: '20px' }}>\n" +
+        "                <li>Order Number: {pgOrderId}</li>\n" +
+        "                <li>Transaction Status: {transactionStatus}</li>\n" +
+        "                <li>Transaction Status Code: {pgTranReturnCode}</li>\n" +
+        "                <li>Transaction Number: {pgTranId}</li>\n" +
+        "                <li>Transaction Date: {timeCreated}</li>\n" +
+        "                <li>Transaction Amount: {amount}</li>\n" +
+        "                <li>Transaction Reference ID: {pgTranRefId}</li>\n" +
+        "              </ul>\n" +
+        "            </li>\n" +
+        "          </ul>";
+
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserAdditionalFieldsService userAdditionalFieldsService, UserQuoteService userQuoteService, CategoryRepository categoryRepository, AuthorRepository authorRepository, QuoteRepository quoteRepository, UserQuoteRepository userQuoteRepository, UserAdditionalFieldsRepository userAdditionalFieldsRepository, PaymentRepository paymentRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -976,7 +1000,7 @@ public class AccountResource {
     public String processPayment(MultipartFile file) {
         // Handle the file upload logic here
         // Redirect to /home
-        return "redirect:/home";
+        return paymentInfo;
     }
 
 
