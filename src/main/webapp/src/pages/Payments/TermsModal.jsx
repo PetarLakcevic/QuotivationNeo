@@ -344,10 +344,11 @@ const TermsModal = ({ setShowModal2 }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            mt: 2
           }}
         >
           <Checkbox checked={agree} onChange={() => setAgree(!agree)} />{' '}
-          <Typography variant="body1" sx={{ mt: 2 }}>
+          <Typography variant="body1">
             By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
             <Link to="/terms-&-conditions">Terms & Conditions</Link>.
           </Typography>
