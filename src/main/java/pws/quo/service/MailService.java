@@ -1,28 +1,29 @@
 package pws.quo.service;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import pws.quo.domain.Payment;
 import pws.quo.domain.User;
+import pws.quo.domain.UserAdditionalFields;
 import tech.jhipster.config.JHipsterProperties;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Service for sending emails.
@@ -45,6 +46,43 @@ public class MailService {
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
+
+    private final String paymentInfo = "<ul style={{ paddingLeft: '20px' }}>\n" +
+        "                <li>Order Number: {0}</li>\n" +
+        "                <li>Transaction Status: {1}</li>\n" +
+        "                <li>Transaction Status Code: {2}</li>\n" +
+        "                <li>Transaction Number: {3}</li>\n" +
+        "                <li>Transaction Date: {4}</li>\n" +
+        "                <li>Transaction Amount: {5}</li>\n" +
+        "                <li>Transaction Reference ID: {6}</li>\n" +
+        "              </ul>";
+    private final String successEmail = "<!DOCTYPE html>\n" +
+        "<html xmlns:th=\"http://www.thymeleaf.org\" th:lang=\"${#locale.language}\" lang=\"en\">\n" +
+        "  <head>\n" +
+        "    <title>Payment Successful - Quotivation</title>\n" +
+        "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
+        "    <link>{0}</link>\n" +
+        "  </head>\n" +
+        "  <body>\n" +
+        "    <p>Dear {1},</p>\n" +
+        "    <p>\n" +
+        "      We are happy to inform you that your purchase of a <b>Premium subscription has been successful.</b>\n" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "      You can now enjoy the full features of Quotivation.\n" +
+        "    </p>\n" +
+        "    <p><b>You can view detailed payment information below:</b></p>\n" +
+        "    <p>\n" +
+        "      Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija\n" +
+        "    </p>\n" +
+        "    <p>{2}</p>\n" +
+        "    <p>\n" +
+        "      <span>Regards, </span>\n" +
+        "      <br />\n" +
+        "      <p>Quotivation Team</p>\n" +
+        "    </p>\n" +
+        "  </body>\n" +
+        "</html>\n";
 
     public MailService(
         JHipsterProperties jHipsterProperties,
@@ -151,4 +189,41 @@ public class MailService {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
     }
+
+    @Async
+    public void sendPasswordPaymentSuccessful(Payment latestPayment, UserAdditionalFields userAdditionalFields) {
+        User user = userAdditionalFields.getInternalUser();
+        if (user.getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        log.debug("Sending password reset email to '{}'", user.getEmail());
+        Locale locale = Locale.ENGLISH;
+        String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl()+"/favicon.ico");
+        content = content.replace("{1}", user.getFirstName()+ " " + user.getLastName());
+        content = content.replace("{2}", latestPayment.toString());
+        //Payment to map
+        //String paymentString = getPaymentString(latestPayment);
+
+        content = content.replace("{2}", latestPayment.getPaymentDataJson());
+
+        content = content.replace("{3}", latestPayment.toString());
+        String subject = "Quotivation - Payment successful - Premium subscription activated";
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+//    private String getPaymentString(Payment latestPayment) {
+//
+//
+//
+//        return paymentInfo.replace("{0}", latestPayment.getPaymentDataJson().get)
+//            .replace("{1}", latestPayment.getTransactionStatus())
+//            .replace("{2}", latestPayment.getTransactionStatusCode())
+//            .replace("{3}", latestPayment.getTransactionNumber())
+//            .replace("{4}", latestPayment.getTransactionDate().toString())
+//            .replace("{5}", latestPayment.getTransactionAmount().toString())
+//            .replace("{6}", latestPayment.getTransactionReferenceId());
+//    }
+
+
 }

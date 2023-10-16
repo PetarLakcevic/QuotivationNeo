@@ -348,6 +348,8 @@ public class AccountResource {
 
         adminUserDTO.setPaymentDataJson(resp);
         adminUserDTO.setHasPremium(true);
+
+        mailService.sendPasswordPaymentSuccessful(latestPayment, userAdditionalFields);
     }
 
     private void failedTransactionStatus(String resp, AdminUserDTO adminUserDTO, UserAdditionalFields userAdditionalFields, Payment latestPayment) {
@@ -360,6 +362,8 @@ public class AccountResource {
         userAdditionalFieldsRepository.save(userAdditionalFields);
 
         adminUserDTO.setPaymentDataJson(resp);
+
+        //trt
     }
 
     private String getTransactionStatus(String resp) {
