@@ -97,19 +97,19 @@ public class AccountResource {
         this.paymentRepository = paymentRepository;
     }
 
+    /**
+     * {@code POST  /register} : register the user.
+     *
+     * @param managedUserVM the managed user View Model.
+     * @throws InvalidPasswordException  {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     */
 
 //    @GetMapping("/testic")
 //    public void registerQuotes(){
 //        userQuoteService.generateNewLineOfQuotes();
 //    }
-
-
-    @PostMapping("/payment-process")
-    public String processPayment(MultipartFile file) {
-        // Handle the file upload logic here
-        // Redirect to /home
-        return "redirect:/home";
-    }
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
@@ -119,7 +119,12 @@ public class AccountResource {
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         //mailService.sendActivationEmail(user);
     }
-
+    @PostMapping("/payment-process")
+    public String processPayment(MultipartFile file) {
+        // Handle the file upload logic here
+        // Redirect to /home
+        return "redirect:/home";
+    }
 
     /**
      * {@code GET  /activate} : activate the registered user.
