@@ -312,10 +312,9 @@ public class AccountResource {
             String transactionStatus = getTransactionStatus(resp);
 
             if (transactionStatus == null) {
-                transactionStatus="FA";
-//                latestPayment.setUsed(true);
-//                paymentRepository.save(latestPayment);
-//                return adminUserDTO;
+                latestPayment.setUsed(true);
+                paymentRepository.save(latestPayment);
+                return adminUserDTO;
             }
             switch (transactionStatus) {
                 case "IP":
