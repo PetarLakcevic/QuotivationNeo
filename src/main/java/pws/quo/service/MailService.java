@@ -77,7 +77,6 @@ public class MailService {
         "  <head>\n" +
         "    <title>Payment Successful - Quotivation</title>\n" +
         "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
-        "    <link>{0}</link>\n" +
         "  </head>\n" +
         "  <body>\n" +
         "    <p>Dear {1},</p>\n" +
@@ -215,8 +214,8 @@ public class MailService {
         }
         log.debug("Sending password reset email to '{}'", user.getEmail());
         Locale locale = Locale.ENGLISH;
-        String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
-        content = content.replace("{1}", user.getFirstName() + " " + user.getLastName());
+        //    String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
+        String content = successEmail.replace("{1}", user.getFirstName() + " " + user.getLastName());
 
         //Payment to map
         String paymentString = null;
