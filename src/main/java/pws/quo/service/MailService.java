@@ -87,9 +87,6 @@ public class MailService {
         "      You can now enjoy the full features of Quotivation.\n" +
         "    </p>\n" +
         "    <p><b>You can view detailed payment information below:</b></p>\n" +
-        "    <p>\n" +
-        "      Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija\n" +
-        "    </p>\n" +
         "    <p>{2}</p>\n" +
         "    <p>\n" +
         "      <span>Regards, </span>\n" +
