@@ -207,7 +207,7 @@ public class MailService {
 
         content = content.replace("{2}", latestPayment.getPaymentDataJson());
 
-        content = content.replace("{3}", latestPayment.toString());
+        content = content.replace("{3}", latestPayment.getPaymentDataJson());
         String subject = "Quotivation - Payment successful - Premium subscription activated";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
