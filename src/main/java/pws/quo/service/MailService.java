@@ -372,6 +372,7 @@ public class MailService {
             .replace("{amount}", amount)
             .replace("{currency}", currency)
             .replace("{pgOrderId}", pgOrderId)
+            .replace("{orderId}", pgOrderId)
             .replace("{transactionStatus}", transactionStatus)
             .replace("{pgTranReturnCode}", pgTranReturnCode)
             .replace("{pgTranId}", pgTranId)

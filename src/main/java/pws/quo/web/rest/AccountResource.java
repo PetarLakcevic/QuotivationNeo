@@ -996,13 +996,6 @@ public class AccountResource {
         }
     }
 
-    @PostMapping("/account/payment-process")
-    public String processPayment(MultipartFile file) {
-        // Handle the file upload logic here
-        // Redirect to /home
-        return paymentInfo;
-    }
-
 
 
     /**
