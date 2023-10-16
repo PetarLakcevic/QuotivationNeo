@@ -119,12 +119,6 @@ public class AccountResource {
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         //mailService.sendActivationEmail(user);
     }
-    @PostMapping("/payment-process")
-    public String processPayment(MultipartFile file) {
-        // Handle the file upload logic here
-        // Redirect to /home
-        return "redirect:/home";
-    }
 
     /**
      * {@code GET  /activate} : activate the registered user.
@@ -977,6 +971,14 @@ public class AccountResource {
             log.warn("Password reset requested for non existing mail");
         }
     }
+
+    @PostMapping("/account/payment-process")
+    public String processPayment(MultipartFile file) {
+        // Handle the file upload logic here
+        // Redirect to /home
+        return "redirect:/home";
+    }
+
 
 
     /**
