@@ -1,5 +1,7 @@
 package pws.quo.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -47,15 +49,29 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    private final String paymentInfo = "<ul style={{ paddingLeft: '20px' }}>\n" +
-        "                <li>Order Number: {0}</li>\n" +
-        "                <li>Transaction Status: {1}</li>\n" +
-        "                <li>Transaction Status Code: {2}</li>\n" +
-        "                <li>Transaction Number: {3}</li>\n" +
-        "                <li>Transaction Date: {4}</li>\n" +
-        "                <li>Transaction Amount: {5}</li>\n" +
-        "                <li>Transaction Reference ID: {6}</li>\n" +
-        "              </ul>";
+    private final String paymentInfo = " <ul style={{ paddingLeft: '20px' }}>\n" +
+        "            <li>Outcome of Payment: Successful – account charged</li>\n" +
+        "            <li>\n" +
+        "              User Information: {firstName} {lastName}, {email}\n" +
+        "            </li>\n" +
+        "            <li>\n" +
+        "              Order Details: Premium, {amount} {currency}, Order ID:{' '}\n" +
+        "              {pgOrderId}\n" +
+        "            </li>\n" +
+        "            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>\n" +
+        "            <li>\n" +
+        "              Transaction Information:\n" +
+        "              <ul style={{ paddingLeft: '20px' }}>\n" +
+        "                <li>Order Number: {pgOrderId}</li>\n" +
+        "                <li>Transaction Status: {transactionStatus}</li>\n" +
+        "                <li>Transaction Status Code: {pgTranReturnCode}</li>\n" +
+        "                <li>Transaction Number: {pgTranId}</li>\n" +
+        "                <li>Transaction Date: {timeCreated}</li>\n" +
+        "                <li>Transaction Amount: {amount}</li>\n" +
+        "                <li>Transaction Reference ID: {pgTranRefId}</li>\n" +
+        "              </ul>\n" +
+        "            </li>\n" +
+        "          </ul>";
     private final String successEmail = "<!DOCTYPE html>\n" +
         "<html xmlns:th=\"http://www.thymeleaf.org\" th:lang=\"${#locale.language}\" lang=\"en\">\n" +
         "  <head>\n" +
@@ -199,30 +215,60 @@ public class MailService {
         }
         log.debug("Sending password reset email to '{}'", user.getEmail());
         Locale locale = Locale.ENGLISH;
-        String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl()+"/favicon.ico");
-        content = content.replace("{1}", user.getFirstName()+ " " + user.getLastName());
+        String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
+        content = content.replace("{1}", user.getFirstName() + " " + user.getLastName());
         content = content.replace("{2}", latestPayment.getPaymentDataJson().toString());
         //Payment to map
-        //String paymentString = getPaymentString(latestPayment);
-
-
+        String paymentString = null;
+        try {
+            paymentString = getPaymentString(latestPayment, userAdditionalFields);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String subject = "Quotivation - Payment successful - Premium subscription activated";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
-//    private String getPaymentString(Payment latestPayment) {
-//
-//
-//
-//        return paymentInfo.replace("{0}", latestPayment.getPaymentDataJson().get)
-//            .replace("{1}", latestPayment.getTransactionStatus())
-//            .replace("{2}", latestPayment.getTransactionStatusCode())
-//            .replace("{3}", latestPayment.getTransactionNumber())
-//            .replace("{4}", latestPayment.getTransactionDate().toString())
-//            .replace("{5}", latestPayment.getTransactionAmount().toString())
-//            .replace("{6}", latestPayment.getTransactionReferenceId());
-//    }
+    private String getPaymentString(Payment latestPayment, UserAdditionalFields uaf) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        JsonNode root = mapper.readTree(latestPayment.getPaymentDataJson());
+        JsonNode transactionList = root.path("transactionList");
+        String transactionStatus = null;
+        String amount = null;
+        String currency = null;
+        String pgOrderId = null;
+        String pgTranReturnCode = null;
+        String pgTranId = null;
+        String timeCreated = null;
+        String pgTranRefId = null;
+        for (JsonNode transaction : transactionList) {
+            transactionStatus = transaction.get("transactionStatus").asText();
+            amount = transaction.get("amount").asText();
+            currency = transaction.get("currency").asText();
+            pgOrderId = transaction.get("pgOrderId").asText();
+            pgTranReturnCode = transaction.get("pgTranReturnCode").asText();
+            pgTranId = transaction.get("pgTranId").asText();
+            timeCreated = transaction.get("timeCreated").asText();
+            pgTranRefId = transaction.get("pgTranRefId").asText();
+
+        }
+
+
+        return paymentInfo.replace("{firstName}", uaf.getInternalUser().getFirstName())
+            .replace("{lastName}", uaf.getInternalUser().getLastName())
+            .replace("{email}", uaf.getInternalUser().getEmail())
+            .replace("{amount}", amount)
+            .replace("{currency}", currency)
+            .replace("{pgOrderId}", pgOrderId)
+            .replace("{transactionStatus}", transactionStatus)
+            .replace("{pgTranReturnCode}", pgTranReturnCode)
+            .replace("{pgTranId}", pgTranId)
+            .replace("{timeCreated}", timeCreated)
+            .replace("{pgTranRefId}", pgTranRefId);
+    }
 
 
 }
