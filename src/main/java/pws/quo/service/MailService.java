@@ -72,6 +72,30 @@ public class MailService {
         "              </ul>\n" +
         "            </li>\n" +
         "          </ul>";
+
+    private final String paymentInfoFail = " <ul style={{ paddingLeft: '20px' }}>\n" +
+        "            <li>Outcome of Payment: Unsuccessful – account NOT charged</li>\n" +
+        "            <li>\n" +
+        "              User Information: {firstName} {lastName}, {email}\n" +
+        "            </li>\n" +
+        "            <li>\n" +
+        "              Order Details: Premium, {amount} {currency}, Order ID:{' '}\n" +
+        "              {pgOrderId}\n" +
+        "            </li>\n" +
+        "            <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>\n" +
+        "            <li>\n" +
+        "              Transaction Information:\n" +
+        "              <ul style={{ paddingLeft: '20px' }}>\n" +
+        "                <li>Order Number: {pgOrderId}</li>\n" +
+        "                <li>Transaction Status: {transactionStatus}</li>\n" +
+        "                <li>Transaction Status Code: {pgTranReturnCode}</li>\n" +
+        "                <li>Transaction Number: {pgTranId}</li>\n" +
+        "                <li>Transaction Date: {timeCreated}</li>\n" +
+        "                <li>Transaction Amount: {amount}</li>\n" +
+        "                <li>Transaction Reference ID: {pgTranRefId}</li>\n" +
+        "              </ul>\n" +
+        "            </li>\n" +
+        "          </ul>";
     private final String successEmail = "<!DOCTYPE html>\n" +
         "<html xmlns:th=\"http://www.thymeleaf.org\" th:lang=\"${#locale.language}\" lang=\"en\">\n" +
         "  <head>\n" +
@@ -85,6 +109,27 @@ public class MailService {
         "    </p>\n" +
         "    <p>\n" +
         "      You can now enjoy the full features of Quotivation.\n" +
+        "    </p>\n" +
+        "    <p><b>You can view detailed payment information below:</b></p>\n" +
+        "    <p>{2}</p>\n" +
+        "    <p>\n" +
+        "      <span>Regards, </span>\n" +
+        "      <br />\n" +
+        "      <p>Quotivation Team</p>\n" +
+        "    </p>\n" +
+        "  </body>\n" +
+        "</html>\n";
+
+    private final String failEmail = "<!DOCTYPE html>\n" +
+        "<html xmlns:th=\"http://www.thymeleaf.org\" th:lang=\"${#locale.language}\" lang=\"en\">\n" +
+        "  <head>\n" +
+        "    <title>Payment Successful - Quotivation</title>\n" +
+        "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
+        "  </head>\n" +
+        "  <body>\n" +
+        "    <p>Dear {1},</p>\n" +
+        "    <p>\n" +
+        "     Unfortunately, the premium subscription has not been purchased \n" +
         "    </p>\n" +
         "    <p><b>You can view detailed payment information below:</b></p>\n" +
         "    <p>{2}</p>\n" +
@@ -228,6 +273,32 @@ public class MailService {
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
+    @Async
+    public void sendPasswordPaymentFail(Payment latestPayment, UserAdditionalFields userAdditionalFields) {
+        User user = userAdditionalFields.getInternalUser();
+        if (user.getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        log.debug("Sending password reset email to '{}'", user.getEmail());
+        Locale locale = Locale.ENGLISH;
+        //    String content = successEmail.replace("{0}", jHipsterProperties.getMail().getBaseUrl() + "/favicon.ico");
+        String content = failEmail.replace("{1}", user.getFirstName() + " " + user.getLastName());
+
+        //Payment to map
+        String paymentString = null;
+        try {
+            paymentString = getPaymentStringFailed(latestPayment, userAdditionalFields);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        content = content.replace("{2}", paymentString);
+
+        String subject = "Quotivation - Payment unsuccessful - Premium subscription not activated";
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
     private String getPaymentString(Payment latestPayment, UserAdditionalFields uaf) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -256,6 +327,46 @@ public class MailService {
 
 
         return paymentInfo.replace("{firstName}", uaf.getInternalUser().getFirstName())
+            .replace("{lastName}", uaf.getInternalUser().getLastName())
+            .replace("{email}", uaf.getInternalUser().getEmail())
+            .replace("{amount}", amount)
+            .replace("{currency}", currency)
+            .replace("{pgOrderId}", pgOrderId)
+            .replace("{transactionStatus}", transactionStatus)
+            .replace("{pgTranReturnCode}", pgTranReturnCode)
+            .replace("{pgTranId}", pgTranId)
+            .replace("{timeCreated}", timeCreated)
+            .replace("{pgTranRefId}", pgTranRefId);
+    }
+
+    private String getPaymentStringFailed(Payment latestPayment, UserAdditionalFields uaf) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        JsonNode root = mapper.readTree(latestPayment.getPaymentDataJson());
+        JsonNode transactionList = root.path("transactionList");
+        String transactionStatus = null;
+        String amount = null;
+        String currency = null;
+        String pgOrderId = null;
+        String pgTranReturnCode = null;
+        String pgTranId = null;
+        String timeCreated = null;
+        String pgTranRefId = null;
+        for (JsonNode transaction : transactionList) {
+            transactionStatus = transaction.get("transactionStatus").asText();
+            amount = transaction.get("amount").asText();
+            currency = transaction.get("currency").asText();
+            pgOrderId = transaction.get("pgOrderId").asText();
+            pgTranReturnCode = transaction.get("pgTranReturnCode").asText();
+            pgTranId = transaction.get("pgTranId").asText();
+            timeCreated = transaction.get("timeCreated").asText();
+            pgTranRefId = transaction.get("pgTranRefId").asText();
+
+        }
+
+
+        return paymentInfoFail.replace("{firstName}", uaf.getInternalUser().getFirstName())
             .replace("{lastName}", uaf.getInternalUser().getLastName())
             .replace("{email}", uaf.getInternalUser().getEmail())
             .replace("{amount}", amount)

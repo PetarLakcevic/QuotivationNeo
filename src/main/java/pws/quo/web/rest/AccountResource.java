@@ -363,7 +363,7 @@ public class AccountResource {
 
         adminUserDTO.setPaymentDataJson(resp);
 
-        //trt
+        mailService.sendPasswordPaymentFail(latestPayment, userAdditionalFields);
     }
 
     private String getTransactionStatus(String resp) {
