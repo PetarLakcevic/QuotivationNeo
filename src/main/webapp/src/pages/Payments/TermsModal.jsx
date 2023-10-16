@@ -220,7 +220,7 @@ const TermsModal = ({ setShowModal2 }) => {
             //   justifyContent: 'flex-end',
             // justifySelf: 'flex-end',
             // justifyItems: 'flex-end',
-            marginLeft: 'auto',
+            // marginLeft: 'auto',
             gap: '3px',
           }}
         >
