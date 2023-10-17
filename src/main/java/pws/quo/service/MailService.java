@@ -360,49 +360,49 @@ public class MailService {
             if (transaction.has("transactionStatus")) {
                 transactionStatus = transaction.get("transactionStatus").asText();
             } else {
-                transactionStatus = "In progress"; // Set a default value
+                transactionStatus = "/"; // Set a default value
             }
 
             if (transaction.has("amount")) {
                 amount = transaction.get("amount").asText();
             } else {
-                amount = "In progress"; // Set a default value
+                amount = "/"; // Set a default value
             }
 
             if (transaction.has("currency")) {
                 currency = transaction.get("currency").asText();
             } else {
-                currency = "In progress"; // Set a default value
+                currency = "/"; // Set a default value
             }
 
             if (transaction.has("pgOrderId")) {
                 pgOrderId = transaction.get("pgOrderId").asText();
             } else {
-                pgOrderId = "In progress"; // Set a default value
+                pgOrderId = "/"; // Set a default value
             }
 
             if (transaction.has("pgTranReturnCode")) {
                 pgTranReturnCode = transaction.get("pgTranReturnCode").asText();
             } else {
-                pgTranReturnCode = "In progress"; // Set a default value
+                pgTranReturnCode = "/"; // Set a default value
             }
 
             if (transaction.has("pgTranId")) {
                 pgTranId = transaction.get("pgTranId").asText();
             } else {
-                pgTranId = "In progress"; // Set a default value
+                pgTranId = "/"; // Set a default value
             }
 
             if (transaction.has("timeCreated")) {
                 timeCreated = transaction.get("timeCreated").asText();
             } else {
-                timeCreated = "In progress"; // Set a default value
+                timeCreated = "/"; // Set a default value
             }
 
             if (transaction.has("pgTranRefId")) {
                 pgTranRefId = transaction.get("pgTranRefId").asText();
             } else {
-                pgTranRefId = "In progress"; // Set a default value
+                pgTranRefId = "/"; // Set a default value
             }
 
 
