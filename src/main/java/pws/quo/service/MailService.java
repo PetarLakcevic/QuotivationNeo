@@ -68,6 +68,7 @@ public class MailService {
         "                <li>Transaction Number: {pgTranId}</li>\n" +
         "                <li>Transaction Date: {timeCreated}</li>\n" +
         "                <li>Transaction Amount: {amount}</li>\n" +
+        "                <li>Currency: {currency}</li>\n" +
         "                <li>Transaction Reference ID: {pgTranRefId}</li>\n" +
         "              </ul>\n" +
         "            </li>\n" +
@@ -92,6 +93,7 @@ public class MailService {
         "                <li>Transaction Number: {pgTranId}</li>\n" +
         "                <li>Transaction Date: {timeCreated}</li>\n" +
         "                <li>Transaction Amount: {amount}</li>\n" +
+        "                <li>Currency: {currency}</li>\n" +
         "                <li>Transaction Reference ID: {pgTranRefId}</li>\n" +
         "              </ul>\n" +
         "            </li>\n" +
