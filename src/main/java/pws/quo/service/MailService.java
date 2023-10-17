@@ -355,14 +355,54 @@ public class MailService {
         String timeCreated = null;
         String pgTranRefId = null;
         for (JsonNode transaction : transactionList) {
-            transactionStatus = transaction.get("transactionStatus").asText();
-            amount = transaction.get("amount").asText();
-            currency = transaction.get("currency").asText();
-            pgOrderId = transaction.get("pgOrderId").asText();
-            pgTranReturnCode = transaction.get("pgTranReturnCode").asText();
-            pgTranId = transaction.get("pgTranId").asText();
-            timeCreated = transaction.get("timeCreated").asText();
-            pgTranRefId = transaction.get("pgTranRefId").asText();
+            if (transaction.has("transactionStatus")) {
+                transactionStatus = transaction.get("transactionStatus").asText();
+            } else {
+                transactionStatus = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("amount")) {
+                amount = transaction.get("amount").asText();
+            } else {
+                amount = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("currency")) {
+                currency = transaction.get("currency").asText();
+            } else {
+                currency = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("pgOrderId")) {
+                pgOrderId = transaction.get("pgOrderId").asText();
+            } else {
+                pgOrderId = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("pgTranReturnCode")) {
+                pgTranReturnCode = transaction.get("pgTranReturnCode").asText();
+            } else {
+                pgTranReturnCode = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("pgTranId")) {
+                pgTranId = transaction.get("pgTranId").asText();
+            } else {
+                pgTranId = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("timeCreated")) {
+                timeCreated = transaction.get("timeCreated").asText();
+            } else {
+                timeCreated = "In progress"; // Set a default value
+            }
+
+            if (transaction.has("pgTranRefId")) {
+                pgTranRefId = transaction.get("pgTranRefId").asText();
+            } else {
+                pgTranRefId = "In progress"; // Set a default value
+            }
+
 
         }
 
