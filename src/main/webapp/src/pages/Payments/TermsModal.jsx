@@ -4,16 +4,17 @@ import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
 import { Box, Button, Checkbox, Select, Typography } from '@mui/material';
 import { Check } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import visaSecure from '../../assets/images/Logotipi/Visa Secure/visa-secure_blu_72dpi.png';
-import masterId from '../../assets/images/Logotipi/masterID check/mc_idcheck_vrt_rgb_pos.png';
-import maestro from '../../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_opt_pos_73_2x.png';
-import master from '../../assets/images/Logotipi/Master Card/Mastercard White and Light Backgrounds/mc_vrt_opt_pos_73_2x.png';
-import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
-import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
-import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.jpg';
+import masterId from '../../assets/images/Logoi/Master Secure crni.svg';
+import maestro from '../../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_pos.svg';
+import master from '../../assets/images/Logoi/Mastercard black.svg';
+import dina from '../../assets/images/Logoi/dinacard-new.svg';
+import visa from '../../assets/images/Logoi/Visa New 2021.svg';
+import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 
 const TermsModal = ({ setShowModal2 }) => {
+  const navigate = useNavigate();
   const [language, setLanguage] = useState('en');
   const dataEng = [
     {
@@ -211,109 +212,109 @@ const TermsModal = ({ setShowModal2 }) => {
           <Typography variant="body1">{item.text}</Typography>
         </>
       ))}
-       <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            alignItems: 'center',
-            //   justifyContent: 'flex-end',
-            // justifySelf: 'flex-end',
-            // justifyItems: 'flex-end',
-            // marginLeft: 'auto',
-            gap: '3px',
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'center',
+          //   justifyContent: 'flex-end',
+          // justifySelf: 'flex-end',
+          // justifyItems: 'flex-end',
+          // marginLeft: 'auto',
+          gap: '3px',
+        }}
+      >
+        {' '}
+        <img
+          src={visa}
+          alt="visa"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            //   backgroundColor: 'white',
+            padding: '5px',
+            // maxWidth: isLandscape ? '10vw' : '100%',
           }}
-        >
-          {' '}
+        />{' '}
+        <img
+          src={master}
+          alt="master"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            //   backgroundColor: 'white',
+            padding: '5px',
+            // maxWidth: isLandscape ? '10vw' : '100%',
+          }}
+        />
+        <img
+          src={maestro}
+          alt="maestro"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            //   backgroundColor: 'white',
+            // padding: '5px',
+            // maxWidth: isLandscape ? '10vw' : '100%',
+          }}
+        />
+        <img
+          src={dina}
+          alt="dina"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            //   backgroundColor: 'white',
+            padding: '5px',
+          }}
+        />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
           <img
-            src={visa}
-            alt="visa"
+            src={chipcard}
+            alt="chipcard"
             style={{
-              width: '65px',
+              width: '75px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
+              // backgroundColor: 'white',
               padding: '5px',
-              // maxWidth: isLandscape ? '10vw' : '100%',
-            }}
-          />{' '}
-          <img
-            src={master}
-            alt="master"
-            style={{
-              width: '65px',
-              height: '50px',
-              objectFit: 'contain',
-              backgroundColor: 'white',
-              padding: '5px',
-              // maxWidth: isLandscape ? '10vw' : '100%',
             }}
           />
+        </a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
           <img
-            src={maestro}
-            alt="maestro"
+            src={visaSecure}
+            alt="visa secure"
             style={{
-              width: '65px',
+              width: '75px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
-              padding: '5px',
-              // maxWidth: isLandscape ? '10vw' : '100%',
-            }}
-          />
-          <img
-            src={dina}
-            alt="dina"
-            style={{
-              width: '65px',
-              height: '50px',
-              objectFit: 'contain',
-              backgroundColor: 'white',
+              // backgroundColor: 'white',
               padding: '5px',
             }}
           />
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
-            <img
-              src={chipcard}
-              alt="chipcard"
-              style={{
-                width: '75px',
-                height: '50px',
-                objectFit: 'contain',
-                backgroundColor: 'white',
-                padding: '5px',
-              }}
-            />
-          </a>
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
-            <img
-              src={visaSecure}
-              alt="visa secure"
-              style={{
-                width: '75px',
-                height: '50px',
-                objectFit: 'contain',
-                backgroundColor: 'white',
-                padding: '5px',
-              }}
-            />
-          </a>
-          <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
-            <img
-              src={masterId}
-              alt="master id"
-              style={{
-                width: '75px',
-                height: '50px',
-                objectFit: 'contain',
-                backgroundColor: 'white',
-                padding: '5px',
-              }}
-            />
-          </a>
-        </Box>
+        </a>
+        <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
+          <img
+            src={masterId}
+            alt="master id"
+            style={{
+              width: '75px',
+              height: '50px',
+              objectFit: 'contain',
+              // backgroundColor: 'white',
+              padding: '5px',
+            }}
+          />
+        </a>
+      </Box>
       <Typography variant="h5">{language === 'en' ? 'Contact' : 'Kontakt'}</Typography>
       <Box>
         {contacts.map((item, index) => (
@@ -344,7 +345,7 @@ const TermsModal = ({ setShowModal2 }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            mt: 2
+            mt: 2,
           }}
         >
           <Checkbox checked={agree} onChange={() => setAgree(!agree)} />{' '}
@@ -353,22 +354,44 @@ const TermsModal = ({ setShowModal2 }) => {
             <Link to="/terms-&-conditions">Terms & Conditions</Link>.
           </Typography>
         </Box>{' '}
-        <Button
-          variant="contained"
+        <Box
           sx={{
-            mt: 2,
-            mb: 2,
-            marginInline: 'auto',
-            bgcolor: '#478D8A',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
           }}
-          onPointerDown={() => setShowModal2(false)}
-          disabled={!agree}
         >
-          {' '}
-          <Typography variant="body1" sx={{ color: '#fff' }}>
-            Continue
-          </Typography>
-        </Button>
+          <Button
+            variant="contained"
+            sx={{
+            //   marginInline: 'auto',
+              bgcolor: '#478D8A',
+            }}
+            onPointerDown={() => setShowModal2(false)}
+            disabled={!agree}
+          >
+            {' '}
+            <Typography variant="body1" sx={{ color: '#fff' }}>
+              Continue
+            </Typography>
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              borderColor: '#478D8A',
+              color: '#478D8A',
+            }}
+            onPointerDown={() => {
+              setShowModal2(false);
+              navigate(-1);
+            }}
+          >
+            {' '}
+            <Typography variant="body1">Cancel</Typography>
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
