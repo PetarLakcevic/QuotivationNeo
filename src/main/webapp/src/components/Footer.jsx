@@ -1,12 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import visaSecure from '../assets/images/Logotipi/Visa Secure/visa-secure_blu_72dpi.png';
-import masterId from '../assets/images/Logotipi/masterID check/mc_idcheck_vrt_rgb_pos.png';
-import maestro from '../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_opt_pos_73_2x.png';
-import master from '../assets/images/Logotipi/Master Card/Mastercard White and Light Backgrounds/mc_vrt_opt_pos_73_2x.png';
-import dina from '../assets/images/Logotipi/Dina/DinaCard znak.jpg';
-import visa from '../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
-import chipcard from '../assets/images/Logotipi/ChipCard LOGO 2021_rgb.jpg';
+import masterId from '../assets/images/Logoi/Master Secure crni.svg';
+import maestro from '../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_pos.svg';
+import master from '../assets/images/Logoi/Mastercard black.svg';
+import dina from '../assets/images/Logoi/dinacard-new.svg';
+import visa from '../assets/images/Logoi/Visa New 2021.svg';
+import chipcard from '../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -52,7 +52,7 @@ const Footer = () => {
               width: '65px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
+            //   backgroundColor: 'white',
               padding: '5px',
               // maxWidth: isLandscape ? '10vw' : '100%',
             }}
@@ -64,7 +64,7 @@ const Footer = () => {
               width: '65px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
+            //   backgroundColor: 'white',
               padding: '5px',
               // maxWidth: isLandscape ? '10vw' : '100%',
             }}
@@ -76,8 +76,8 @@ const Footer = () => {
               width: '65px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
-              padding: '5px',
+            //   backgroundColor: 'white',
+            //   padding: '5px',
               // maxWidth: isLandscape ? '10vw' : '100%',
             }}
           />
@@ -88,7 +88,7 @@ const Footer = () => {
               width: '65px',
               height: '50px',
               objectFit: 'contain',
-              backgroundColor: 'white',
+            //   backgroundColor: 'white',
               padding: '5px',
             }}
           />
@@ -101,7 +101,7 @@ const Footer = () => {
                 width: '75px',
                 height: '50px',
                 objectFit: 'contain',
-                backgroundColor: 'white',
+                // backgroundColor: 'white',
                 padding: '5px',
               }}
             />
@@ -115,7 +115,7 @@ const Footer = () => {
                 width: '75px',
                 height: '50px',
                 objectFit: 'contain',
-                backgroundColor: 'white',
+                // backgroundColor: 'white',
                 padding: '5px',
               }}
             />
@@ -128,7 +128,7 @@ const Footer = () => {
                 width: '75px',
                 height: '50px',
                 objectFit: 'contain',
-                backgroundColor: 'white',
+                // backgroundColor: 'white',
                 padding: '5px',
               }}
             />
