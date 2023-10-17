@@ -311,7 +311,7 @@ public class AccountResource {
             //Parse response
             String transactionStatus = getTransactionStatus(resp);
 
-            if (transactionStatus==null){
+            if (transactionStatus == null) {
                 latestPayment.setUsed(true);
                 paymentRepository.save(latestPayment);
                 return adminUserDTO;
@@ -319,9 +319,7 @@ public class AccountResource {
             switch (transactionStatus) {
                 case "IP":
                     System.out.println("In Progress");
-                    //TODO: mozda izmeniti?
                     failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
-
                     break;
                 case "CA":
                     System.out.println("Cancelled");
@@ -423,146 +421,6 @@ public class AccountResource {
         }
         return null;
     }
-
-
-//    @Transactional
-//    @GetMapping("/account")
-//    public AdminUserDTO getAccount() {
-//        System.out.println("::::::::::::::::::::::::::::::GETTING ACCOUNT:::::::::::::::::::::::::::::::::");
-//        Optional<User> user = userService.getUserWithAuthorities();
-//        if (user.isPresent()) {
-//            AdminUserDTO adminUserDTO = new AdminUserDTO(user.get());
-//            UserAdditionalFields userAdditionalFields = userAdditionalFieldsService.findByUser(user.get());
-//            adminUserDTO.setUserAdditionalFields(userAdditionalFields);
-//
-//            if (userAdditionalFields != null) {
-//                List<Category> kate = getCategoriesForUser();
-//                adminUserDTO.setCategoryList(kate);
-//            }
-//
-//
-//            if (userAdditionalFields.getFirstTimePremium() == true || userAdditionalFields.getFailedPayment() == true) {
-//                List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
-//                if (paymentList.size() > 0) {
-//                    Payment latestPayment = returnLatestPayment(paymentList);
-//                    adminUserDTO.setPaymentDataJson(latestPayment.getPaymentDataJson());
-//                }
-//            }
-//
-//            //set trial and stuff
-//            if (userAdditionalFields != null) {
-//                if (userAdditionalFields.getTrialExpiry() == null || userAdditionalFields.getTrialExpiry().isAfter(Instant.now())) {
-//                    adminUserDTO.setHasTrial(true);
-//                } else {
-//                    adminUserDTO.setHasTrial(false);
-//                }
-//                if (userAdditionalFields.getExpiry() != null && userAdditionalFields.getExpiry().isAfter(Instant.now())) {
-//                    adminUserDTO.setHasPremium(true);
-//                } else {
-//                    adminUserDTO.setHasPremium(false);
-//                }
-//
-//
-//                System.out.println("-------------------------------PREMIUM-------------------------------------");
-//                System.out.println(adminUserDTO.isHasPremium());
-//                System.out.println("-------------------------------========-------------------------------------");
-//                //check if it has payments, if it has check maybe if premium is active
-//                //TODO: mozda dodati sta ako uskoro istice?
-//                if (adminUserDTO.isHasPremium() == false) {
-//
-//                    List<Payment> paymentList = paymentRepository.findAllByUserAdditionalFieldsAndUsed(userAdditionalFields, false);
-//
-//                    if (paymentList.size() > 0) {
-//                        Payment latestPayment = returnLatestPayment(paymentList);
-//
-//
-//                        //TODO: pozvaati onaj njihov endpoint da vidim da li je placeno
-//
-//                        //send payment transaction
-//                        RestTemplate restTemplate = new RestTemplate();
-//
-//                        HttpHeaders headers = new HttpHeaders();
-//                        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//
-//
-//                        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-//                        map.add("ACTION", "QUERYTRANSACTION");
-//                        map.add("SESSIONTOKEN", latestPayment.getSessionToken());
-//
-//                        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-//
-//                        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
-//
-//
-//                        System.out.println("Response: " + resp); // Printing the entire response
-//
-//                        ObjectMapper mapper = new ObjectMapper();
-//                        try {
-//                            JsonNode root = mapper.readTree(resp);
-//
-//
-//                            JsonNode transactionList = root.path("transactionList");
-//                            String transactionStatus = null;
-//                            System.out.println(":::::::::::::::TRLRLRLRLRLRLLR:::::::::::::::::::::");
-//
-//                            for (JsonNode transaction : transactionList) {
-//                                transactionStatus = transaction.get("transactionStatus").asText();
-//                                System.out.println("/////////////////" + transactionStatus + "/////////////////////");
-//                                break;
-//                            }
-//
-//                            if (transactionStatus == null) {
-//                                userAdditionalFields.setFailedPayment(true);
-//                                userAdditionalFields.setFirstTimePremium(false);
-//                                userAdditionalFieldsRepository.save(userAdditionalFields);
-//                                adminUserDTO.setFailedPayment(true);
-//
-//                                return adminUserDTO;
-//                            }
-//                            //TODO: SWITCH CASE ZA SVE TRANS STATUSE
-//
-//                            if (transactionStatus.equalsIgnoreCase("AP")) {
-//
-//                                userAdditionalFields.setExpiry(latestPayment.getPaymentDate().plus(Duration.ofDays(366)));
-//                                latestPayment.setUsed(true);
-//
-//
-//                                latestPayment.setPaymentDataJson(mapica.toString());
-//
-//                                adminUserDTO.setPaymentDataJson(mapica.toString());
-//
-//                                adminUserDTO.setFailedPayment(userAdditionalFields.getFailedPayment());
-//
-//
-//                                paymentRepository.save(latestPayment);
-//                                userAdditionalFields.setFailedPayment(false);
-//                                userAdditionalFields.setFirstTimePremium(true);
-//                                userAdditionalFieldsRepository.save(userAdditionalFields);
-//                                adminUserDTO.setFirstTimePremium(userAdditionalFields.getFirstTimePremium());
-//                                adminUserDTO.setHasPremium(true);
-//
-//
-//                            } else {
-//                                userAdditionalFields.setFailedPayment(true);
-//                                userAdditionalFields.setFirstTimePremium(false);
-//                                userAdditionalFieldsRepository.save(userAdditionalFields);
-//                                adminUserDTO.setFailedPayment(true);
-//
-//
-//                                return adminUserDTO;
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//
-//            return adminUserDTO;
-//        } else {
-//            throw new AccountResourceException("User could not be found");
-//        }
-//    }
 
 
     @PatchMapping("/ok-premium")
@@ -995,7 +853,6 @@ public class AccountResource {
             log.warn("Password reset requested for non existing mail");
         }
     }
-
 
 
     /**

@@ -133,6 +133,7 @@ public class MailService {
         "    </p>\n" +
         "    <p><b>You can view detailed payment information below:</b></p>\n" +
         "    <p>{2}</p>\n" +
+        "    <p>The payment was unsuccessful, your account has not been charged. The most common cause is an incorrectly entered card number, expiration date, or security code. Please try again, and in the case of repeated errors, contact your bank.</p>\n" +
         "    <p>\n" +
         "      <span>Regards, </span>\n" +
         "      <br />\n" +
