@@ -286,9 +286,7 @@ public class AccountResource {
             adminUserDTO.setPaymentDataJson(payment.getPaymentDataJson());
         }
 
-        System.out.println("-------------------------------PREMIUM-------------------------------------");
-        System.out.println(adminUserDTO.isHasPremium());
-        System.out.println("-------------------------------========-------------------------------------");
+
 
 
         //if no premium check maybe he bought ??
