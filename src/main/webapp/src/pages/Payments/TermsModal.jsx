@@ -218,10 +218,6 @@ const TermsModal = ({ setShowModal2 }) => {
           flexWrap: 'wrap',
           flexDirection: 'row',
           alignItems: 'center',
-          //   justifyContent: 'flex-end',
-          // justifySelf: 'flex-end',
-          // justifyItems: 'flex-end',
-          // marginLeft: 'auto',
           gap: '3px',
         }}
       >
@@ -233,9 +229,7 @@ const TermsModal = ({ setShowModal2 }) => {
             width: '65px',
             height: '50px',
             objectFit: 'contain',
-            //   backgroundColor: 'white',
-            padding: '5px',
-            // maxWidth: isLandscape ? '10vw' : '100%',
+            // padding: '5px',
           }}
         />{' '}
         <img
@@ -245,9 +239,7 @@ const TermsModal = ({ setShowModal2 }) => {
             width: '65px',
             height: '50px',
             objectFit: 'contain',
-            //   backgroundColor: 'white',
             padding: '5px',
-            // maxWidth: isLandscape ? '10vw' : '100%',
           }}
         />
         <img
@@ -257,9 +249,6 @@ const TermsModal = ({ setShowModal2 }) => {
             width: '65px',
             height: '50px',
             objectFit: 'contain',
-            //   backgroundColor: 'white',
-            // padding: '5px',
-            // maxWidth: isLandscape ? '10vw' : '100%',
           }}
         />
         <img
@@ -270,7 +259,7 @@ const TermsModal = ({ setShowModal2 }) => {
             height: '50px',
             objectFit: 'contain',
             //   backgroundColor: 'white',
-            padding: '5px',
+            // padding: '5px',
           }}
         />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -279,11 +268,11 @@ const TermsModal = ({ setShowModal2 }) => {
             src={chipcard}
             alt="chipcard"
             style={{
-              width: '75px',
+              width: '85px',
               height: '50px',
               objectFit: 'contain',
               // backgroundColor: 'white',
-              padding: '5px',
+            //   padding: '5px',
             }}
           />
         </a>
@@ -297,7 +286,7 @@ const TermsModal = ({ setShowModal2 }) => {
               height: '50px',
               objectFit: 'contain',
               // backgroundColor: 'white',
-              padding: '5px',
+            //   padding: '5px',
             }}
           />
         </a>
@@ -310,7 +299,7 @@ const TermsModal = ({ setShowModal2 }) => {
               height: '50px',
               objectFit: 'contain',
               // backgroundColor: 'white',
-              padding: '5px',
+            //   padding: '5px',
             }}
           />
         </a>
