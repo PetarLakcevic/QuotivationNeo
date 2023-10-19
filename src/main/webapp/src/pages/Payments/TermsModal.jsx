@@ -236,9 +236,11 @@ const TermsModal = ({ setShowModal2 }) => {
           <Typography variant="body1">{item.text}</Typography>
           <Box>
             {item?.additional?.map((item, index) => (
-              <Typography variant="body1" sx={{
-                textAlign: 'left',
-              }}>
+              <Typography variant="body1"
+              //   sx={{
+              //   textAlign: 'left',
+              // }}
+              >
                 <b>{item.title}</b>
                 {item.text}
               </Typography>

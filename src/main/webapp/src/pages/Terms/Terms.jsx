@@ -9,7 +9,19 @@ const Terms = () => {
   const dataEng = [
     {
       title: 'PRODUCT DESCRIPTION',
-      text: 'Premium account offering one year of daily quotes. Price for this service is 2,000.00 RSD.',
+      text: 'Premium account offering one year (365 days) of daily quotes, that means:',
+      additional: [
+        { title: 'Two quotes daily', text: ', directly within the app – that’s 730 quotes over an entire year.' },
+        {
+          title: 'Notifications',
+          text: " that remind you to stay up to date with the newest quotes (provided you've subscribed to notifications).",
+        },
+        {
+          title: 'History ',
+          text: ' – you can review all of the quotes you have already gotten in the history panel of the application.',
+        },
+      ],
+      desc: 'The total cost for this premium service is 2,000.00 RSD',
     },
     {
       title: 'CURRENCY CONVERSION STATEMENT',
@@ -44,7 +56,19 @@ const Terms = () => {
   const dataSrb = [
     {
       title: 'OPIS PROIZVODA',
-      text: 'Premium nalog koji nudi godinu dana dnevnih citata. Cena ove usluge je 2.000,00 RSD.',
+      text: 'Premium nalog koji nudi godinu dana (365 dana) dnevnih citata, što znači:',
+      additional: [
+        { title: 'Dva citata dnevno', text: ', direktno u aplikaciji – to je 730 citata tokom cele godine.' },
+        {
+          title: 'Notifikacije',
+          text: ' koje vas podsećaju da ostanete u toku sa najnovijim citatima (pod uslovom da ste se pretplatili na notifikacije).',
+        },
+        {
+          title: 'Istorija',
+          text: ' – možete pregledati sve citate koje ste dobili u istoriji aplikacije.',
+        },
+      ],
+      desc: 'Ukupna cena za ovu premium uslugu je 2.000,00 RSD',
     },
     {
       title: 'IZJAVA O KONVERZIJI',
@@ -187,18 +211,28 @@ const Terms = () => {
             <option value="en">English</option>
             <option value="sr">Srpski</option>
           </Select>
-          <Typography variant="h4">
-            {language === 'en' ? 'Terms and Conditions' : 'Uslovi korišćenja'}
-          </Typography>
+          <Typography variant="h4">{language === 'en' ? 'Terms and Conditions' : 'Uslovi korišćenja'}</Typography>
           {data.map((item, index) => (
             <>
               <Typography variant="h6">{item.title}</Typography>
               <Typography variant="body1">{item.text}</Typography>
+              <Box>
+                {item?.additional?.map((item, index) => (
+                  <Typography
+                    variant="body1"
+                    // sx={{
+                    //   textAlign: 'left',
+                    // }}
+                  >
+                    <b>{item.title}</b>
+                    {item.text}
+                  </Typography>
+                ))}
+              </Box>
+              <Typography variant="body1">{item?.desc}</Typography>
             </>
           ))}
-          <Typography variant="h5">
-            {language === 'en' ? 'Contact' : 'Kontakt'}
-          </Typography>
+          <Typography variant="h5">{language === 'en' ? 'Contact' : 'Kontakt'}</Typography>
           <Box>
             {contacts.map((item, index) => (
               <Box
