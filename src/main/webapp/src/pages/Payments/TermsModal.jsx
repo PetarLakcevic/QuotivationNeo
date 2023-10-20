@@ -39,7 +39,7 @@ const TermsModal = ({ setShowModal2 }) => {
     },
     {
       title: 'PRODUCT DELIVERY',
-      text: 'The premium account is accessible immediately upon payment.',
+      text: 'The premium account is accessible immediately upon payment.Starting today, you will receive two quotes every day',
     },
     {
       title: 'REFUND POLICY',
@@ -205,14 +205,14 @@ const TermsModal = ({ setShowModal2 }) => {
   return (
     <Box
       sx={{
-        position: 'absolute',
-        bgcolor: '#fff',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        overflowY: 'scroll',
-        width: '90%',
-        height: '90%',
+        // position: 'absolute',
+        // bgcolor: '#fff',
+        // top: '50%',
+        // left: '50%',
+        // transform: 'translate(-50%, -50%)',
+        // overflowY: 'scroll',
+        // width: '90%',
+        // height: '90%',
         padding: '20px',
         display: 'flex',
         flexDirection: 'column',
@@ -236,10 +236,11 @@ const TermsModal = ({ setShowModal2 }) => {
           <Typography variant="body1">{item.text}</Typography>
           <Box>
             {item?.additional?.map((item, index) => (
-              <Typography variant="body1"
-              //   sx={{
-              //   textAlign: 'left',
-              // }}
+              <Typography
+                variant="body1"
+                //   sx={{
+                //   textAlign: 'left',
+                // }}
               >
                 <b>{item.title}</b>
                 {item.text}
@@ -395,7 +396,7 @@ const TermsModal = ({ setShowModal2 }) => {
               //   marginInline: 'auto',
               bgcolor: '#478D8A',
             }}
-            onPointerDown={() => setShowModal2(false)}
+            onPointerDown={() => navigate('/payments/step3')}
             disabled={!agree}
           >
             {' '}
@@ -409,13 +410,10 @@ const TermsModal = ({ setShowModal2 }) => {
               borderColor: '#478D8A',
               color: '#478D8A',
             }}
-            onPointerDown={() => {
-              setShowModal2(false);
-              navigate(-1);
-            }}
+            onPointerDown={() => navigate('/home')}
           >
             {' '}
-            <Typography variant="body1">Cancel</Typography>
+            <Typography variant="body1"> Back to home</Typography>
           </Button>
         </Box>
       </Box>

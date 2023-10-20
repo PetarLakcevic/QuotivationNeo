@@ -29,7 +29,7 @@ import master from '../../assets/images/Logotipi/Master Card/Mastercard White an
 import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
 import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { paymentLink } from '../../axios/axios';
 import Footer from '../../components/Footer';
 import TermsModal from './TermsModal';
@@ -56,6 +56,7 @@ function CustomStepIcon(props) {
 }
 
 const Payments = ({ isLandscape }) => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [planType, setPlanType] = useState('yearly');
 
@@ -315,19 +316,43 @@ const Payments = ({ isLandscape }) => {
                 <Link to="/terms-&-conditions">Terms & Conditions</Link>.
               </Typography>
             </Box>
-            <Button
-              variant="contained"
+            <Box
               sx={{
-                mt: 2,
-                mb: 2,
-                marginInline: 'auto',
-                bgcolor: '#478D8A',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+                mt: 3,
               }}
-              onPointerDown={() => setShowModal(true)}
-              disabled={!accepted}
             >
-              BUY NOW
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  marginInline: 'auto',
+                  bgcolor: '#478D8A',
+                }}
+                onPointerDown={() => setShowModal(true)}
+                disabled={!accepted}
+              >
+                BUY NOW
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: '#478D8A',
+                  borderColor: '#478D8A',
+                }}
+                onPointerDown={() => navigate('/home')}
+              >
+                {' '}
+                <Typography variant="body1" sx={{ color: '#478D8A' }}>
+                  Back to home
+                </Typography>
+              </Button>
+            </Box>
           </Box>
           <Modal open={showModal} onClose={() => setShowModal(false)}>
             <Box
@@ -371,9 +396,9 @@ const Payments = ({ isLandscape }) => {
               </Button>
             </Box>
           </Modal>
-          <Modal open={showModal2}>
+          {/* <Modal open={showModal2}>
 <TermsModal setShowModal2={setShowModal2} />
-          </Modal>
+          </Modal> */}
           <Box mt={2}>
             <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms-&-conditions">Terms & Conditions</Link>
           </Box>

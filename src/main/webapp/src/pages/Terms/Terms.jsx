@@ -4,9 +4,41 @@ import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
 import { Box, Select, Typography } from '@mui/material';
 
-const Terms = () => {
+const Terms = ({ account }) => {
   const [language, setLanguage] = useState('en');
+  // const [planText, setPlanText] = useState('');
+
+  const premiumText = '';
+  const trialText = '';
+  const trialExpiredText = '';
+
+  // useEffect(() => {
+  //   const expiryDate = new Date(account?.paymentTokenExpiry).toLocaleDateString();
+  //   const registrationDate = new Date(account?.registrationDate);
+  //   const trialEndDate = new Date(registrationDate);
+  //   trialEndDate.setDate(trialEndDate.getDate() + 7);
+  //   const trialEndDateString = trialEndDate.toLocaleDateString();
+
+  //   const nonRenewalNotice =
+  //     ' Your subscription will not be automatically renewed. You will be notified one week before your renewal options expire.';
+  //   const cancellationNotice = '  You may cancel your subscription within 7 days of purchase.';
+  //   const cardInfoNotice = ' We do not store your card information.';
+  //   setPlanText(`Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`); 
+  //   if (account?.hasPremium) {
+  //     setPlanText(`You have a premium subscription active until the ${expiryDate}. ${cancellationNotice} ${nonRenewalNotice}  ${cardInfoNotice}`);
+  //   } else if (!account?.hasPremium && account?.hasTrial) {
+  //     setPlanText(
+  //       `You don't have a premium account. Your trial period will end on the ${trialEndDateString}. Consider upgrading to premium. ${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`
+  //     );
+  //   } else if (!account?.hasPremium && !account?.hasTrial) {
+  //     setPlanText(`Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`);
+  //   }
+  // }, [account]);
   const dataEng = [
+    // {
+    //   title: 'CURRENT PLAN',
+    //   text: planText,
+    // },
     {
       title: 'PRODUCT DESCRIPTION',
       text: 'Premium account offering one year (365 days) of daily quotes, that means:',
@@ -29,7 +61,7 @@ const Terms = () => {
     },
     {
       title: 'PRODUCT DELIVERY',
-      text: 'The premium account is accessible immediately upon payment.',
+      text: 'The premium account is accessible immediately upon payment. Starting today, you will receive two quotes every day.',
     },
     {
       title: 'REFUND POLICY',
