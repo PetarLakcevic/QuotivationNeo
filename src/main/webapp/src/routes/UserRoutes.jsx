@@ -122,9 +122,9 @@ const UserRoutes = ({ isLandscape }) => {
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
         <Route path="payments/step1" element={<Step1 account={account}/>} />
-        <Route path="payments/step2" element={<Step2 />} />
+        {/* <Route path="payments/step2" element={<Step2 />} /> */}
 
-        <Route path="/payments/step3" element={<Payments isLandscape={isLandscape} />} />
+        <Route path="/payments/step2" element={<Payments isLandscape={isLandscape} />} />
         <Route path="/payment-status" element={<ActivatePremium />} />
         <Route path="/account/reset/finish" element={<PasswordChange />} />
       </Routes>{' '}

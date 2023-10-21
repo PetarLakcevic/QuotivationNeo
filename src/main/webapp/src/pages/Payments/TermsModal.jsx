@@ -19,19 +19,38 @@ const TermsModal = ({ setShowModal2 }) => {
   const dataEng = [
     {
       title: 'PRODUCT DESCRIPTION',
-      text: 'Premium account offering one year (365 days) of daily quotes, that means:',
       additional: [
-        { title: 'Two quotes daily', text: ', directly within the app – that’s 730 quotes over an entire year.' },
         {
-          title: 'Notifications',
-          text: " that remind you to stay up to date with the newest quotes (provided you've subscribed to notifications).",
+          title: '1. Explore Plan (Free)',
+          content: [
+            {
+              title: '1.1. Introduction',
+              text: 'The Explore Plan is a complimentary offering designed to introduce users to the world of Quotivation. Perfect for individuals looking to periodically rejuvenate their spirit.',
+            },
+            {
+              title: '1.2. Offering',
+              text: 'During the first week of subscription, users will receive 2 daily quotes to uplift their spirit. Post the introductory week, users will be presented with a special quote every 3 days, a gentle reminder of the immense power within.',
+            },
+          ],
         },
         {
-          title: 'History ',
-          text: ' – you can review all of the quotes you have already gotten in the history panel of the application.',
+          title: '2. Premium Plan (Paid)',
+          content: [
+            {
+              title: '2.1. Introduction',
+              text: 'For those seeking a consistent and regular source of inspiration, the Premium Plan has been meticulously crafted. It’s not just about the frequency but about ensuring that every day comes with its own set of powerful words.',
+            },
+            {
+              title: '2.2. Offering',
+              text: 'An annual subscription grants users 2 handpicked inspirational quotes daily, ensuring a continuous flow of positivity. Users gain exclusive access to their personal quote history, ensuring cherished words are never lost.',
+            },
+            {
+              title: '2.3. Pricing',
+              text: 'The total cost for an annual subscription to the Premium Plan is 2,000.00 RSD.',
+            },
+          ],
         },
       ],
-      desc: 'The total cost for this premium service is 2,000.00 RSD',
     },
     {
       title: 'CURRENCY CONVERSION STATEMENT',
@@ -39,7 +58,7 @@ const TermsModal = ({ setShowModal2 }) => {
     },
     {
       title: 'PRODUCT DELIVERY',
-      text: 'The premium account is accessible immediately upon payment.Starting today, you will receive two quotes every day',
+      text: 'The premium account is accessible immediately upon payment. Starting today, you will receive two quotes every day.',
     },
     {
       title: 'REFUND POLICY',
@@ -66,20 +85,40 @@ const TermsModal = ({ setShowModal2 }) => {
   const dataSrb = [
     {
       title: 'OPIS PROIZVODA',
-      text: 'Premium nalog koji nudi godinu dana (365 dana) dnevnih citata, što znači:',
       additional: [
-        { title: 'Dva citata dnevno', text: ', direktno u aplikaciji – to je 730 citata tokom cele godine.' },
         {
-          title: 'Notifikacije',
-          text: ' koje vas podsećaju da ostanete u toku sa najnovijim citatima (pod uslovom da ste se pretplatili na notifikacije).',
+          title: '1. Istraživački paket (Besplatno)',
+          content: [
+            {
+              title: '1.1. Uvod',
+              text: 'Istraživački paket je besplatna ponuda napravljena kako bi korisnike upoznala sa svetom Quotivation-a. Savršen za pojedince koji žele povremeno da osveže svoj duh.',
+            },
+            {
+              title: '1.2. Ponuda',
+              text: 'Tokom prve nedelje pretplate, korisnici će svakodnevno dobijati 2 inspirativna citata koji će ih podići. Nakon uvodne nedelje, korisnicima će svaka 3 dana biti predstavljen poseban citat, blag podsetnik na ogromnu snagu koja leži u njima.',
+            },
+          ],
         },
         {
-          title: 'Istorija',
-          text: ' – možete pregledati sve citate koje ste dobili u istoriji aplikacije.',
+          title: '2. Premium paket (Plaćeno)',
+          content: [
+            {
+              title: '2.1. Uvod',
+              text: 'Za one koji traže konstantan i redovan izvor inspiracije, Premium paket je pažljivo osmišljen. Ne radi se samo o frekvenciji, već o tome da svaki dan donosi svoj set moćnih reči.',
+            },
+            {
+              title: '2.2. Ponuda',
+              text: 'Godišnja pretplata pruža korisnicima 2 pažljivo odabrana inspirativna citata dnevno, obezbeđujući neprekidan tok pozitivnosti. Korisnici dobijaju ekskluzivan pristup svojoj ličnoj istoriji citata, čime se osigurava da dragocene reči nikada ne budu izgubljene.',
+            },
+            {
+              title: '2.3. Cena',
+              text: 'Ukupna cena za godišnju pretplatu na Premium paket iznosi 2,000.00 RSD.',
+            },
+          ],
         },
       ],
-      desc: 'Ukupna cena za ovu premium uslugu je 2.000,00 RSD',
     },
+
     {
       title: 'IZJAVA O KONVERZIJI',
       text: 'Sva plaćanja će biti izvršena u lokalnoj valuti Republike Srbije – dinar (RSD). Za informativni prikaz cena u drugim valutama koristi se kurs (117.2 RSD = 1 EUR). Iznos koji će biti zadužen na vašoj platnoj kartici može biti izražen u vašoj lokalnoj valuti kroz konverziju prema kursu koji koriste kartičarske organizacije, a koji nam u trenutku transakcije ne može biti poznat. Kao rezultat ove konverzije može postojati neznatna razlika od originalne cene navedene na našem sajtu. Hvala vam na razumevanju.',
@@ -205,14 +244,14 @@ const TermsModal = ({ setShowModal2 }) => {
   return (
     <Box
       sx={{
-        // position: 'absolute',
-        // bgcolor: '#fff',
-        // top: '50%',
-        // left: '50%',
-        // transform: 'translate(-50%, -50%)',
-        // overflowY: 'scroll',
-        // width: '90%',
-        // height: '90%',
+        position: 'absolute',
+        bgcolor: '#fff',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflowY: 'scroll',
+        width: '90%',
+        height: '90%',
         padding: '20px',
         display: 'flex',
         flexDirection: 'column',
@@ -235,17 +274,21 @@ const TermsModal = ({ setShowModal2 }) => {
           <Typography variant="h6">{item.title}</Typography>
           <Typography variant="body1">{item.text}</Typography>
           <Box>
-            {item?.additional?.map((item, index) => (
-              <Typography
-                variant="body1"
-                //   sx={{
-                //   textAlign: 'left',
-                // }}
-              >
-                <b>{item.title}</b>
-                {item.text}
-              </Typography>
-            ))}
+          {item?.additional?.map((item, index) => (
+                  <>
+                    <Typography variant="h6" mb={3}>
+                      {item?.title}
+                    </Typography>
+                    {item?.content?.map((item, index) => (
+                      <>
+                        <Typography variant="body1" mt={3}>
+                          {item?.title}
+                        </Typography>
+                        <Typography variant="body1">{item?.text}</Typography>
+                      </>
+                    ))}
+                  </>
+                ))}
           </Box>
           <Typography variant="body1">{item?.desc}</Typography>
         </>
@@ -388,6 +431,7 @@ const TermsModal = ({ setShowModal2 }) => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 2,
+            mt: 2,
           }}
         >
           <Button
@@ -396,7 +440,7 @@ const TermsModal = ({ setShowModal2 }) => {
               //   marginInline: 'auto',
               bgcolor: '#478D8A',
             }}
-            onPointerDown={() => navigate('/payments/step3')}
+            onPointerDown={() => setShowModal2(false)}
             disabled={!agree}
           >
             {' '}

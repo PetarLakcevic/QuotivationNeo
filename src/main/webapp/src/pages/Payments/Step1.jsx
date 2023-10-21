@@ -2,51 +2,16 @@ import React, { useEffect, useState } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Info } from '@mui/icons-material';
 
 const Step1 = ({ account }) => {
   const navigate = useNavigate();
-  const [planText, setPlanText] = useState('');
-  useEffect(() => {
-    const expiryDate = new Date(account?.paymentTokenExpiry).toLocaleDateString();
-    const registrationDate = new Date(account?.registrationDate);
-    const trialEndDate = new Date(registrationDate);
-    trialEndDate.setDate(trialEndDate.getDate() + 7);
-    const trialEndDateString = trialEndDate.toLocaleDateString();
 
-    const nonRenewalNotice =
-      ' Your subscription will not be automatically renewed. You will be notified one week before your renewal options expire.';
-    const cancellationNotice = '  You may cancel your subscription within 7 days of purchase.';
-    const cardInfoNotice = ' We do not store your card information.';
-    // setPlanText(`Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`);
-    if (!account?.hasPremium && account?.hasTrial) {
-      setPlanText(
-        `You don't have a premium account. Your trial period will end on the ${trialEndDateString}. Consider upgrading to premium. ${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`
-      );
-    } else if (!account?.hasPremium && !account?.hasTrial) {
-      setPlanText(
-        `Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`
-      );
-    }
-  }, [account]);
+  const [modalFree, setModalFree] = useState(false);
+  const [modalPremium, setModalPremium] = useState(false);
 
-  const premiumText = {
-    title: 'PRODUCT DESCRIPTION',
-    text: 'Premium account offering one year (365 days) of daily quotes, that means:',
-    additional: [
-      { title: 'Two quotes daily', text: ', directly within the app – that’s 730 quotes over an entire year.' },
-      {
-        title: 'Notifications',
-        text: " that remind you to stay up to date with the newest quotes (provided you've subscribed to notifications).",
-      },
-      {
-        title: 'History ',
-        text: ' – you can review all of the quotes you have already gotten in the history panel of the application.',
-      },
-    ],
-    desc: 'The total cost for this premium service is 2,000.00 RSD',
-  };
   return (
     <UserContainer>
       <UserNavbar />
@@ -60,24 +25,206 @@ const Step1 = ({ account }) => {
             gap: 3,
             textAlign: 'center',
             textDecoration: 'none',
-            maxWidth: '760px',
+            maxWidth: '560px',
             margin: '0 auto',
+            minWidth: '350px',
+            mt: 3,
           }}
         >
-          <Typography variant="h6">CURRENT PLAN</Typography>
-          <Typography variant="body1">{planText}</Typography>
-          {/* <Typography variant="h6">WHAT YOU GET WITH PREMIUM?</Typography> */}
-          <Typography variant="h6">{premiumText.title}</Typography>
-          <Typography variant="body1">{premiumText.text}</Typography>
-          <Box>
-            {premiumText?.additional?.map((item, index) => (
-              <Typography variant="body1">
-                <b>{item.title}</b>
-                {item.text}
-              </Typography>
-            ))}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              justifyContent: 'space-between',
+              width: '100%',
+              gap: 2,
+            }}
+          >
+            <Box
+              sx={{
+                width: '50%',
+                border: '1px solid #478D8A',
+                borderRadius: '5px',
+
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Box
+                sx={{
+                  p: 1,
+                  pb: 0.5,
+                  // bgcolor: '#478D8A',
+                  // color: '#fff',
+                  borderBottomLeftRadius: '10px',
+                  borderBottomRightRadius: '10px',
+                }}
+              >
+                <Typography variant="h6">Explore plan</Typography>
+                <Typography sx={{ fontWeight: 'bold', visibility: 'hidden', fontSize: '1.15rem' }} variant="h6">
+                  2000 RSD/Year
+                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+                  (Free)
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 2,
+                  p: 2,
+                  mt: 1,
+                }}
+              >
+                <Box>
+                  <Typography>-2 quotes a day for the first 7 days</Typography>
+                  <Typography>-1 quote every 3 days after the first 7 days expire</Typography>
+                  <Typography>-Daily notifications</Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    detailed informations
+                    <IconButton
+                    onClick={() => setModalFree(true)}
+                    >
+                      <Info />
+                    </IconButton>
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      //   marginInline: 'auto',
+                      bgcolor: '#478D8A',
+                    }}
+                    disabled
+                  >
+                    {' '}
+                    <Typography variant="body1">
+                      FREE <br />
+                      <span
+                        style={{
+                          fontSize: '0.7rem',
+                          fontWeight: 'normal',
+                        }}
+                      >
+                        {' '}
+                        (ALREADY ACTIVE)
+                      </span>
+                    </Typography>{' '}
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: '50%',
+                border: '1px solid #478D8A',
+                borderRadius: '5px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Box
+                sx={{
+                  p: 1,
+                  bgcolor: '#478D8A',
+                  color: '#fff',
+                  borderBottomLeftRadius: '10px',
+                  borderBottomRightRadius: '10px',
+                }}
+              >
+                <Typography variant="h6">Premium plan</Typography>
+                <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+                  2000 RSD/Year
+                </Typography>
+                <Typography> (approx. 117.2 EUR/Year)</Typography>
+              </Box>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 2,
+                  p: 2,
+                  mt: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 1,
+                  }}
+                >
+                  <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
+                  <Typography>- Daily notifications</Typography>{' '}
+                  <Typography>- Access to History (see the list of your previously received quotes)</Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    detailed informations
+                    <IconButton
+                    onClick={() => setModalPremium(true)}
+                    >
+                      <Info />
+                    </IconButton>
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      //   marginInline: 'auto',
+                      bgcolor: '#478D8A',
+                    }}
+                    onPointerDown={() => navigate('/payments/step2')}
+                  >
+                    {' '}
+                    <Typography variant="body1" sx={{ color: '#fff' }}>
+                      BUY NOW
+                    </Typography>
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
           </Box>
-          <Typography variant="body1">{premiumText?.desc}</Typography>
+          <Box>
+            <ul style={{
+              textAlign: 'left',
+              padding: 10,
+            }}>
+              <li>
+                Quotivation.io does not save your credit card information. 
+              </li>
+              <li>
+                When the Premium plan expires, it will not renew automatically, instead you will be switched to the Explore plan.
+              </li>
+              <li>
+                There is no monthly plan, only annual.
+              </li>
+            </ul>
+          </Box>
           <Box
             sx={{
               display: 'flex',
@@ -88,19 +235,6 @@ const Step1 = ({ account }) => {
               mt: 3,
             }}
           >
-            <Button
-              variant="contained"
-              sx={{
-                //   marginInline: 'auto',
-                bgcolor: '#478D8A',
-              }}
-              onPointerDown={() => navigate('/payments/step2')}
-            >
-              {' '}
-              <Typography variant="body1" sx={{ color: '#fff' }}>
-                Continue
-              </Typography>
-            </Button>
             <Button
               variant="outlined"
               sx={{
@@ -116,6 +250,71 @@ const Step1 = ({ account }) => {
             </Button>
           </Box>
         </Box>
+        <Modal open={modalFree} onClose={() => setModalFree(false)}>
+          <Box
+            sx={{
+              position: 'absolute',
+        bgcolor: '#fff',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflowY: 'scroll',
+        width: '90%',
+        maxHeight: '90%',
+        padding: 6,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 3,
+        textAlign: 'center',
+        textDecoration: 'none',
+        maxWidth: '760px',
+        margin: '0 auto',
+            }}
+          >
+            <Typography variant="h6">Explore plan</Typography>
+            <Typography variant="body1">
+            Embark on a journey of inspiration with our free Explore Plan. For the first week, receive a boost of motivation with 2 daily quotes. After that, continue your journey with a special quote every 3 days, reminding you of the power within.
+            </Typography>
+            <Button variant="contained" sx={{ bgcolor: '#478D8A', color: '#fff' }} onPointerDown={() => setModalFree(false)}>
+              <Typography variant="body1">Close</Typography>
+            </Button>
+          </Box>
+        </Modal>
+        <Modal open={modalPremium} onClose={() => setModalPremium(false)}>
+          <Box
+            sx={{
+              position: 'absolute',
+        bgcolor: '#fff',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflowY: 'scroll',
+        width: '90%',
+        maxHeight: '90%',
+        padding: 6,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 3,
+        textAlign: 'center',
+        textDecoration: 'none',
+        maxWidth: '760px',
+        margin: '0 auto',
+            }}
+          >
+            <Typography variant="h6">Premium Plan (Paid)</Typography>
+            <Typography variant="body1">
+            Elevate your daily dose of motivation with our <b>Premium Plan</b>. For an annual subscription, enjoy <b>2 inspirational quotes every single day</b>, ensuring you're constantly fueled with positivity. Plus, with <b>exclusive access to your personal quote history</b>, you'll never lose track of those words that resonated with you the most. 
+The total cost for the Premium Plan is <b>2,000.00 RSD</b>
+            </Typography>
+            <Button variant="contained" sx={{ bgcolor: '#478D8A', color: '#fff' }} onPointerDown={() => setModalPremium(false)}>
+              <Typography variant="body1">Close</Typography>
+            </Button>
+          </Box>
+        </Modal>
       </UserContent>
     </UserContainer>
   );

@@ -20,7 +20,6 @@ const UserNavbar = ({ home }) => {
 
   const [daysLeft, setDaysLeft] = useState(0);
 
-
   const [previousPath, setPreviousPath] = useState('');
   const currentPathRef = useRef(location.pathname);
 
@@ -314,20 +313,22 @@ const UserNavbar = ({ home }) => {
                     Home
                   </Typography>
                 </Button>
-                <Button
-                  onPointerDown={() => {
-                    navigate('/history');
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: 'white',
+                {account?.hasPremium && (
+                  <Button
+                    onPointerDown={() => {
+                      navigate('/history');
                     }}
                   >
-                    History
-                  </Typography>
-                </Button>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: 'white',
+                      }}
+                    >
+                      History
+                    </Typography>
+                  </Button>
+                )}
                 <Button
                   onPointerDown={() => {
                     navigate('/category');
@@ -435,7 +436,7 @@ const UserNavbar = ({ home }) => {
                         color: 'white',
                       }}
                     >
-                      Premium account
+                      UPGRADE PLAN
                     </Typography>
                   </Button>
                 )}
