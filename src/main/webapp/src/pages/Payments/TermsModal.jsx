@@ -410,7 +410,7 @@ const TermsModal = ({ setShowModal2 }) => {
             <Typography variant="body1"> {item.text}</Typography>
           </Box>
         ))}
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -423,7 +423,7 @@ const TermsModal = ({ setShowModal2 }) => {
             By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
             <Link to="/terms-&-conditions">Terms & Conditions</Link>.
           </Typography>
-        </Box>{' '}
+        </Box>{' '} */}
         <Box
           sx={{
             display: 'flex',
@@ -441,7 +441,7 @@ const TermsModal = ({ setShowModal2 }) => {
               bgcolor: '#478D8A',
             }}
             onPointerDown={() => setShowModal2(false)}
-            disabled={!agree}
+            // disabled={!agree}
           >
             {' '}
             <Typography variant="body1" sx={{ color: '#fff' }}>

@@ -451,7 +451,7 @@ const UserNavbar = ({ home }) => {
               alignItems: 'flex-start',
             }}
           >
-            <Typography
+            {/* <Typography
               variant="h6"
               sx={{
                 color: 'white',
@@ -459,7 +459,7 @@ const UserNavbar = ({ home }) => {
               }}
             >
               Your trial ends in {daysLeft} days
-            </Typography>
+            </Typography> */}
             {!user.auth.includes('ROLE_ADMIN') && (
               <Button
                 onPointerDown={() => {
