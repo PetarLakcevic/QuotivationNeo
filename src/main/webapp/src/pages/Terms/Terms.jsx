@@ -4,12 +4,71 @@ import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
 import { Box, Select, Typography } from '@mui/material';
 
-const Terms = () => {
+const Terms = ({ account }) => {
   const [language, setLanguage] = useState('en');
+  // const [planText, setPlanText] = useState('');
+
+  const premiumText = '';
+  const trialText = '';
+  const trialExpiredText = '';
+
+  // useEffect(() => {
+  //   const expiryDate = new Date(account?.paymentTokenExpiry).toLocaleDateString();
+  //   const registrationDate = new Date(account?.registrationDate);
+  //   const trialEndDate = new Date(registrationDate);
+  //   trialEndDate.setDate(trialEndDate.getDate() + 7);
+  //   const trialEndDateString = trialEndDate.toLocaleDateString();
+
+  //   const nonRenewalNotice =
+  //     ' Your subscription will not be automatically renewed. You will be notified one week before your renewal options expire.';
+  //   const cancellationNotice = '  You may cancel your subscription within 7 days of purchase.';
+  //   const cardInfoNotice = ' We do not store your card information.';
+  //   setPlanText(`Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`);
+  //   if (account?.hasPremium) {
+  //     setPlanText(`You have a premium subscription active until the ${expiryDate}. ${cancellationNotice} ${nonRenewalNotice}  ${cardInfoNotice}`);
+  //   } else if (!account?.hasPremium && account?.hasTrial) {
+  //     setPlanText(
+  //       `You don't have a premium account. Your trial period will end on the ${trialEndDateString}. Consider upgrading to premium. ${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`
+  //     );
+  //   } else if (!account?.hasPremium && !account?.hasTrial) {
+  //     setPlanText(`Your trial period has expired. Consider upgrading to premium.${cancellationNotice} ${nonRenewalNotice} ${cardInfoNotice}`);
+  //   }
+  // }, [account]);
   const dataEng = [
     {
       title: 'PRODUCT DESCRIPTION',
-      text: 'Premium account offering one year of daily quotes. Price for this service is 2,000.00 RSD.',
+      additional: [
+        {
+          title: '1. Explore Plan (Free)',
+          content: [
+            {
+              title: '1.1. Introduction',
+              text: 'The Explore Plan is a complimentary offering designed to introduce users to the world of Quotivation. Perfect for individuals looking to periodically rejuvenate their spirit.',
+            },
+            {
+              title: '1.2. Offering',
+              text: 'During the first week of subscription, users will receive 2 daily quotes to uplift their spirit. Post the introductory week, users will be presented with a special quote every 3 days, a gentle reminder of the immense power within.',
+            },
+          ],
+        },
+        {
+          title: '2. Premium Plan (Paid)',
+          content: [
+            {
+              title: '2.1. Introduction',
+              text: 'For those seeking a consistent and regular source of inspiration, the Premium Plan has been meticulously crafted. It’s not just about the frequency but about ensuring that every day comes with its own set of powerful words.',
+            },
+            {
+              title: '2.2. Offering',
+              text: 'An annual subscription grants users 2 handpicked inspirational quotes daily, ensuring a continuous flow of positivity. Users gain exclusive access to their personal quote history, ensuring cherished words are never lost.',
+            },
+            {
+              title: '2.3. Pricing',
+              text: 'The total cost for an annual subscription to the Premium Plan is 2,000.00 RSD.',
+            },
+          ],
+        },
+      ],
     },
     {
       title: 'CURRENCY CONVERSION STATEMENT',
@@ -17,7 +76,7 @@ const Terms = () => {
     },
     {
       title: 'PRODUCT DELIVERY',
-      text: 'The premium account is accessible immediately upon payment.',
+      text: 'The premium account is accessible immediately upon payment. Starting today, you will receive two quotes every day.',
     },
     {
       title: 'REFUND POLICY',
@@ -44,8 +103,40 @@ const Terms = () => {
   const dataSrb = [
     {
       title: 'OPIS PROIZVODA',
-      text: 'Premium nalog koji nudi godinu dana dnevnih citata. Cena ove usluge je 2.000,00 RSD.',
+      additional: [
+        {
+          title: '1. Istraživački paket (Besplatno)',
+          content: [
+            {
+              title: '1.1. Uvod',
+              text: 'Istraživački paket je besplatna ponuda napravljena kako bi korisnike upoznala sa svetom Quotivation-a. Savršen za pojedince koji žele povremeno da osveže svoj duh.',
+            },
+            {
+              title: '1.2. Ponuda',
+              text: 'Tokom prve nedelje pretplate, korisnici će svakodnevno dobijati 2 inspirativna citata koji će ih podići. Nakon uvodne nedelje, korisnicima će svaka 3 dana biti predstavljen poseban citat, blag podsetnik na ogromnu snagu koja leži u njima.',
+            },
+          ],
+        },
+        {
+          title: '2. Premium paket (Plaćeno)',
+          content: [
+            {
+              title: '2.1. Uvod',
+              text: 'Za one koji traže konstantan i redovan izvor inspiracije, Premium paket je pažljivo osmišljen. Ne radi se samo o frekvenciji, već o tome da svaki dan donosi svoj set moćnih reči.',
+            },
+            {
+              title: '2.2. Ponuda',
+              text: 'Godišnja pretplata pruža korisnicima 2 pažljivo odabrana inspirativna citata dnevno, obezbeđujući neprekidan tok pozitivnosti. Korisnici dobijaju ekskluzivan pristup svojoj ličnoj istoriji citata, čime se osigurava da dragocene reči nikada ne budu izgubljene.',
+            },
+            {
+              title: '2.3. Cena',
+              text: 'Ukupna cena za godišnju pretplatu na Premium paket iznosi 2,000.00 RSD.',
+            },
+          ],
+        },
+      ],
     },
+
     {
       title: 'IZJAVA O KONVERZIJI',
       text: 'Sva plaćanja će biti izvršena u lokalnoj valuti Republike Srbije – dinar (RSD). Za informativni prikaz cena u drugim valutama koristi se kurs (117.2 RSD = 1 EUR). Iznos koji će biti zadužen na vašoj platnoj kartici može biti izražen u vašoj lokalnoj valuti kroz konverziju prema kursu koji koriste kartičarske organizacije, a koji nam u trenutku transakcije ne može biti poznat. Kao rezultat ove konverzije može postojati neznatna razlika od originalne cene navedene na našem sajtu. Hvala vam na razumevanju.',
@@ -187,18 +278,32 @@ const Terms = () => {
             <option value="en">English</option>
             <option value="sr">Srpski</option>
           </Select>
-          <Typography variant="h4">
-            {language === 'en' ? 'Terms and Conditions' : 'Uslovi korišćenja'}
-          </Typography>
+          <Typography variant="h4">{language === 'en' ? 'Terms and Conditions' : 'Uslovi korišćenja'}</Typography>
           {data.map((item, index) => (
             <>
-              <Typography variant="h6">{item.title}</Typography>
-              <Typography variant="body1">{item.text}</Typography>
+              <Typography variant="h6">{item?.title}</Typography>
+              <Typography variant="body1">{item?.text}</Typography>
+              <Box>
+                {item?.additional?.map((item, index) => (
+                  <>
+                    <Typography variant="h6" mb={3}>
+                      {item?.title}
+                    </Typography>
+                    {item?.content?.map((item, index) => (
+                      <>
+                        <Typography variant="body1" mt={3}>
+                          {item?.title}
+                        </Typography>
+                        <Typography variant="body1">{item?.text}</Typography>
+                      </>
+                    ))}
+                  </>
+                ))}
+              </Box>
+              <Typography variant="body1">{item?.desc}</Typography>
             </>
           ))}
-          <Typography variant="h5">
-            {language === 'en' ? 'Contact' : 'Kontakt'}
-          </Typography>
+          <Typography variant="h5">{language === 'en' ? 'Contact' : 'Kontakt'}</Typography>
           <Box>
             {contacts.map((item, index) => (
               <Box

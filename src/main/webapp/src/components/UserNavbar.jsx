@@ -15,6 +15,11 @@ const UserNavbar = ({ home }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [registrationDate, setRegistrationDate] = useState('');
+  const [trialEndDate, setTrialEndDate] = useState('');
+
+  const [daysLeft, setDaysLeft] = useState(0);
+
   const [previousPath, setPreviousPath] = useState('');
   const currentPathRef = useRef(location.pathname);
 
@@ -24,6 +29,21 @@ const UserNavbar = ({ home }) => {
       // console.log(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (account) {
+      const registrationDate = new Date(account?.userAdditionalFields.registrationDate);
+      const trialEndDate = new Date(registrationDate);
+      trialEndDate.setDate(trialEndDate.getDate() + 7);
+      const trialEndDateString = trialEndDate.toLocaleDateString();
+      setRegistrationDate(registrationDate.toLocaleDateString());
+      setTrialEndDate(trialEndDateString);
+      const today = new Date();
+      const diffTime = Math.abs(trialEndDate - today);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setDaysLeft(diffDays);
+    }
+  }, [account]);
 
   // useEffect(() => {
   //   if (account?.firstTimePremium) {
@@ -126,16 +146,16 @@ const UserNavbar = ({ home }) => {
           </Button>
         </Box>
       </Modal> */}
-       <img
-          src={crown}
-          alt="qq"
-          style={{
-            // width: '50%',
-            maxHeight: '2rem',
-            objectFit: 'contain',
-            opacity: account?.hasPremium ? 1 : 0,
-          }}
-        />
+      <img
+        src={crown}
+        alt="qq"
+        style={{
+          // width: '50%',
+          maxHeight: '2rem',
+          objectFit: 'contain',
+          opacity: account?.hasPremium ? 1 : 0,
+        }}
+      />
       <ArrowBack
         sx={{
           color: 'white',
@@ -293,20 +313,22 @@ const UserNavbar = ({ home }) => {
                     Home
                   </Typography>
                 </Button>
-                <Button
-                  onPointerDown={() => {
-                    navigate('/history');
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: 'white',
+                {account?.hasPremium && (
+                  <Button
+                    onPointerDown={() => {
+                      navigate('/history');
                     }}
                   >
-                    History
-                  </Typography>
-                </Button>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: 'white',
+                      }}
+                    >
+                      History
+                    </Typography>
+                  </Button>
+                )}
                 <Button
                   onPointerDown={() => {
                     navigate('/category');
@@ -394,7 +416,7 @@ const UserNavbar = ({ home }) => {
                 {!account?.hasPremium && (
                   <Button
                     onPointerDown={() => {
-                      navigate('/premium');
+                      navigate('/payments/step1');
                     }}
                   >
                     {' '}
@@ -414,7 +436,7 @@ const UserNavbar = ({ home }) => {
                         color: 'white',
                       }}
                     >
-                      Premium subscription
+                      UPGRADE PLAN
                     </Typography>
                   </Button>
                 )}
@@ -425,8 +447,19 @@ const UserNavbar = ({ home }) => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
             }}
           >
+            {/* <Typography
+              variant="h6"
+              sx={{
+                color: 'white',
+                pl: '0.5rem',
+              }}
+            >
+              Your trial ends in {daysLeft} days
+            </Typography> */}
             {!user.auth.includes('ROLE_ADMIN') && (
               <Button
                 onPointerDown={() => {

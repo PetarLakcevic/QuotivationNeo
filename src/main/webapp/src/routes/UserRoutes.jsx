@@ -21,6 +21,8 @@ import Privacy from '../pages/Privacy/Privacy';
 import Refund from '../pages/Refund/Refund';
 import ActivatePremium from '../pages/ActivatePremium/ActivatePremium';
 import Terms from '../pages/Terms/Terms';
+import Step1 from '../pages/Payments/Step1';
+import Step2 from '../pages/Payments/Step2';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -114,12 +116,15 @@ const UserRoutes = ({ isLandscape }) => {
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/refund" element={<Refund />} />
-        <Route path="/terms-&-conditions" element={<Terms />} />
+        <Route path="/terms-&-conditions" element={<Terms  account={account}/>} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
-        <Route path="/premium" element={<Payments isLandscape={isLandscape} />} />
+        <Route path="payments/step1" element={<Step1 account={account}/>} />
+        {/* <Route path="payments/step2" element={<Step2 />} /> */}
+
+        <Route path="/payments/step2" element={<Payments isLandscape={isLandscape} />} />
         <Route path="/payment-status" element={<ActivatePremium />} />
         <Route path="/account/reset/finish" element={<PasswordChange />} />
       </Routes>{' '}

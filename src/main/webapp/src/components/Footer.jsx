@@ -52,8 +52,8 @@ const Footer = () => {
               width: '65px',
               height: '50px',
               objectFit: 'contain',
-            //   backgroundColor: 'white',
-              padding: '5px',
+            // //   backgroundColor: 'white',
+            //   padding: '5px',
               // maxWidth: isLandscape ? '10vw' : '100%',
             }}
           />{' '}
@@ -89,7 +89,7 @@ const Footer = () => {
               height: '50px',
               objectFit: 'contain',
             //   backgroundColor: 'white',
-              padding: '5px',
+            //   padding: '5px',
             }}
           />
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -98,11 +98,11 @@ const Footer = () => {
               src={chipcard}
               alt="chipcard"
               style={{
-                width: '75px',
+                width: '85px',
                 height: '50px',
                 objectFit: 'contain',
                 // backgroundColor: 'white',
-                padding: '5px',
+                // padding: '5px',
               }}
             />
           </a>
@@ -116,7 +116,7 @@ const Footer = () => {
                 height: '50px',
                 objectFit: 'contain',
                 // backgroundColor: 'white',
-                padding: '5px',
+                // padding: '5px',
               }}
             />
           </a>
@@ -129,7 +129,7 @@ const Footer = () => {
                 height: '50px',
                 objectFit: 'contain',
                 // backgroundColor: 'white',
-                padding: '5px',
+                // padding: '5px',
               }}
             />
           </a>

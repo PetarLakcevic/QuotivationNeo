@@ -29,10 +29,11 @@ import master from '../../assets/images/Logotipi/Master Card/Mastercard White an
 import dina from '../../assets/images/Logotipi/Dina/DinaCard znak.jpg';
 import visa from '../../assets/images/Logotipi/Visa/Visa_Brandmark_Blue_RGB_2021.png';
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { paymentLink } from '../../axios/axios';
 import Footer from '../../components/Footer';
 import TermsModal from './TermsModal';
+import crown from '../../assets/images/crown.png';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
@@ -56,6 +57,7 @@ function CustomStepIcon(props) {
 }
 
 const Payments = ({ isLandscape }) => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [planType, setPlanType] = useState('yearly');
 
@@ -196,33 +198,6 @@ const Payments = ({ isLandscape }) => {
         }}
       >
         <UserNavbar />
-        <Fade in={loading} timeout={500}>
-          <Box
-            sx={{
-              // display: loading ? 'block' : 'none',
-              position: 'fixed',
-              top: '0%',
-              left: '0%',
-              width: '100vw !important',
-              // bgcolor: 'rgba(0,0,0,0.5)',
-              height: '100vh',
-              // right: '0%',
-              // bottom: '0%',
-              color: '#000',
-              zIndex: 9999,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress
-              sx={{
-                color: 'black',
-              }}
-            />
-          </Box>
-        </Fade>
-
         <Box
           sx={{
             display: 'flex',
@@ -230,13 +205,18 @@ const Payments = ({ isLandscape }) => {
             justifyContent: 'center',
             alignItems: 'center',
             p: 3,
-            pb: 0,
-            opacity: loading ? 0.5 : 1,
+            // pb: 0,
+            maxWidth: '90%',
+            marginInline: 'auto',
+            mt: 2,
+            gap: 1,
+            borderRadius: '0.5em',
+            boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.35)',
           }}
         >
           <Box
             sx={{
-              mt: isLandscape ? 10 : 2,
+              // mt: isLandscape ? 10 : 2,
               mb: 2,
               display: 'flex',
               flexDirection: 'column',
@@ -245,61 +225,158 @@ const Payments = ({ isLandscape }) => {
             }}
           >
             <Typography
-              variant="h5"
+              variant="h4"
               sx={{
                 textAlign: 'center',
               }}
             >
-              BUY PREMIUM <br /> SUBSCRIPTION
+              PREMIUM PLAN
             </Typography>
-            <Typography variant="body1">Get unlimited quotes!</Typography>
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: isLandscape ? 0 : 1,
-                p: 2,
-                pb: 0,
-                bgcolor: '#fff',
-                height: '100%',
-                transition: 'all 0.3s ease',
-                mt: 1,
-                textAlign: 'center',
+                flexDirection: isLandscape ? 'row' : 'column',
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                gap: 1,
+                width: '100%',
               }}
             >
-              <Typography variant="h6">Annual Subscription</Typography>
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: isLandscape ? 'row' : 'column',
+                  flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  gap: isLandscape ? '2vw' : '0',
+                  gap: 1,
+                  width: isLandscape ? '50%' : '100%',
+                  minHeight: '200px',
+                  backgroundImage: `url(${crown})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
                 }}
-              >
-                <Typography variant="h5">2,000.00 RSD</Typography>
-                <Typography variant="h6">~ 17 EUR</Typography>
-              </Box>
+              />
+
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: isLandscape ? 'row' : 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: isLandscape ? '2vw' : '0',
+                  flexDirection: 'column',
+                  width: isLandscape ? '50%' : '100%',
                 }}
               >
-                <Typography variant="body1">
-                  166.67 RSD/month,
-                  {!isLandscape && <br />} billed annually
-                </Typography>
-                <Typography variant="body2">~ 1.42 EUR/month</Typography>{' '}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: isLandscape ? 0 : 1,
+                    p: 2,
+                    pb: 0,
+                    bgcolor: '#fff',
+                    height: '100%',
+                    transition: 'all 0.3s ease',
+                    // mt: 1,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography variant="h6">Annual Subscription</Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: isLandscape ? 'row' : 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    <Typography variant="h5">2,000.00 RSD</Typography>
+                    <Typography variant="h6"> ~ 17 EUR</Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // gap: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      sx={
+                        {
+                          // whiteSpace: 'nowrap',
+                        }
+                      }
+                    >
+                      166.67 RSD/month, billed annually
+                    </Typography>
+                    <Typography variant="body2">~ 1.42 EUR/month</Typography>{' '}
+                  </Box>
+                  <Typography variant="body1">Conversion rate: 117.2</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: isLandscape ? 0 : 1,
+                    p: 2,
+                    pb: 0,
+                    pt: 0,
+                    bgcolor: '#fff',
+                    height: '100%',
+                    transition: 'all 0.3s ease',
+                    // mt: 1,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography variant="h6" mt={2}>
+                    What you get:
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      textAlign: 'center',
+                      // fontSize: '1.1em',
+                    }}
+                  >
+                    ~ 2 quotes per day for an entire year! <br /> (That is 730 quotes!)
+                  </Typography>{' '}
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      textAlign: 'center',
+                      // fontSize: '1.1em',
+                    }}
+                  >
+                    {' '}
+                    ~ Access to History
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="body2">Conversion rate: 117.2</Typography>
             </Box>
-            <Typography variant="body1" sx={{ mt: 1 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                textAlign: 'center',
+                mt: 5,
+                fontStyle: 'italic',
+              }}
+            >
+              * When the premium plan expires, it will NOT be renewed automatically!
+            </Typography>{' '}
+            <Typography
+              variant="body2"
+              sx={{
+                textAlign: 'center',
+
+                fontStyle: 'italic',
+              }}
+            >
               We don't store your credit card information.
             </Typography>
             <Box
@@ -307,27 +384,52 @@ const Payments = ({ isLandscape }) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                mt: 4,
               }}
             >
-              <Checkbox sx={{ mt: 2 }} onChange={() => setAccepted(!accepted)} />
-              <Typography variant="body1" sx={{ mt: 2 }}>
+              <Checkbox onChange={() => setAccepted(!accepted)} />
+              <Typography variant="body1" >
                 By checking this box, you agree to our <Link to="/privacy">Privacy Policy</Link> and{' '}
                 <Link to="/terms-&-conditions">Terms & Conditions</Link>.
               </Typography>
             </Box>
-            <Button
-              variant="contained"
+            <Box
               sx={{
-                mt: 2,
-                mb: 2,
-                marginInline: 'auto',
-                bgcolor: '#478D8A',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+                mt: 3,
               }}
-              onPointerDown={() => setShowModal(true)}
-              disabled={!accepted}
             >
-              BUY NOW
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  // mt: 2,
+                  // mb: 2,
+                  marginInline: 'auto',
+                  bgcolor: '#478D8A',
+                }}
+                onPointerDown={() => setShowModal(true)}
+                disabled={!accepted}
+              >
+                BUY NOW
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: '#478D8A',
+                  borderColor: '#478D8A',
+                }}
+                onPointerDown={() => navigate('/home')}
+              >
+                {' '}
+                <Typography variant="body1" sx={{ color: '#478D8A' }}>
+                  Back to home
+                </Typography>
+              </Button>
+            </Box>
           </Box>
           <Modal open={showModal} onClose={() => setShowModal(false)}>
             <Box
@@ -372,7 +474,7 @@ const Payments = ({ isLandscape }) => {
             </Box>
           </Modal>
           <Modal open={showModal2}>
-<TermsModal setShowModal2={setShowModal2} />
+            <TermsModal setShowModal2={setShowModal2} />
           </Modal>
           <Box mt={2}>
             <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms-&-conditions">Terms & Conditions</Link>

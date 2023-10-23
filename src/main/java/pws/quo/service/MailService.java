@@ -125,7 +125,7 @@ public class MailService {
     private final String failEmail = "<!DOCTYPE html>\n" +
         "<html xmlns:th=\"http://www.thymeleaf.org\" th:lang=\"${#locale.language}\" lang=\"en\">\n" +
         "  <head>\n" +
-        "    <title>Payment Successful - Quotivation</title>\n" +
+        "    <title>Payment Unsuccessful - Quotivation</title>\n" +
         "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
         "  </head>\n" +
         "  <body>\n" +
