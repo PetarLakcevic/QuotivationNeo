@@ -287,7 +287,7 @@ const Home = () => {
                       color: '#fff',
                     },
                   }}
-                  onPointerDown={() => navigate('Login')}
+                  onPointerDown={() => navigate('register')}
                   // disabled={!agree}
                 >
                   {' '}
