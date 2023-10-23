@@ -23,6 +23,7 @@ import ActivatePremium from '../pages/ActivatePremium/ActivatePremium';
 import Terms from '../pages/Terms/Terms';
 import Step1 from '../pages/Payments/Step1';
 import Step2 from '../pages/Payments/Step2';
+import Home from '../pages/Home/Home';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -112,7 +113,8 @@ const UserRoutes = ({ isLandscape }) => {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/theme" element={<Theme account={account} setAccount={setAccount} isLandscape={isLandscape} />} />
         <Route path="/category" element={<Category account={account} setAccount={setAccount} />} />
-        <Route path="/home" element={<Quote account={account} />} />
+        <Route path="/" element={<Home account={account} />} />
+        <Route path="/quote" element={<Quote account={account} />} />
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/refund" element={<Refund />} />

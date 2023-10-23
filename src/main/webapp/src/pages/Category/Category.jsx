@@ -160,6 +160,12 @@ const Category = ({ account, setAccount }) => {
           <Button
             variant="outlined"
             onPointerDown={handleSubmit}
+            sx={{
+              borderColor: '#478D8A',
+
+              color: '#478D8A',
+              mt: '1rem',
+            }}
           >
             <Typography variant="h6">SAVE</Typography>
           </Button>

@@ -153,7 +153,9 @@ const Theme = ({ account, setAccount, isLandscape }) => {
               ))}
             </Box>
           </Box>
-          <Button variant="outlined" sx={{ mt: 3 }} onPointerDown={handleSubmit}>
+             
+          <Button variant="outlined" sx={{ mt: 3,  borderColor: '#478D8A',  color: '#478D8A',
+              mt: '2rem', }} onPointerDown={handleSubmit}>
             <Typography variant="h6">SAVE</Typography>
           </Button>
         </Box>
