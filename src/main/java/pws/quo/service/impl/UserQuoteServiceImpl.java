@@ -15,6 +15,7 @@ import pws.quo.repository.UserRepository;
 import pws.quo.service.UserQuoteService;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -71,6 +72,56 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             })
             .map(userQuoteRepository::save);
     }
+
+    //0 0 12 */7 * ?
+    @Scheduled(cron = "0 0 12 */7 * ?")
+    public void generateForFreebies() {
+        List<UserAdditionalFields> userAdditionalFields = userAdditionalFieldsRepository.findAll();
+        List<UserQuote> userQuoteList = userQuoteRepository.findAll();
+
+        List<UserQuote> newQuotes = new ArrayList<>();
+
+        for (UserAdditionalFields uaf : userAdditionalFields) {
+            Quote newQuote = null;
+
+            //if he has premium or in first  7days ignore!
+            if(uaf.getExpiry()!=null && uaf.getExpiry().isAfter(Instant.now())){
+                continue;
+            }
+
+            if (uaf.getRegistrationDate()!=null && uaf.getRegistrationDate().plus(7, ChronoUnit.DAYS).isAfter(Instant.now())) {
+                continue;
+            }
+
+
+            List<Quote> myQuotes = findMyQuotes(uaf.getInternalUser(), userQuoteList);
+            Set<Category> myCategories = uaf.getCategories();
+            List<Quote> quotesByCategories = quoteRepository.findByCategoriesIn(myCategories);
+
+            Collections.shuffle(quotesByCategories);
+
+            for (Quote quote : quotesByCategories) {
+                if (!myQuotes.contains(quote)) {
+                    newQuote = quote;
+                    break;
+                }
+            }
+
+            if (newQuote != null) {
+                UserQuote uq = new UserQuote();
+                uq.setUser(uaf.getInternalUser());
+                uq.setQuote(newQuote);
+                uq.setTime(Instant.now());
+                uq.setFavourite(false);
+                newQuotes.add(uq);
+            }
+
+        }
+
+        userQuoteRepository.saveAll(newQuotes);
+
+    }
+
 
     @Scheduled(cron = "0 0 9 * * *")
     @Scheduled(cron = "0 0 18 * * *")
