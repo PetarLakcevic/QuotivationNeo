@@ -192,7 +192,7 @@ const UserNavbar = ({ home }) => {
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            minHeight: '100vh',
+            minHeight: window.innerHeight,
             padding: '2rem',
             backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%), hsl(144, 25%, 57%), #aac0d0)',
             gap: '1rem',

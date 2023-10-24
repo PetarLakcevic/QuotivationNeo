@@ -32,22 +32,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   const backgorunds = [
-    // hope,
-    // rain,
-    // sandColor,
-    // seapink,
-    // sky,
-    // sunset,
-    // golden,
-    // sandbrown,
-    // sandgray,
-    // reddoor,
-    // pencil,
-    // road,
-    // droneview,
-    // galaxy,
-    // skyline,
-    // autumn,
     leafs,
     bird,
     midnight,
@@ -77,6 +61,7 @@ const Home = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
 
   useEffect(() => {
     setQuote(quotes[phase]);
@@ -164,7 +149,7 @@ const Home = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: matches ? 'row' : 'column',
               alignItems: 'stretch',
               justifyContent: 'space-between',
               width: '100%',
@@ -174,7 +159,7 @@ const Home = () => {
           >
             <Box
               sx={{
-                width: '50%',
+                width: matches ? '50%' : '100%',
                 border: '1px solid #fff',
                 borderRadius: '5px',
 
@@ -216,7 +201,7 @@ const Home = () => {
             </Box>
             <Box
               sx={{
-                width: '50%',
+                width: matches ? '50%' : '100%',
                 border: '1px solid #fff',
                 borderRadius: '5px',
                 display: 'flex',
