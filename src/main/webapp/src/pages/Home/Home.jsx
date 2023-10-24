@@ -6,311 +6,332 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import qq from '../../assets/images/qq.png';
 import logo from '../../assets/images/logo.png';
 import { useNavigate } from 'react-router-dom';
+import hope from '../../assets/images/hope.jpg';
+import rain from '../../assets/images/rain.jpg';
+import sandColor from '../../assets/images/sandcolor.jpg';
+import seapink from '../../assets/images/seapink.jpg';
+import sky from '../../assets/images/sky.jpg';
+import sunset from '../../assets/images/sunset.webp';
+import golden from '../../assets/images/golden.jpeg';
+import sandbrown from '../../assets/images/sandbrown.jpg';
+import sandgray from '../../assets/images/sandgray.jpeg';
+import reddoor from '../../assets/images/reddoor.webp';
+import pencil from '../../assets/images/pencil.webp';
+import road from '../../assets/images/road.jpeg';
+import droneview from '../../assets/images/droneview.jpeg';
+import galaxy from '../../assets/images/galaxy.jpeg';
+import skyline from '../../assets/images/skyline.jpg';
+import autumn from '../../assets/images/autumn.jpeg';
+import leafs from '../../assets/images/leafs.jpg';
+import bird from '../../assets/images/bird.jpg';
+import midnight from '../../assets/images/midnight.jpg';
 
 const Home = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
+
+  const backgorunds = [
+    // hope,
+    // rain,
+    // sandColor,
+    // seapink,
+    // sky,
+    // sunset,
+    // golden,
+    // sandbrown,
+    // sandgray,
+    // reddoor,
+    // pencil,
+    // road,
+    // droneview,
+    // galaxy,
+    // skyline,
+    // autumn,
+    leafs,
+    bird,
+    midnight,
+  ];
+  const quotes = [
+    {
+      quote: 'Our greatest glory is not in never falling, but in rising every time we fall',
+      author: 'Confucius',
+    },
+    {
+      quote: 'The future belongs to those who believe in the beauty of their dreams.',
+      author: 'Eleanor Roosevelt',
+    },
+    {
+      quote: 'What lies behind us and what lies before us are tiny matters compared to what lies within us.',
+      author: 'Ralph Waldo Emerson',
+    },
+  ];
+
+  const [phase, setPhase] = useState(0);
+
+  const [quote, setQuote] = useState(quotes[0]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhase(phase => (phase + 1) % backgorunds.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setQuote(quotes[phase]);
+  }, [phase]);
   return (
     <UserContainer>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          backgroundImage: 'linear-gradient(135deg, hsl(193, 66%, 32%) 0%, hsl(144, 25%, 57%) 90% )',
-          boxShadow: '-1px 2px 10px 1px rgba(0, 0, 0, 0.4)',
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-        }}
-      >
-        <img src={qq} alt="logo" style={{ width: '100px', height: '100px' }} />
-      </Box>
       <UserContent>
+        {backgorunds.map((background, index) => (
+          <Box
+            key={index}
+            sx={{
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              zIndex: '0',
+              opacity: phase === index ? '1' : '0',
+              transition: 'opacity 1s ease-in-out',
+              backgroundImage: `url(${background})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          ></Box>
+        ))}{' '}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            zIndex: '0',
+            // backdropFilter: 'blur(5px)',
+          }}
+        />
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
+
             alignItems: 'center',
-            maxWidth: '1260px',
+            maxWidth: '940px',
             margin: '0 auto',
             textAlign: 'center',
             gap: '1rem',
             mt: '2rem',
+            p: '3rem',
+            position: 'relative',
+            zIndex: '2',
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '10px',
+            boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+            textShadow: '0 0 10px rgba(0,0,0,0.5)',
           }}
         >
+          <Box>
+            <Typography variant="h4" color="white">
+              {quote.quote}
+            </Typography>
+            <Typography variant="h5" color="white"
+              sx={{
+                fontStyle: 'italic',
+                mt: 1,
+            }}
+            >
+              {quote.author}
+            </Typography>
+          </Box>{' '}
+          <Typography
+            variant="h6"
+            sx={{
+              mt: 3,
+              textAlign: 'center',
+            }}
+            color="white"
+          >
+            Every day, we face challenges that test our limits, push our boundaries, and sometimes shake our beliefs. In these moments, the
+            right words can be a beacon of hope, a nudge of encouragement, or a spark of inspiration.
+          </Typography>
+          <Box>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 'min(100vw, 300px)',
-              mb: '1rem',
+              alignItems: 'stretch',
+              justifyContent: 'space-between',
+              width: '100%',
+              gap: 2,
+              mt: 2,
             }}
           >
-            <img
-              src={logo}
-              alt="logo"
-              style={{
-                width: '6rem',
+            <Box
+              sx={{
+                width: '50%',
+                border: '1px solid #fff',
+                borderRadius: '5px',
+
+                display: 'flex',
+                flexDirection: 'column',
               }}
-            />
-            <Typography variant="h5" sx={{ textAlign: 'center', color: 'black', marginLeft: '-0.6rem', fontWeight: 'bold' }}>
-              uotivation
-            </Typography>
-          </Box>
+            >
+              <Box
+                sx={{
+                  p: 1,
+                  py: 4.5,
+                  // bgcolor: '#478D8A',
+                  // color: '#fff',
+                  borderBottomLeftRadius: '10px',
+                  borderBottomRightRadius: '10px',
+                }}
+                color="white"
+              >
+                <Typography variant="h5">Explore plan</Typography>
+              </Box>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 2,
+                  p: 2,
+                  mt: 1,
+                }}
+                color="white"
+              >
+                <Box>
+                  <Typography variant="body1">-2 quotes a day for the first 7 days</Typography>
+                  <Typography>-1 quote every 3 days after the first 7 days expire</Typography>
+                  <Typography>-Daily notifications</Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: '50%',
+                border: '1px solid #fff',
+                borderRadius: '5px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Box
+                sx={{
+                  p: 4.5,
+                  bgcolor: '#fff',
+                  color: '#000',
+                  borderBottomLeftRadius: '10px',
+                  borderBottomRightRadius: '10px',
+                }}
+                color="white"
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: '500',
+                  }}
+                >
+                  Premium plan
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 2,
+                  p: 2,
+                  mt: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 1,
+                  }}
+                  color="white"
+                >
+                  <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
+                  <Typography>- Daily notifications</Typography>{' '}
+                  <Typography>- Access to History (see the list of your previously received quotes)</Typography>
+                </Box>
+              </Box>
+            </Box>
+           
+          </Box> <Typography variant="h6" color="white" mt={2}>
+              All details you can find in our {" "}
+              <Typography
+                variant="h6"
+                color="white"
+                component="a"
+                onPointerDown={() => navigate('/terms-&-conditions')}
+                sx={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  color: '#478D8A',
+                }}
+              >
+                terms and conditions page
+              </Typography>
+            </Typography></Box>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: matches ? 'row' : 'column',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              gap: matches ? '3rem' : '2rem',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               width: '100%',
-              mt: '2rem',
-              mb: '2rem',
+              gap: '1rem',
+              // mt: matches ? '1rem' : '1rem',
             }}
           >
-            <Box
+          
+            <Button
+              size="large"
+              variant="outlined"
               sx={{
-                width: matches ? '36%' : '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
+                //   marginInline: 'auto',
+                bgcolor: '#fff',
+                color: '#000',
+                // hover
+                '&:hover': {
+                  bgcolor: '#fff',
+                  color: '#000',
+                },
               }}
+              onPointerDown={() => navigate('/register')}
+              // disabled={!agree}
             >
-              <Typography variant="h4">Our mission</Typography>
+              {' '}
+              <Typography variant="h5">Register now</Typography>
+            </Button>
+            <Typography variant="h6" color="white">
+              Already a member?{' '}
               <Typography
                 variant="h6"
+                color="white"
+                component="a"
+                onPointerDown={() => navigate('/login')}
                 sx={{
-                  mt: 3,
-                  textAlign: 'justify',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  color: '#478D8A',
                 }}
               >
-                Every day, we face challenges that test our limits, push our boundaries, and sometimes shake our beliefs. In these moments,
-                the right words can be a beacon of hope, a nudge of encouragement, or a spark of inspiration.
+                Login here.
               </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  mt: 5,
-                  textAlign: 'justify',
-                }}
-              >
-                At Quotivation, we understand the profound impact that a well-timed quote can have on one's day, outlook, and life. That's
-                why we've crafted an app tailored to serve you personalized quotes, categorized to fit every mood, moment, and milestone.
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  mt: 5,
-                  textAlign: 'justify',
-                }}
-              >
-                Whether you're seeking motivation for your next big endeavor, solace during trying times, or just a splash of positivity in
-                your day – we've got a quote for that.
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  mt: 8,
-                  textAlign: 'justify',
-                }}
-              >
-                Dive in, and let the words guide, uplift, and motivate you. Experience the transformative power of quotes today, only on
-                Quotivation!
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                width: matches ? '64%' : '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Box>
-                <Typography variant="h4">Plans</Typography>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    mt: 3,
-                    textAlign: 'justify',
-                  }}
-                >
-                  <b>Explore Plan (Free)</b> : Embark on a journey of inspiration with our free Explore Plan. For the first week, receive a
-                  boost of motivation with 2 daily quotes. After that, continue your journey with a special quote every 3 days, reminding
-                  you of the power within. Register to use this option for free!
-                </Typography>
-                <Typography variant="h6" sx={{ mt: 1, textAlign: 'justify' }}>
-                  <b> Premium Plan (Paid)</b> : Elevate your daily dose of motivation with our Premium Plan. For an annual subscription,
-                  enjoy 2 inspirational quotes every single day, ensuring you're constantly fueled with positivity. Plus, with exclusive
-                  access to your personal quote history, you'll never lose track of those words that resonated with you the most. Register
-                  and unlock the premium plan for 2.000 RSD (approx. 17.2 EUR)
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'stretch',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  gap: 2,
-                  mt: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '50%',
-                    border: '1px solid #478D8A',
-                    borderRadius: '5px',
-
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      p: 1,
-                      py: 4.5,
-                      // bgcolor: '#478D8A',
-                      // color: '#fff',
-                      borderBottomLeftRadius: '10px',
-                      borderBottomRightRadius: '10px',
-                    }}
-                  >
-                    <Typography variant="h5">Explore plan</Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      gap: 2,
-                      p: 2,
-                      mt: 1,
-                    }}
-                  >
-                    <Box>
-                      <Typography variant="body1">-2 quotes a day for the first 7 days</Typography>
-                      <Typography>-1 quote every 3 days after the first 7 days expire</Typography>
-                      <Typography>-Daily notifications</Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    width: '50%',
-                    border: '1px solid #478D8A',
-                    borderRadius: '5px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      p: 4.5,
-                      bgcolor: '#478D8A',
-                      color: '#fff',
-                      borderBottomLeftRadius: '10px',
-                      borderBottomRightRadius: '10px',
-                    }}
-                  >
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        fontWeight: '500',
-                      }}
-                    >
-                      Premium plan
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      gap: 2,
-                      p: 2,
-                      mt: 1,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 1,
-                      }}
-                    >
-                      <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
-                      <Typography>- Daily notifications</Typography>{' '}
-                      <Typography>- Access to History (see the list of your previously received quotes)</Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>{' '}
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '100%',
-                  gap: '1rem',
-                  mt: matches ? '2rem' : '2rem',
-                  // position: 'fixed',
-                  // bottom: 50,
-                  // left: '0',
-                  // right: '0',
-                }}
-              >
-                <Button
-                  size="large"
-                  variant="outlined"
-                  sx={{
-                    //   marginInline: 'auto',
-                    bgcolor: '#478D8A',
-                    color: '#fff',
-                    // hover 
-                    '&:hover': {
-                      bgcolor: '#478D8Ad5',
-                      color: '#fff',
-                    },
-                  }}
-                  onPointerDown={() => navigate('/register')}
-                  // disabled={!agree}
-                >
-                  {' '}
-                  <Typography variant="h5">Register now</Typography>
-                </Button>
-                <Typography variant="body1" color="black">
-                  Already a member?{' '}
-                  <Typography
-                    variant="body1"
-                    color="black"
-                    component="a"
-                    onPointerDown={() => navigate('/login')}
-                    sx={{
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Login here.
-                  </Typography>
-                </Typography>
-              </Box>
-            </Box>
-          </Box>{' '}
+            </Typography>
+          </Box>
         </Box>
       </UserContent>
     </UserContainer>

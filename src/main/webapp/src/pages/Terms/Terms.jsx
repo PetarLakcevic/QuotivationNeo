@@ -259,7 +259,7 @@ const Terms = ({ account }) => {
   }, [language]);
   return (
     <UserContainer>
-      <UserNavbar />
+      {account && <UserNavbar />}
       <UserContent>
         <Box
           sx={{
