@@ -90,7 +90,7 @@ const UserNavbar = ({ home }) => {
         padding: '1rem',
         backgroundImage: location.pathname === '/home' ? ' ' : 'linear-gradient(135deg, hsl(193, 66%, 32%) 0%, hsl(144, 25%, 57%) 90% )',
         boxShadow: location.pathname === '/home' ? ' ' : '-1px 2px 10px 1px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
+        position: location.pathname === '/home' ? 'absolute' : 'relative',
         zIndex: 1,
         width: '100%',
       }}

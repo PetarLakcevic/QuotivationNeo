@@ -302,11 +302,12 @@ const Quote = ({ account }) => {
           alignItems: 'center',
           width: '100vw',
           height: window.innerHeight,
-          backgroundImage: `url(${imageArray[account?.userAdditionalFields?.themePicture - 1]})`,
+          backgroundImage: `url(${imageArray[account?.userAdditionalFields?.themePicture - 1 ? account?.userAdditionalFields?.themePicture - 1 : 0]})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           position: 'relative',
+          // border: '1px solid red',
         }}
       >
         <Box
