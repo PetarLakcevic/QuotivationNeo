@@ -480,7 +480,7 @@ const Payments = ({ isLandscape }) => {
             <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms-&-conditions">Terms & Conditions</Link>
           </Box>
         </Box>
-        <Footer />
+        {/* <Footer /> */}
         {/* <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
         Wermax Consulting doo | PIB 109871829 | MB 21258385
       </Typography> */}

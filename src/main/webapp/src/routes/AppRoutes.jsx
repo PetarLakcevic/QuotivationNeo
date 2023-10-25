@@ -11,8 +11,10 @@ import Home from '../pages/Home/Home';
 import Terms from '../pages/Terms/Terms';
 import NoUserNavbar from '../components/NoUserNavbar';
 import Privacy from '../pages/Privacy/Privacy';
+import Footer from '../components/Footer';
 
 const AppRoutes = ({ setToken, parseToken, token }) => {
+  const location = useLocation();
   return (
     <>
       {' '}
@@ -28,6 +30,8 @@ const AppRoutes = ({ setToken, parseToken, token }) => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms-&-conditions" element={<Terms />} />
       </Routes>
+      {location.pathname !== '/' && location.pathname !== '/login'&& location.pathname !== '/register' && location.pathname !== '/forgot-password'&& <Footer />}
+      {/* <Footer /> */}
     </>
   );
 };

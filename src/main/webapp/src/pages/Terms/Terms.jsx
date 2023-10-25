@@ -11,7 +11,6 @@ import dina from '../../assets/images/Logoi/dinacard-new.svg';
 import visa from '../../assets/images/Logoi/Visa New 2021.svg';
 import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
 
-
 const Terms = ({ account }) => {
   const [language, setLanguage] = useState('en');
   // const [planText, setPlanText] = useState('');
@@ -311,7 +310,7 @@ const Terms = ({ account }) => {
               <Typography variant="body1">{item?.desc}</Typography>
             </>
           ))}
-             <Box
+          {/* <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -402,7 +401,7 @@ const Terms = ({ account }) => {
             }}
           />
         </a>
-      </Box>
+      </Box> */}
           <Typography variant="h5">{language === 'en' ? 'Contact' : 'Kontakt'}</Typography>
           <Box>
             {contacts.map((item, index) => (

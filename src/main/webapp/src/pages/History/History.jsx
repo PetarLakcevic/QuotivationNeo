@@ -76,8 +76,7 @@ const History = ({ account }) => {
   };
 
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
+    <>
       <UserContent>
         <Box
           sx={{
@@ -353,7 +352,7 @@ const History = ({ account }) => {
           </Box>
         )}
       </Box>
-    </UserContainer>
+    </>
   );
 };
 

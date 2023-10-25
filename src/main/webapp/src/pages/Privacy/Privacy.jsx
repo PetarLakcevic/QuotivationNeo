@@ -121,7 +121,7 @@ const Privacy = () => {
             <br /> <br />
             Thank you for choosing Quotivation. We value your trust and privacy.
           </Typography>
-          <Box
+          {/* <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -212,7 +212,7 @@ const Privacy = () => {
             }}
           />
         </a>
-      </Box>
+      </Box> */}
       <Typography variant="h5">{ 'Contact'}</Typography>
           <Box>
             {contactsEng.map((item, index) => (

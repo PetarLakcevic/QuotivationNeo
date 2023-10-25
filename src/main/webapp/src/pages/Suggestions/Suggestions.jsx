@@ -13,8 +13,6 @@ const Suggestions = () => {
   const authorRef = useRef();
   const navigate = useNavigate();
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{
@@ -120,7 +118,6 @@ const Suggestions = () => {
           </Typography>
         </Box>
       </UserContent>
-    </UserContainer>
   );
 };
 

@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
   const navigate = useNavigate();
-  return (
-    <UserContainer>
+  return (     <UserContent>
+    {/* // <UserContainer> */}
       {/* <UserNavbar /> */}
-      <UserContent>
+ 
         <Box
           sx={{
             display: 'flex',
@@ -57,7 +57,7 @@ const Welcome = () => {
           </Button>
         </Box>
       </UserContent>
-    </UserContainer>
+    // </UserContainer>
   );
 };
 

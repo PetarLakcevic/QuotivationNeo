@@ -236,7 +236,7 @@ const Step1 = ({ account }) => {
               </li>
             </ul>
           </Box>
-          <Box
+          {/* <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -327,7 +327,7 @@ const Step1 = ({ account }) => {
             }}
           />
         </a>
-      </Box>
+      </Box> */}
           <Box
             sx={{
               display: 'flex',

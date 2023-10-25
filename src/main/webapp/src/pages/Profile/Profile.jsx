@@ -26,7 +26,7 @@ const Profile = ({ account }) => {
   };
 
   return (
-    <UserContainer>
+    <UserContent>
       {/* <UserNavbar /> */}
       <Box
         sx={{
@@ -194,7 +194,7 @@ const Profile = ({ account }) => {
           </Alert>
         </Snackbar>
       </Box>
-    </UserContainer>
+    </UserContent>
   );
 };
 

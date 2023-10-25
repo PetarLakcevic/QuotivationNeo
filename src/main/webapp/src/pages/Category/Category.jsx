@@ -43,8 +43,7 @@ const Category = ({ account, setAccount }) => {
 
 
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
+  
       <UserContent>
         <Box
           sx={{
@@ -171,7 +170,7 @@ const Category = ({ account, setAccount }) => {
           </Button>
         </Box>
       </UserContent>
-    </UserContainer>
+
   );
 };
 

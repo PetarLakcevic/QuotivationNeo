@@ -25,6 +25,8 @@ import Step1 from '../pages/Payments/Step1';
 import Step2 from '../pages/Payments/Step2';
 import Home from '../pages/Home/Home';
 import UserNavbar from '../components/UserNavbar';
+import Footer from '../components/Footer';
+import UserContainer from '../components/UserContainer';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -99,7 +101,7 @@ const UserRoutes = ({ isLandscape }) => {
   };
 
   return (
-    <>
+    <UserContainer>
       {/* <Box
         sx={{
           position: 'fixed',
@@ -120,12 +122,12 @@ const UserRoutes = ({ isLandscape }) => {
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/refund" element={<Refund />} />
-        <Route path="/terms-&-conditions" element={<Terms  account={account}/>} />
+        <Route path="/terms-&-conditions" element={<Terms account={account} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/history" element={<History account={account} />} />
         <Route path="/profile" element={<Profile account={account} />} />
-        <Route path="payments/step1" element={<Step1 account={account}/>} />
+        <Route path="payments/step1" element={<Step1 account={account} />} />
         {/* <Route path="payments/step2" element={<Step2 />} /> */}
 
         <Route path="/payments/step2" element={<Payments isLandscape={isLandscape} />} />
@@ -204,7 +206,8 @@ const UserRoutes = ({ isLandscape }) => {
           </Box>
         </Box>
       </Snackbar>
-    </>
+      {location.pathname !== '/home' && <Footer />}
+    </UserContainer>
   );
 };
 

@@ -6,8 +6,6 @@ import { Box, Typography } from '@mui/material';
 
 const Contact = () => {
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{
@@ -36,7 +34,6 @@ const Contact = () => {
           </Typography>
         </Box>
       </UserContent>
-    </UserContainer>
   );
 };
 

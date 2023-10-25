@@ -41,8 +41,7 @@ const Theme = ({ account, setAccount, isLandscape }) => {
   };
 
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
+
       <UserContent>
         <Box
           sx={{
@@ -160,7 +159,6 @@ const Theme = ({ account, setAccount, isLandscape }) => {
           </Button>
         </Box>
       </UserContent>
-    </UserContainer>
   );
 };
 

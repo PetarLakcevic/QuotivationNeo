@@ -21,42 +21,39 @@ const ActivatePremium = () => {
       });
   }, []);
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
-      <Box
-        sx={{
-          width: '100%',
-          height: '70vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Fade in={loading} timeout={1000}>
-          <CircularProgress
-            size={80}
-            sx={{
-              color: 'black',
-            }}
-          />
-        </Fade>
-        <Fade in={!loading} timeout={1000}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'absolute',
-              fontSize: '2rem',
-              textAlign: 'center',
-            }}
-          >
-            Your account has been successfully upgraded to premium!
-          </Box>
-        </Fade>
-      </Box>
-    </UserContainer>
+    <Box
+      sx={{
+        width: '100%',
+        height: '70vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Fade in={loading} timeout={1000}>
+        <CircularProgress
+          size={80}
+          sx={{
+            color: 'black',
+          }}
+        />
+      </Fade>
+      <Fade in={!loading} timeout={1000}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            fontSize: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          Your account has been successfully upgraded to premium!
+        </Box>
+      </Fade>
+    </Box>
   );
 };
 
