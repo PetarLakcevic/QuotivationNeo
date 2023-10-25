@@ -34,6 +34,7 @@ import { paymentLink } from '../../axios/axios';
 import Footer from '../../components/Footer';
 import TermsModal from './TermsModal';
 import crown from '../../assets/images/crown.png';
+import UserContent from '../../components/UserContent';
 
 function CustomStepIcon(props) {
   const { active, completed, icon } = props;
@@ -187,24 +188,22 @@ const Payments = ({ isLandscape }) => {
   const [accepted, setAccepted] = useState(false);
 
   return (
-    <UserContainer>
+    <UserContent>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
           justifyContent: 'space-between',
-          minHeight: '100vh',
         }}
       >
-        {/* <UserNavbar /> */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            p: 3,
+            p: 2.5,
             // pb: 0,
             maxWidth: '90%',
             marginInline: 'auto',
@@ -480,12 +479,8 @@ const Payments = ({ isLandscape }) => {
             <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms-&-conditions">Terms & Conditions</Link>
           </Box>
         </Box>
-        {/* <Footer /> */}
-        {/* <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
-        Wermax Consulting doo | PIB 109871829 | MB 21258385
-      </Typography> */}
       </Box>
-    </UserContainer>
+    </UserContent>
   );
 };
 

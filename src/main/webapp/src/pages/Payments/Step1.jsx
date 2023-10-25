@@ -24,8 +24,6 @@ const Step1 = ({ account }) => {
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{
@@ -419,7 +417,7 @@ The total cost for the Premium Plan is <b>2,000.00 RSD</b>
           </Box>
         </Modal>
       </UserContent>
-    </UserContainer>
+
   );
 };
 

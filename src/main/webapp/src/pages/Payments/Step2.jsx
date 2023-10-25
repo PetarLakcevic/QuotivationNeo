@@ -9,8 +9,7 @@ import TermsModal from './TermsModal';
 const Step2 = () => {
   const navigate = useNavigate();
   return (
-    <UserContainer>
-      {/* <UserNavbar /> */}
+
       <UserContent>
         <Box
           sx={{
@@ -29,7 +28,7 @@ const Step2 = () => {
         
         </Box>
       </UserContent>
-    </UserContainer>
+
   );
 };
 
