@@ -293,7 +293,7 @@ const Quote = ({ account }) => {
           width: '100%',
         }}
       >
-        <UserNavbar home={true} />{' '}
+        {/* <UserNavbar home={true} />{' '} */}
       </Box>
       <Box
         sx={{

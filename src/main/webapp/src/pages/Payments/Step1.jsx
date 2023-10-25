@@ -2,9 +2,17 @@ import React, { useEffect, useState } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
+import { Box, Button, IconButton, Modal, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Info } from '@mui/icons-material';
+import visaSecure from '../../assets/images/Logotipi/Visa Secure/visa-secure_blu_72dpi.png';
+import masterId from '../../assets/images/Logoi/Master Secure crni.svg';
+import maestro from '../../assets/images/Logotipi/Maestro Card/Maestro - White and Light Backgrounds/ms_vrt_pos.svg';
+import master from '../../assets/images/Logoi/Mastercard black.svg';
+import dina from '../../assets/images/Logoi/dinacard-new.svg';
+import visa from '../../assets/images/Logoi/Visa New 2021.svg';
+import chipcard from '../../assets/images/Logotipi/ChipCard LOGO 2021_rgb.png';
+
 
 const Step1 = ({ account }) => {
   const navigate = useNavigate();
@@ -12,9 +20,12 @@ const Step1 = ({ account }) => {
   const [modalFree, setModalFree] = useState(false);
   const [modalPremium, setModalPremium] = useState(false);
 
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{
@@ -25,16 +36,16 @@ const Step1 = ({ account }) => {
             gap: 3,
             textAlign: 'center',
             textDecoration: 'none',
-            maxWidth: '560px',
+            maxWidth: '760px',
             margin: '0 auto',
-            minWidth: '350px',
+            // minWidth: '350px',
             mt: 3,
           }}
         >
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: matches ? 'row' : 'column',
               alignItems: 'stretch',
               justifyContent: 'space-between',
               width: '100%',
@@ -43,7 +54,7 @@ const Step1 = ({ account }) => {
           >
             <Box
               sx={{
-                width: '50%',
+                width: matches ? '50%' : '100%',
                 border: '1px solid #478D8A',
                 borderRadius: '5px',
 
@@ -131,7 +142,7 @@ const Step1 = ({ account }) => {
             </Box>
             <Box
               sx={{
-                width: '50%',
+                width: matches ? '50%' : '100%',
                 border: '1px solid #478D8A',
                 borderRadius: '5px',
                 display: 'flex',
@@ -225,6 +236,98 @@ const Step1 = ({ account }) => {
               </li>
             </ul>
           </Box>
+          <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '3px',
+        }}
+      >
+        {' '}
+        <img
+          src={visa}
+          alt="visa"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            // padding: '5px',
+          }}
+        />{' '}
+        <img
+          src={master}
+          alt="master"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            padding: '5px',
+          }}
+        />
+        <img
+          src={maestro}
+          alt="maestro"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+          }}
+        />
+        <img
+          src={dina}
+          alt="dina"
+          style={{
+            width: '65px',
+            height: '50px',
+            objectFit: 'contain',
+            //   backgroundColor: 'white',
+            // padding: '5px',
+          }}
+        />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="https://chipcard.rs/ecommerce/" target="_blank" rel="noreferrer">
+          <img
+            src={chipcard}
+            alt="chipcard"
+            style={{
+              width: '85px',
+              height: '50px',
+              objectFit: 'contain',
+              // backgroundColor: 'white',
+              //   padding: '5px',
+            }}
+          />
+        </a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank" rel="noreferrer">
+          <img
+            src={visaSecure}
+            alt="visa secure"
+            style={{
+              width: '75px',
+              height: '50px',
+              objectFit: 'contain',
+              // backgroundColor: 'white',
+              //   padding: '5px',
+            }}
+          />
+        </a>
+        <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html " target="_blank" rel="noreferrer">
+          <img
+            src={masterId}
+            alt="master id"
+            style={{
+              width: '75px',
+              height: '50px',
+              objectFit: 'contain',
+              // backgroundColor: 'white',
+              //   padding: '5px',
+            }}
+          />
+        </a>
+      </Box>
           <Box
             sx={{
               display: 'flex',

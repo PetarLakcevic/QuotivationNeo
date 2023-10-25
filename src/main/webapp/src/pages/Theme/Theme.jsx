@@ -42,7 +42,7 @@ const Theme = ({ account, setAccount, isLandscape }) => {
 
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{

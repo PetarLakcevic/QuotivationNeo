@@ -7,7 +7,7 @@ import { Box, Typography } from '@mui/material';
 const Contact = () => {
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{

@@ -9,19 +9,26 @@ import PasswordChange from '../pages/PassworChange/PasswordChange';
 import CheckEmail from '../pages/CheckEmail/CheckEmail';
 import Home from '../pages/Home/Home';
 import Terms from '../pages/Terms/Terms';
+import NoUserNavbar from '../components/NoUserNavbar';
+import Privacy from '../pages/Privacy/Privacy';
 
 const AppRoutes = ({ setToken, parseToken, token }) => {
   return (
-    <Routes>
-      {/* <Route path="/" element={<Splash />} /> */}
-      <Route path="/login" element={<Login setToken={setToken} parseToken={parseToken} />} />
-      <Route path="/register" element={<Registration setToken={setToken} parseToken={parseToken} />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/check-email" element={<CheckEmail />} />
-      <Route path="/account/reset/finish" element={<PasswordChange setToken={setToken} parseToken={parseToken} />} />
-      <Route path="/" element={<Home />} />
-      <Route path='/terms-&-conditions' element={<Terms />} />
-    </Routes>
+    <>
+      {' '}
+      <NoUserNavbar />
+      <Routes>
+        {/* <Route path="/" element={<Splash />} /> */}
+        <Route path="/login" element={<Login setToken={setToken} parseToken={parseToken} />} />
+        <Route path="/register" element={<Registration setToken={setToken} parseToken={parseToken} />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/check-email" element={<CheckEmail />} />
+        <Route path="/account/reset/finish" element={<PasswordChange setToken={setToken} parseToken={parseToken} />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms-&-conditions" element={<Terms />} />
+      </Routes>
+    </>
   );
 };
 

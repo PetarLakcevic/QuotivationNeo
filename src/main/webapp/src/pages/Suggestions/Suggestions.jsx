@@ -14,7 +14,7 @@ const Suggestions = () => {
   const navigate = useNavigate();
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{

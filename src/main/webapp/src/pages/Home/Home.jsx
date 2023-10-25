@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UserContainer from '../../components/UserContainer';
 import UserNavbar from '../../components/UserNavbar';
 import UserContent from '../../components/UserContent';
@@ -25,17 +25,16 @@ import autumn from '../../assets/images/autumn.jpeg';
 import leafs from '../../assets/images/leafs.jpg';
 import bird from '../../assets/images/bird.jpg';
 import midnight from '../../assets/images/midnight.jpg';
+import { ArrowDownward, Menu, Sort } from '@mui/icons-material';
+import SlideLeft from '../../components/SlideLeft';
+import Footer from '../../components/Footer';
 
 const Home = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
 
-  const backgorunds = [
-    leafs,
-    bird,
-    midnight,
-  ];
+  const backgorunds = [leafs, bird, midnight];
   const quotes = [
     {
       quote: 'Our greatest glory is not in never falling, but in rising every time we fall',
@@ -62,55 +61,81 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   useEffect(() => {
     setQuote(quotes[phase]);
   }, [phase]);
+
+  const [isFooterVisible, setFooterVisibility] = useState(false);
+
+  // Ref za footer
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    const checkFooterVisibility = () => {
+      const rect = footerRef?.current?.getBoundingClientRect();
+      console.log(rect.top);
+      console.log(window.innerHeight);
+      if (rect.top >= 0 && rect.top <= window.innerHeight) {
+        setFooterVisibility(true);
+      } else {
+        setFooterVisibility(false);
+      }
+    };
+
+    // Prati skrolovanje
+    window.addEventListener('scroll', checkFooterVisibility);
+
+    // Početna provera
+    checkFooterVisibility();
+
+    return () => {
+      // Uklonite event listener kada se komponenta unmount-uje
+      window.removeEventListener('scroll', checkFooterVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(isFooterVisible);
+  }, [isFooterVisible]);
+
   return (
     <UserContainer>
-      <UserContent>
-        {backgorunds.map((background, index) => (
-          <Box
-            key={index}
-            sx={{
-              position: 'fixed',
-              top: '0',
-              left: '0',
-              right: '0',
-              bottom: '0',
-              zIndex: '0',
-              opacity: phase === index ? '1' : '0',
-              transition: 'opacity 1s ease-in-out',
-              backgroundImage: `url(${background})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          ></Box>
-        ))}{' '}
+      {backgorunds.map((background, index) => (
         <Box
+          key={index}
           sx={{
-            position: 'absolute',
+            position: 'fixed',
             top: '0',
             left: '0',
             right: '0',
             bottom: '0',
             zIndex: '0',
-            // backdropFilter: 'blur(5px)',
+            opacity: phase === index ? '1' : '0',
+            transition: 'opacity 1s ease-in-out',
+            backgroundImage: `url(${background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           }}
         />
+      ))}
+      <Box
+        sx={{
+          position: 'relative',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-
             alignItems: 'center',
-            maxWidth: '940px',
+            // maxWidth: '940px',
+            width: 'min(90vw, 940px)',
             margin: '0 auto',
             textAlign: 'center',
             gap: '1rem',
-            mt: '2rem',
+            mt: '5rem',
             p: '3rem',
             position: 'relative',
             zIndex: '2',
@@ -125,11 +150,13 @@ const Home = () => {
             <Typography variant="h4" color="white">
               {quote.quote}
             </Typography>
-            <Typography variant="h5" color="white"
+            <Typography
+              variant="h5"
+              color="white"
               sx={{
                 fontStyle: 'italic',
                 mt: 1,
-            }}
+              }}
             >
               {quote.author}
             </Typography>
@@ -146,115 +173,113 @@ const Home = () => {
             right words can be a beacon of hope, a nudge of encouragement, or a spark of inspiration.
           </Typography>
           <Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: matches ? 'row' : 'column',
-              alignItems: 'stretch',
-              justifyContent: 'space-between',
-              width: '100%',
-              gap: 2,
-              mt: 2,
-            }}
-          >
             <Box
               sx={{
-                width: matches ? '50%' : '100%',
-                border: '1px solid #fff',
-                borderRadius: '5px',
+                display: 'flex',
+                flexDirection: matches ? 'row' : 'column',
+                alignItems: 'stretch',
+                justifyContent: 'space-between',
+                width: '100%',
+                gap: 2,
+                mt: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  width: matches ? '50%' : '100%',
+                  border: '1px solid #fff',
+                  borderRadius: '5px',
 
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  p: 1,
-                  py: 4.5,
-                  // bgcolor: '#478D8A',
-                  // color: '#fff',
-                  borderBottomLeftRadius: '10px',
-                  borderBottomRightRadius: '10px',
-                }}
-                color="white"
-              >
-                <Typography variant="h5">Explore plan</Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: 2,
-                  p: 2,
-                  mt: 1,
-                }}
-                color="white"
-              >
-                <Box>
-                  <Typography variant="body1">-2 quotes a day for the first 7 days</Typography>
-                  <Typography>-1 quote every 3 days after the first 7 days expire</Typography>
-                  <Typography>-Daily notifications</Typography>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                width: matches ? '50%' : '100%',
-                border: '1px solid #fff',
-                borderRadius: '5px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  p: 4.5,
-                  bgcolor: '#fff',
-                  color: '#000',
-                  borderBottomLeftRadius: '10px',
-                  borderBottomRightRadius: '10px',
-                }}
-                color="white"
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: '500',
-                  }}
-                >
-                  Premium plan
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: 2,
-                  p: 2,
-                  mt: 1,
                 }}
               >
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 1,
+                    p: 1,
+                    py: 4.5,
+                    borderBottomLeftRadius: '10px',
+                    borderBottomRightRadius: '10px',
                   }}
                   color="white"
                 >
-                  <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
-                  <Typography>- Daily notifications</Typography>{' '}
-                  <Typography>- Access to History (see the list of your previously received quotes)</Typography>
+                  <Typography variant="h5">Explore plan</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: 2,
+                    p: 2,
+                    mt: 1,
+                  }}
+                  color="white"
+                >
+                  <Box>
+                    <Typography variant="body1">-2 quotes a day for the first 7 days</Typography>
+                    <Typography>-1 quote every 3 days after the first 7 days expire</Typography>
+                    <Typography>-Daily notifications</Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  width: matches ? '50%' : '100%',
+                  border: '1px solid #fff',
+                  borderRadius: '5px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 4.5,
+                    bgcolor: '#fff',
+                    color: '#000',
+                    borderBottomLeftRadius: '10px',
+                    borderBottomRightRadius: '10px',
+                  }}
+                  color="white"
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: '500',
+                    }}
+                  >
+                    Premium plan
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: 2,
+                    p: 2,
+                    mt: 1,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1,
+                    }}
+                    color="white"
+                  >
+                    <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
+                    <Typography>- Daily notifications</Typography>{' '}
+                    <Typography>- Access to History (see the list of your previously received quotes)</Typography>
+                  </Box>
                 </Box>
               </Box>
             </Box>
-           
-          </Box> <Typography variant="h6" color="white" mt={2}>
-              All details you can find in our {" "}
+            <Typography variant="h6" color="white" mt={2}>
+              All details you can find in our{' '}
               <Typography
                 variant="h6"
                 color="white"
@@ -268,7 +293,8 @@ const Home = () => {
               >
                 terms and conditions page
               </Typography>
-            </Typography></Box>
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: 'flex',
@@ -277,27 +303,21 @@ const Home = () => {
               alignItems: 'center',
               width: '100%',
               gap: '1rem',
-              // mt: matches ? '1rem' : '1rem',
             }}
           >
-          
             <Button
               size="large"
               variant="outlined"
               sx={{
-                //   marginInline: 'auto',
                 bgcolor: '#fff',
                 color: '#000',
-                // hover
                 '&:hover': {
                   bgcolor: '#fff',
                   color: '#000',
                 },
               }}
               onPointerDown={() => navigate('/register')}
-              // disabled={!agree}
             >
-              {' '}
               <Typography variant="h5">Register now</Typography>
             </Button>
             <Typography variant="h6" color="white">
@@ -318,7 +338,29 @@ const Home = () => {
             </Typography>
           </Box>
         </Box>
-      </UserContent>
+        <ArrowDownward
+          sx={{
+            color: 'white',
+            cursor: 'pointer',
+            position: 'fixed',
+            bottom: '2rem',
+            right: '1rem',
+            zIndex: '999',
+            transform: isFooterVisible ? 'scale(0)' : 'scale(1)',
+            transition: 'transform 0.3s ease-in-out',
+          }}
+          onClick={() => footerRef.current.scrollIntoView({ behavior: 'smooth' })}
+        />
+
+        <Box
+          sx={{
+            mt: 10,
+          }}
+          ref={footerRef}
+        >
+          <Footer />
+        </Box>
+      </Box>
     </UserContainer>
   );
 };

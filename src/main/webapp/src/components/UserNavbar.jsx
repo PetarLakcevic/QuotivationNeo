@@ -88,13 +88,14 @@ const UserNavbar = ({ home }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '1rem',
-        backgroundImage: home ? ' ' : 'linear-gradient(135deg, hsl(193, 66%, 32%) 0%, hsl(144, 25%, 57%) 90% )',
-        boxShadow: home ? ' ' : '-1px 2px 10px 1px rgba(0, 0, 0, 0.4)',
+        backgroundImage: location.pathname === '/home' ? ' ' : 'linear-gradient(135deg, hsl(193, 66%, 32%) 0%, hsl(144, 25%, 57%) 90% )',
+        boxShadow: location.pathname === '/home' ? ' ' : '-1px 2px 10px 1px rgba(0, 0, 0, 0.4)',
         position: 'relative',
         zIndex: 1,
         width: '100%',
       }}
     >
+      {/* {location.pathname} */}
       {/* <Modal open={firstTimeModal} onClose={() => setFirstTimeModal(false)}>
         <Box
           sx={{
@@ -152,6 +153,7 @@ const UserNavbar = ({ home }) => {
         style={{
           // width: '50%',
           maxHeight: '2rem',
+          transform: 'translateX(100%)',
           objectFit: 'contain',
           opacity: account?.hasPremium ? 1 : 0,
         }}
@@ -163,10 +165,15 @@ const UserNavbar = ({ home }) => {
           opacity: previousPath.length === 0 || previousPath === '/login' ? 0 : 1,
           cursor: previousPath.length === 0 || previousPath === '/login' ? 'default' : 'pointer',
           transition: 'all 0.3s ease',
+          // marginLeft: '-1rem',
+          position: 'absolute',
+          left: '1rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
         onPointerDown={previousPath.length === 0 || previousPath === '/login' ? null : goBack}
       />
-      {!home && (
+      {/* {!location.pathname === '/home' && ( */}
         <img
           src={qq}
           alt="qq"
@@ -174,9 +181,10 @@ const UserNavbar = ({ home }) => {
             width: '50%',
             maxHeight: '5rem',
             objectFit: 'contain',
+            opacity: location.pathname === '/home' ? 0 : 1,
           }}
         />
-      )}
+      {/* )} */}
       <Sort
         sx={{
           transform: 'scaleX(-1)',

@@ -24,6 +24,7 @@ import Terms from '../pages/Terms/Terms';
 import Step1 from '../pages/Payments/Step1';
 import Step2 from '../pages/Payments/Step2';
 import Home from '../pages/Home/Home';
+import UserNavbar from '../components/UserNavbar';
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -109,6 +110,7 @@ const UserRoutes = ({ isLandscape }) => {
       >
         <img src={crown} alt="crown" style={{ width: '35px', height: '35px' }} />
       </Box> */}
+      <UserNavbar />
       <Routes>
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/theme" element={<Theme account={account} setAccount={setAccount} isLandscape={isLandscape} />} />

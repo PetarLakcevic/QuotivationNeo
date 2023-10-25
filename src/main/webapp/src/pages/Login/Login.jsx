@@ -283,6 +283,7 @@ const Login = ({ setToken, parseToken }) => {
                 Register here.
               </Typography>
             </Typography>
+            
           </Box>
         </form>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>

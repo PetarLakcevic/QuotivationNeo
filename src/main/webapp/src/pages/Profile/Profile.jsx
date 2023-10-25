@@ -27,7 +27,7 @@ const Profile = ({ account }) => {
 
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <Box
         sx={{
           display: 'flex',

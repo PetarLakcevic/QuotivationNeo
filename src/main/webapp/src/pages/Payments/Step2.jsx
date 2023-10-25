@@ -10,7 +10,7 @@ const Step2 = () => {
   const navigate = useNavigate();
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{

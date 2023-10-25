@@ -197,7 +197,7 @@ const Payments = ({ isLandscape }) => {
           minHeight: '100vh',
         }}
       >
-        <UserNavbar />
+        {/* <UserNavbar /> */}
         <Box
           sx={{
             display: 'flex',

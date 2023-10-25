@@ -9,7 +9,7 @@ const ThankYou = () => {
     const navigate = useNavigate();
   return (
       <UserContainer>
-          <UserNavbar />
+          {/* <UserNavbar /> */}
           <UserContent>
               <Box sx={{
                   display: 'flex',

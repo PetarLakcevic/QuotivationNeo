@@ -22,7 +22,7 @@ const ActivatePremium = () => {
   }, []);
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <Box
         sx={{
           width: '100%',

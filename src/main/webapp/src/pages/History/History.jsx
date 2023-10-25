@@ -77,7 +77,7 @@ const History = ({ account }) => {
 
   return (
     <UserContainer>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       <UserContent>
         <Box
           sx={{
