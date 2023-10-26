@@ -1,4 +1,18 @@
-import { ArrowBack, Sort } from '@mui/icons-material';
+import {
+  ArrowBack,
+  Category,
+  ContactEmergency,
+  Gavel,
+  Home,
+  ImageSearch,
+  Logout,
+  Person,
+  PictureAsPdf,
+  PrivacyTip,
+  QuestionAnswer,
+  Sort,
+  TerminalSharp,
+} from '@mui/icons-material';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import qq from '../assets/images/qq.png';
@@ -162,8 +176,8 @@ const UserNavbar = ({ home }) => {
         sx={{
           color: 'white',
           filter: 'drop-shadow(0 0 1rem black)',
-          opacity: previousPath.length === 0 || previousPath === '/login' ? 0 : 1,
-          cursor: previousPath.length === 0 || previousPath === '/login' ? 'default' : 'pointer',
+          opacity: location.pathname === '/home' ? 0 : 1,
+          cursor: location.pathname === '/home' ? 'default' : 'pointer',
           transition: 'all 0.3s ease',
           // marginLeft: '-1rem',
           position: 'absolute',
@@ -171,19 +185,19 @@ const UserNavbar = ({ home }) => {
           top: '50%',
           transform: 'translateY(-50%)',
         }}
-        onPointerDown={previousPath.length === 0 || previousPath === '/login' ? null : goBack}
+        onPointerDown={location.pathname === '/home' ? null : goBack}
       />
       {/* {!location.pathname === '/home' && ( */}
-        <img
-          src={qq}
-          alt="qq"
-          style={{
-            width: '50%',
-            maxHeight: '5rem',
-            objectFit: 'contain',
-            opacity: location.pathname === '/home' ? 0 : 1,
-          }}
-        />
+      <img
+        src={qq}
+        alt="qq"
+        style={{
+          width: '50%',
+          maxHeight: '5rem',
+          objectFit: 'contain',
+          opacity: location.pathname === '/home' ? 0 : 1,
+        }}
+      />
       {/* )} */}
       <Sort
         sx={{
@@ -311,9 +325,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/home');
                   }}
+                  startIcon={
+                    <Home
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -326,9 +347,16 @@ const UserNavbar = ({ home }) => {
                     onPointerDown={() => {
                       navigate('/history');
                     }}
+                    startIcon={
+                      <Home
+                        sx={{
+                          color: 'white',
+                        }}
+                      />
+                    }
                   >
                     <Typography
-                      variant="h6"
+                      variant="body1"
                       sx={{
                         color: 'white',
                       }}
@@ -341,9 +369,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/category');
                   }}
+                  startIcon={
+                    <Category
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -355,9 +390,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/theme');
                   }}
+                  startIcon={
+                    <ImageSearch
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -369,9 +411,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/suggestions');
                   }}
+                  startIcon={
+                    <QuestionAnswer
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -383,9 +432,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/privacy');
                   }}
+                  startIcon={
+                    <PrivacyTip
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -397,12 +453,26 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/terms-&-conditions');
                   }}
+                  startIcon={
+                    <Gavel
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
+                    startIcon={
+                      <Home
+                        sx={{
+                          color: 'white',
+                        }}
+                      />
+                    }
                   >
                     Terms & Conditions
                   </Typography>
@@ -411,9 +481,16 @@ const UserNavbar = ({ home }) => {
                   onPointerDown={() => {
                     navigate('/contact');
                   }}
+                  startIcon={
+                    <ContactEmergency
+                      sx={{
+                        color: 'white',
+                      }}
+                    />
+                  }
                 >
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       color: 'white',
                     }}
@@ -426,20 +503,22 @@ const UserNavbar = ({ home }) => {
                     onPointerDown={() => {
                       navigate('/payments/step1');
                     }}
+                    startIcon={
+                      <img
+                        src={crown}
+                        alt="crown"
+                        style={{
+                          width: '1.5rem',
+                          height: '1.5rem',
+                          objectFit: 'contain',
+                          // marginRight: '0.5rem',
+                        }}
+                      />
+                    }
                   >
                     {' '}
-                    <img
-                      src={crown}
-                      alt="crown"
-                      style={{
-                        width: '1.5rem',
-                        height: '1.5rem',
-                        objectFit: 'contain',
-                        marginRight: '0.5rem',
-                      }}
-                    />
                     <Typography
-                      variant="h6"
+                      variant="body1"
                       sx={{
                         color: 'white',
                       }}
@@ -473,9 +552,16 @@ const UserNavbar = ({ home }) => {
                 onPointerDown={() => {
                   navigate('/profile');
                 }}
+                startIcon={
+                  <Person
+                    sx={{
+                      color: 'white',
+                    }}
+                  />
+                }
               >
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   sx={{
                     color: 'white',
                   }}
@@ -485,10 +571,19 @@ const UserNavbar = ({ home }) => {
               </Button>
             )}
 
-            <Button onPointerDown={handleLogout}>
+            <Button
+              onPointerDown={handleLogout}
+              startIcon={
+                <Logout
+                  sx={{
+                    color: 'white',
+                  }}
+                />
+              }
+            >
               {' '}
               <Typography
-                variant="h6"
+                variant="body1"
                 sx={{
                   color: 'white',
                 }}
