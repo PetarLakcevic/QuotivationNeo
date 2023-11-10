@@ -287,8 +287,6 @@ public class AccountResource {
         }
 
 
-
-
         //if no premium check maybe he bought ??
         if (adminUserDTO.isHasPremium() == false) {
             Payment latestPayment = getLatestPaymentNotUsed(userAdditionalFields);
@@ -303,16 +301,16 @@ public class AccountResource {
             map.add("ACTION", "QUERYTRANSACTION");
             map.add("SESSIONTOKEN", latestPayment.getSessionToken());
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-           // String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+            // String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
             String resp = restTemplate.postForObject("https://merchantsafeunipay.com/msu/api/v2", request, String.class);
 
-
+            System.out.println("RESP:" + resp);
             //Parse response
             String transactionStatus = getTransactionStatus(resp);
 
             if (transactionStatus == null) {
-                latestPayment.setUsed(true);
-                paymentRepository.save(latestPayment);
+                System.out.println("Failed");
+                failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
                 return adminUserDTO;
             }
             switch (transactionStatus) {
@@ -515,7 +513,7 @@ public class AccountResource {
         }
 
 
-       // return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+        // return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
         return "https://merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
 
     }
@@ -535,6 +533,7 @@ public class AccountResource {
         map.add("MERCHANTUSER", pt.getMerchantUser());
         map.add("MERCHANTPASSWORD", pt.getMerchantPassword());
         map.add("MERCHANT", pt.getMerchant());
+        map.add("MERCHANTNAME", pt.getMerchant());
 
         map.add("CUSTOMER", pt.getCustomer());
         map.add("AMOUNT", pt.getAmount());
@@ -555,7 +554,7 @@ public class AccountResource {
         map.add("MERCHANTPAYMENTID", paymentId);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-  //      String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+        //      String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
         String resp = restTemplate.postForObject("https://merchantsafeunipay.com/msu/api/v2", request, String.class);
         //  System.out.println("Response: " + resp); // Printing the entire response
 
