@@ -452,7 +452,7 @@ const Payments = ({ isLandscape }) => {
                 Unlock unlimited access to all of our exclusive features for an entire year!
               </Typography>
               <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
-                Annual Plan: 2,000.00 RSD (~19.2 EUR at a conversion rate of 117.2)
+                Annual Plan: 2,000.00 RSD (~17 EUR at a conversion rate of 117.2)
               </Typography>
               <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
                 That's only 166.67 RSD (~1.42 EUR) per month, billed annually.

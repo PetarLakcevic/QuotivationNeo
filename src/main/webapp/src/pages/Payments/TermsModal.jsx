@@ -54,7 +54,7 @@ const TermsModal = ({ setShowModal2 }) => {
     },
     {
       title: 'CURRENCY CONVERSION STATEMENT',
-      text: 'All payments will be made in the local currency of the Republic of Serbia – dinar (RSD). For an informative display of prices in other currencies, a rate of 117.2 RSD = 1 EUR is used. The amount your card will be charged might be expressed in your local currency through a conversion rate used by card companies, which is unknown to us at the time of the transaction. As a result of this conversion, there might be a slight difference from the original price listed on our website. Thank you for your understanding.',
+      text: 'All payments will be effected in Serbian currency – dinar (RSD). The amount your credit card account will be charged for is obtained through the conversion of the price in Euro into Serbian dinar according to the current exchange rate of the Serbian National Bank. When charging your credit card, the same amount is converted into your local currency according to the exchange rate of credit card associations. As a result of this conversion there is a possibility of a slight difference from the original price stated in our web site Thank you for your understanding.',
     },
     {
       title: 'PRODUCT DELIVERY',
