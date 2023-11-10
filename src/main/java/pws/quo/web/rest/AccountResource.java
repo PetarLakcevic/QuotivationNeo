@@ -303,7 +303,8 @@ public class AccountResource {
             map.add("ACTION", "QUERYTRANSACTION");
             map.add("SESSIONTOKEN", latestPayment.getSessionToken());
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+           // String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+            String resp = restTemplate.postForObject("https://merchantsafeunipay.com/msu/api/v2", request, String.class);
 
 
             //Parse response
@@ -514,7 +515,8 @@ public class AccountResource {
         }
 
 
-        return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+       // return "https://test.merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
+        return "https://merchantsafeunipay.com/chipcard/pay3d/" + sessionToken;
 
     }
 
@@ -553,7 +555,8 @@ public class AccountResource {
         map.add("MERCHANTPAYMENTID", paymentId);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+  //      String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
+        String resp = restTemplate.postForObject("https://merchantsafeunipay.com/msu/api/v2", request, String.class);
         //  System.out.println("Response: " + resp); // Printing the entire response
 
         ObjectMapper mapper = new ObjectMapper();

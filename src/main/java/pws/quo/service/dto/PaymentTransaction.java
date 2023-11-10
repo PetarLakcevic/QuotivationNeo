@@ -23,9 +23,9 @@ public class PaymentTransaction {
 
     public PaymentTransaction(UserAdditionalFields userAdditionalFields) {
         // MERCHANT DATA - CHANGE
-        this.merchantUser = "npavlovi@nassan.rs";
-        this.merchantPassword = "+5UQ8@NDVm@*=r3";
-        this.merchant = "ems02";
+        this.merchantUser = "api.user@wermax.com";
+        this.merchantPassword = "k@69NS6!U(GCc*V";
+        this.merchant = "wermaxconsulting";
 
 
         // TRANSACTION DATA - DONT CHANGE
