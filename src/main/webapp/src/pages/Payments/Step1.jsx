@@ -160,7 +160,7 @@ const Step1 = ({ account }) => {
                 <Typography sx={{ fontWeight: 'bold' }} variant="h6">
                   2000 RSD/Year
                 </Typography>
-                <Typography> (approx. 117.2 EUR/Year)</Typography>
+                <Typography> (approx. 17 EUR/Year)</Typography>
               </Box>
               <Box
                 sx={{
