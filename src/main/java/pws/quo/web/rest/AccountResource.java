@@ -309,9 +309,8 @@ public class AccountResource {
             String transactionStatus = getTransactionStatus(resp);
 
             if (transactionStatus == null) {
-                System.out.println("No transaction status");
-                latestPayment.setUsed(true);
-                paymentRepository.save(latestPayment);
+                System.out.println("Failed");
+                failedTransactionStatus(resp, adminUserDTO, userAdditionalFields, latestPayment);
                 return adminUserDTO;
             }
             switch (transactionStatus) {
