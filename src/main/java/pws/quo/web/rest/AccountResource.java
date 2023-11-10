@@ -249,6 +249,13 @@ public class AccountResource {
 //        }
 //        return null;
 //    }
+
+
+    @PostMapping("/validate-payment")
+    public void grabPaymentData(@RequestBody String object) {
+        System.out.println(object);
+    }
+
     @Transactional
     @GetMapping("/account")
     public AdminUserDTO getAccountNew() {
