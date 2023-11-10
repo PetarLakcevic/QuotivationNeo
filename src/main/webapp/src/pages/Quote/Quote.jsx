@@ -174,21 +174,21 @@ const Quote = ({ account }) => {
               User Information: {account?.firstName} {account?.lastName}, {account?.email}
             </li>
             <li>
-              Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
-              {paymentData?.transactionList[0]?.pgOrderId}
+              Order Details: Premium, {paymentData?.transactionList[0]?.amount || '/'} {paymentData?.transactionList[0]?.currency || '/'}, Order ID:{' '}
+              {paymentData?.transactionList[0]?.pgOrderId || '/'}
             </li>
             <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>
             <li>
               Transaction Information:
               <ul style={{ paddingLeft: '20px' }}>
-                <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
+                <li>Order Number: {paymentData?.transactionList[0]?.pgOrderId || '/'}</li>
                 {/* <li>Authorization Code: [Authorization Code]</li> */}
-                <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
-                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
-                <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
-                <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
-                <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
-                <li>Transaction Reference ID: {paymentData?.transactionList[0].pgTranRefId}</li>
+                <li>Transaction Status: {paymentData?.transactionList[0]?.transactionStatus || '/'}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0]?.pgTranReturnCode || '/'}</li>
+                <li>Transaction Number: {paymentData?.transactionList[0]?.pgTranId || '/'}</li>
+                <li>Transaction Date: {paymentData?.transactionList[0]?.timeCreated || '/'}</li>
+                <li>Transaction Amount: {paymentData?.transactionList[0]?.amount || '/'}</li>
+                <li>Transaction Reference ID: {paymentData?.transactionList[0]?.pgTranRefId || '/'}</li>
               </ul>
             </li>
           </ul>
@@ -248,21 +248,21 @@ const Quote = ({ account }) => {
               User Information: {account?.firstName} {account?.lastName}, {account?.email}
             </li>
             <li>
-              Order Details: Premium, {paymentData?.transactionList[0]?.amount} {paymentData?.transactionList[0]?.currency}, Order ID:{' '}
-              {paymentData?.transactionList[0]?.pgOrderId}
+              Order Details: Premium, {paymentData?.transactionList[0]?.amount || '/'} {paymentData?.transactionList[0]?.currency || '/'}, Order ID:{' '}
+              {paymentData?.transactionList[0]?.pgOrderId || '/'}
             </li>
             <li>Merchant Information: Wermax Consulting doo, 109871829, Hiladnarska 21, Beograd, Srbija</li>
             <li>
               Transaction Information:
               <ul style={{ paddingLeft: '20px' }}>
-                <li>Order Number: {paymentData?.transactionList[0].pgOrderId}</li>
+                <li>Order Number: {paymentData?.transactionList[0]?.pgOrderId || '/'}</li>
                 {/* <li>Authorization Code: [Authorization Code]</li> */}
-                <li>Transaction Status: {paymentData?.transactionList[0].transactionStatus}</li>
-                <li>Transaction Status Code: {paymentData?.transactionList[0].pgTranReturnCode}</li>
-                <li>Transaction Number: {paymentData?.transactionList[0].pgTranId}</li>
-                <li>Transaction Date: {paymentData?.transactionList[0].timeCreated}</li>
-                <li>Transaction Amount: {paymentData?.transactionList[0].amount}</li>
-                <li>Transaction Reference ID: {paymentData?.transactionList[0].pgTranRefId}</li>
+                <li>Transaction Status: {paymentData?.transactionList[0]?.transactionStatus || '/'}</li>
+                <li>Transaction Status Code: {paymentData?.transactionList[0]?.pgTranReturnCode || '/'}</li>
+                <li>Transaction Number: {paymentData?.transactionList[0]?.pgTranId || '/'}</li>
+                <li>Transaction Date: {paymentData?.transactionList[0]?.timeCreated || '/'}</li>
+                <li>Transaction Amount: {paymentData?.transactionList[0]?.amount || '/'}</li>
+                <li>Transaction Reference ID: {paymentData?.transactionList[0]?.pgTranRefId || '/'}</li>
               </ul>
             </li>
           </ul>
