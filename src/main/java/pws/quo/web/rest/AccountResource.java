@@ -253,7 +253,10 @@ public class AccountResource {
 
     @PostMapping("/validate-payment")
     public void grabPaymentData(@RequestBody String object) {
+        System.out.println("DATA: ");
+        System.out.println("--------------------------");
         System.out.println(object);
+        System.out.println("--------------------------");
     }
 
     @Transactional
@@ -311,7 +314,10 @@ public class AccountResource {
             // String resp = restTemplate.postForObject("https://test.merchantsafeunipay.com/msu/api/v2", request, String.class);
             String resp = restTemplate.postForObject("https://merchantsafeunipay.com/msu/api/v2", request, String.class);
 
+            System.out.println("**********************");
             System.out.println("RESP:" + resp);
+            System.out.println("**********************");
+
             //Parse response
             String transactionStatus = getTransactionStatus(resp);
 
