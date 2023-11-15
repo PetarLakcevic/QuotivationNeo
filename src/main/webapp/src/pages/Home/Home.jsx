@@ -22,9 +22,9 @@ import droneview from '../../assets/images/droneview.jpeg';
 import galaxy from '../../assets/images/galaxy.jpeg';
 import skyline from '../../assets/images/skyline.jpg';
 import autumn from '../../assets/images/autumn.jpeg';
-import leafs from '../../assets/images/leafs.jpg';
-import bird from '../../assets/images/bird.jpg';
-import midnight from '../../assets/images/midnight.jpg';
+import leafs from '../../assets/images/3.webp';
+import bird from '../../assets/images/5.jpeg';
+import midnight from '../../assets/images/2.jpeg';
 import { ArrowDownward, Menu, Sort } from '@mui/icons-material';
 import SlideLeft from '../../components/SlideLeft';
 import Footer from '../../components/Footer';
@@ -143,7 +143,10 @@ const Home = () => {
             backdropFilter: 'blur(10px)',
             borderRadius: '10px',
             boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-            textShadow: '0 0 10px rgba(0,0,0,0.5)',
+            textShadow: '0 0 5px  rgba(0,0,0,1)',
+            // fontWeight: '900 !important',
+            //text stroke
+            // WebkitTextStroke: '0.5px #ccc',
           }}
         >
           <Box>
@@ -289,6 +292,7 @@ const Home = () => {
                   textDecoration: 'underline',
                   cursor: 'pointer',
                   color: '#478D8A',
+                  textShadow: '0 0 5px  rgba(0,0,0,0)',
                 }}
               >
                 terms and conditions page
@@ -331,6 +335,7 @@ const Home = () => {
                   textDecoration: 'underline',
                   cursor: 'pointer',
                   color: '#478D8A',
+                  textShadow: '0 0 5px  rgba(0,0,0,0)',
                 }}
               >
                 Login here.
