@@ -23,7 +23,7 @@ import galaxy from '../../assets/images/galaxy.jpeg';
 import skyline from '../../assets/images/skyline.jpg';
 import autumn from '../../assets/images/autumn.jpeg';
 import leafs from '../../assets/images/3.webp';
-import bird from '../../assets/images/5.jpeg';
+import bird from '../../assets/images/9.jpg';
 import midnight from '../../assets/images/2.jpeg';
 import { ArrowDownward, Menu, Sort } from '@mui/icons-material';
 import SlideLeft from '../../components/SlideLeft';
@@ -139,23 +139,24 @@ const Home = () => {
             p: '3rem',
             position: 'relative',
             zIndex: '2',
-            backgroundColor: 'rgba(255,255,255,0.2)',
+            backgroundColor: 'rgba(255,255,255,0.4)',
             backdropFilter: 'blur(10px)',
             borderRadius: '10px',
             boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-            textShadow: '0 0 5px  rgba(0,0,0,1)',
+            color: 'black',
+            textShadow: '0 0 1px rgba(255,255,255,0)',
             // fontWeight: '900 !important',
             //text stroke
             // WebkitTextStroke: '0.5px #ccc',
           }}
         >
           <Box>
-            <Typography variant="h4" color="white">
+            <Typography variant="h4" color="black">
               {quote.quote}
             </Typography>
             <Typography
               variant="h5"
-              color="white"
+              // color="white"
               sx={{
                 fontStyle: 'italic',
                 mt: 1,
@@ -170,7 +171,7 @@ const Home = () => {
               mt: 3,
               textAlign: 'center',
             }}
-            color="white"
+            // color="white"
           >
             Every day, we face challenges that test our limits, push our boundaries, and sometimes shake our beliefs. In these moments, the
             right words can be a beacon of hope, a nudge of encouragement, or a spark of inspiration.
@@ -204,7 +205,7 @@ const Home = () => {
                     borderBottomLeftRadius: '10px',
                     borderBottomRightRadius: '10px',
                   }}
-                  color="white"
+                  // color="white"
                 >
                   <Typography variant="h5">Explore plan</Typography>
                 </Box>
@@ -218,7 +219,7 @@ const Home = () => {
                     p: 2,
                     mt: 1,
                   }}
-                  color="white"
+                  // color="white"
                 >
                   <Box>
                     <Typography variant="body1">-2 quotes a day for the first 7 days</Typography>
@@ -272,7 +273,7 @@ const Home = () => {
                       flexDirection: 'column',
                       gap: 1,
                     }}
-                    color="white"
+                    // color="white"
                   >
                     <Typography>- 2 quotes a day for an entire year (365 days)</Typography>
                     <Typography>- Daily notifications</Typography>{' '}
@@ -281,11 +282,15 @@ const Home = () => {
                 </Box>
               </Box>
             </Box>
-            <Typography variant="h6" color="white" mt={2}>
+            <Typography
+              variant="h6"
+              // color="white"
+              mt={2}
+            >
               All details you can find in our{' '}
               <Typography
                 variant="h6"
-                color="white"
+                // color="white"
                 component="a"
                 onPointerDown={() => navigate('/terms-&-conditions')}
                 sx={{
@@ -324,7 +329,7 @@ const Home = () => {
             >
               <Typography variant="h5">Register now</Typography>
             </Button>
-            <Typography variant="h6" color="white">
+            <Typography variant="h6" >
               Already a member?{' '}
               <Typography
                 variant="h6"
@@ -345,7 +350,7 @@ const Home = () => {
         </Box>
         <ArrowDownward
           sx={{
-            color: 'white',
+            // color: 'white',
             cursor: 'pointer',
             position: 'fixed',
             bottom: '2rem',
