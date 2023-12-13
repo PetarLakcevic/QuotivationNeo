@@ -46,7 +46,7 @@ const UserNavbar = ({ home }) => {
 
   useEffect(() => {
     if (account) {
-      const registrationDate = new Date(account?.userAdditionalFields.registrationDate);
+      const registrationDate = new Date(account?.userAdditionalFields?.registrationDate);
       const trialEndDate = new Date(registrationDate);
       trialEndDate.setDate(trialEndDate.getDate() + 7);
       const trialEndDateString = trialEndDate.toLocaleDateString();
