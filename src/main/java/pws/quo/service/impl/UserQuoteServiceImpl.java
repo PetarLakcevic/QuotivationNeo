@@ -155,12 +155,31 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             }
 
             if (newQuote != null) {
+
                 UserQuote uq = new UserQuote();
                 uq.setUser(uaf.getInternalUser());
                 uq.setQuote(newQuote);
                 uq.setTime(Instant.now());
                 uq.setFavourite(false);
                 newQuotes.add(uq);
+            }else{
+                System.out.println("No new quote found for user: "+uaf.getInternalUser().getLogin()+", generating random quote");
+                List<Quote> allQuotes = quoteRepository.findAll();
+
+                for (Quote quote : allQuotes) {
+                    if (!myQuotes.contains(quote)) {
+                        newQuote = quote;
+                        UserQuote uq = new UserQuote();
+                        uq.setUser(uaf.getInternalUser());
+                        uq.setQuote(newQuote);
+                        uq.setTime(Instant.now());
+                        uq.setFavourite(false);
+                        newQuotes.add(uq);
+                        break;
+                    }
+                }
+
+
             }
 
         }
