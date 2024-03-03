@@ -141,7 +141,6 @@ public class UserQuoteServiceImpl implements UserQuoteService {
 
                 if (uaf.getExpiry() == null || uaf.getExpiry().isBefore(Instant.now())) {
                     System.out.println("BBB");
-
                     continue;
                 }
             }

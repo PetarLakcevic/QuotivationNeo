@@ -53,6 +53,13 @@ public class UserQuoteResource {
         this.userQuoteRepository = userQuoteRepository;
         this.userQuoteQueryService = userQuoteQueryService;
     }
+
+
+    @GetMapping("/test-gen")
+    public void testGen() {
+         userQuoteService.generateNewLineOfQuotes();
+    }
+
     /**
      * {@code POST  /user-quotes} : Create a new userQuote.
      *

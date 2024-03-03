@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import pws.quo.domain.Quote;
 import pws.quo.domain.User;
 import pws.quo.domain.UserQuote;
@@ -70,6 +71,8 @@ public interface UserQuoteService {
     Quote findLastQuote(User user);
 
     List<Quote> findQuotesForUser(User user);
+
+    void generateNewLineOfQuotes();
 
     //void generateNewLineOfQuotes();
 }
