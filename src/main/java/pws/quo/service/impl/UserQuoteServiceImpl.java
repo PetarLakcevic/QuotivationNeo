@@ -137,14 +137,10 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             Quote newQuote = null;
 
             if (uaf.getTrialExpiry().isBefore(Instant.now())) {
-                System.out.println("AAA");
-
                 if (uaf.getExpiry() == null || uaf.getExpiry().isBefore(Instant.now())) {
-                    System.out.println("BBB");
                     continue;
                 }
             }
-            System.out.println("CCC");
 
             List<Quote> myQuotes = findMyQuotes(uaf.getInternalUser(), userQuoteList);
             Set<Category> myCategories = uaf.getCategories();
@@ -153,17 +149,14 @@ public class UserQuoteServiceImpl implements UserQuoteService {
             Collections.shuffle(quotesByCategories);
 
             for (Quote quote : quotesByCategories) {
-                System.out.println("DDD");
-
                 if (!myQuotes.contains(quote)) {
-                    System.out.println("EEE");
                     newQuote = quote;
                     break;
                 }
             }
 
             if (newQuote != null) {
-                System.out.println("FFF");
+                System.out.println("Found new quote for user");
 
                 UserQuote uq = new UserQuote();
                 uq.setUser(uaf.getInternalUser());
@@ -172,17 +165,11 @@ public class UserQuoteServiceImpl implements UserQuoteService {
                 uq.setFavourite(false);
                 newQuotes.add(uq);
             }else{
-                System.out.println("GGG");
-
                 System.out.println("No new quote found for user: "+uaf.getInternalUser().getLogin()+", generating random quote");
                 List<Quote> allQuotes = quoteRepository.findAll();
 
                 for (Quote quote : allQuotes) {
-                    System.out.println("HHH");
-
                     if (!myQuotes.contains(quote)) {
-                        System.out.println("LLL");
-
                         newQuote = quote;
                         UserQuote uq = new UserQuote();
                         uq.setUser(uaf.getInternalUser());
@@ -193,14 +180,10 @@ public class UserQuoteServiceImpl implements UserQuoteService {
                         break;
                     }
                 }
-
-
             }
-
         }
 
         userQuoteRepository.saveAll(newQuotes);
-
     }
 
 
